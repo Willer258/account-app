@@ -53,7 +53,7 @@ class PockiiApp extends ConsumerWidget {
         title: 'Pockii',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light(),
-        // darkTheme: AppTheme.dark(), // Post-MVP
+        darkTheme: AppTheme.dark(),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

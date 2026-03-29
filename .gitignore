@@ -74,3 +74,8 @@ key.properties
 
 # Windsurf
 .windsurf/
+
+# Build artifacts (use GitHub Releases instead)
+*.apk
+*.aab
+*.ipa
