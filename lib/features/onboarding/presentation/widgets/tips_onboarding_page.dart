@@ -189,10 +189,7 @@ class _TipCard extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  tip.category.emoji,
-                  style: const TextStyle(fontSize: 14),
-                ),
+                Text(tip.category.emoji, style: const TextStyle(fontSize: 14)),
                 const SizedBox(width: 4),
                 Text(
                   tip.category.displayName,

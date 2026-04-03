@@ -21,8 +21,8 @@ final onboardingCompletedProvider = FutureProvider<bool>((ref) async {
 /// Provider for onboarding state management.
 final onboardingStateProvider =
     StateNotifierProvider<OnboardingNotifier, OnboardingState>(
-  OnboardingNotifier.new,
-);
+      OnboardingNotifier.new,
+    );
 
 /// Notifier for managing onboarding flow state.
 class OnboardingNotifier extends StateNotifier<OnboardingState> {
