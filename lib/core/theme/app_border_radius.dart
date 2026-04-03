@@ -79,25 +79,25 @@ abstract class AppBorderRadius {
 
   /// Creates a BorderRadius with only top corners rounded.
   static BorderRadius top(double radius) => BorderRadius.only(
-        topLeft: Radius.circular(radius),
-        topRight: Radius.circular(radius),
-      );
+    topLeft: Radius.circular(radius),
+    topRight: Radius.circular(radius),
+  );
 
   /// Creates a BorderRadius with only bottom corners rounded.
   static BorderRadius bottom(double radius) => BorderRadius.only(
-        bottomLeft: Radius.circular(radius),
-        bottomRight: Radius.circular(radius),
-      );
+    bottomLeft: Radius.circular(radius),
+    bottomRight: Radius.circular(radius),
+  );
 
   /// Creates a BorderRadius with only left corners rounded.
   static BorderRadius left(double radius) => BorderRadius.only(
-        topLeft: Radius.circular(radius),
-        bottomLeft: Radius.circular(radius),
-      );
+    topLeft: Radius.circular(radius),
+    bottomLeft: Radius.circular(radius),
+  );
 
   /// Creates a BorderRadius with only right corners rounded.
   static BorderRadius right(double radius) => BorderRadius.only(
-        topRight: Radius.circular(radius),
-        bottomRight: Radius.circular(radius),
-      );
+    topRight: Radius.circular(radius),
+    bottomRight: Radius.circular(radius),
+  );
 }

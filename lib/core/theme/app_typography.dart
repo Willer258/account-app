@@ -186,6 +186,64 @@ abstract class AppTypography {
   );
 
   // ============================================
+  // Revolut-style text styles
+  // ============================================
+
+  /// Revolut display — massive hero number (72sp, ultra-bold)
+  static const TextStyle revolutDisplay = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 72.0,
+    fontWeight: FontWeight.w800,
+    height: 1.0,
+    letterSpacing: -2.0,
+  );
+
+  /// Revolut title — screen-level heading (28sp, bold)
+  static const TextStyle revolutTitle = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 28.0,
+    fontWeight: FontWeight.w700,
+    height: 1.2,
+    letterSpacing: -0.5,
+  );
+
+  /// Revolut subtitle — section/card heading (20sp, semibold)
+  static const TextStyle revolutSubtitle = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 20.0,
+    fontWeight: FontWeight.w600,
+    height: 1.3,
+    letterSpacing: -0.25,
+  );
+
+  /// Revolut body — standard readable text (15sp, regular)
+  static const TextStyle revolutBody = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 15.0,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+    letterSpacing: 0.0,
+  );
+
+  /// Revolut label — button/chip text (14sp, semibold)
+  static const TextStyle revolutLabel = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14.0,
+    fontWeight: FontWeight.w600,
+    height: 1.4,
+    letterSpacing: 0.1,
+  );
+
+  /// Revolut micro — timestamps and hints (11sp, medium)
+  static const TextStyle revolutMicro = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 11.0,
+    fontWeight: FontWeight.w500,
+    height: 1.3,
+    letterSpacing: 0.3,
+  );
+
+  // ============================================
   // Helper Methods
   // ============================================
 
