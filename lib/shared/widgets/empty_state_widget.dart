@@ -59,14 +59,13 @@ class EmptyStateWidget extends StatelessWidget {
   ///
   /// Displays when the patterns feature is not yet unlocked.
   /// Handles French singular/plural: "1 jour" vs "X jours".
-  factory EmptyStateWidget.patternsLocked({
-    required int daysRemaining,
-  }) {
+  factory EmptyStateWidget.patternsLocked({required int daysRemaining}) {
     final dayWord = daysRemaining == 1 ? 'jour' : 'jours';
     return EmptyStateWidget(
       icon: Icons.lock_outline,
       title: 'Tes tendances arrivent bientôt',
-      subtitle: 'Encore $daysRemaining $dayWord de données pour débloquer cette fonctionnalité',
+      subtitle:
+          'Encore $daysRemaining $dayWord de données pour débloquer cette fonctionnalité',
     );
   }
 
@@ -144,9 +143,7 @@ class EmptyStateWidget extends StatelessWidget {
               FilledButton.tonal(
                 onPressed: onAction,
                 // Ensure minimum touch target of 48x48dp per AC3
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size(48, 48),
-                ),
+                style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
                 child: Text(actionLabel!),
               ),
             ],
@@ -172,11 +169,7 @@ class _EmptyStateIcon extends StatelessWidget {
         color: AppColors.surfaceVariant,
         shape: BoxShape.circle,
       ),
-      child: Icon(
-        icon,
-        size: 40,
-        color: AppColors.onSurfaceVariant,
-      ),
+      child: Icon(icon, size: 40, color: AppColors.onSurfaceVariant),
     );
   }
 }
@@ -205,10 +198,7 @@ class _FabPointerState extends State<_FabPointer>
     _bounceAnimation = Tween<double>(
       begin: 0,
       end: 8,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ),);
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
