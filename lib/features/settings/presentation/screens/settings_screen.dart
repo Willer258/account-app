@@ -8,6 +8,7 @@ import '../../../../core/services/simulation_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/pockii_colors.dart';
 import '../../../../core/theme/app_typography.dart';
+import '../../../../core/services/currency_preference.dart';
 import '../../../../core/theme/theme_provider.dart';
 import '../../../../shared/utils/fcfa_formatter.dart';
 import '../../../../shared/widgets/glassmorphic_card.dart';
@@ -59,6 +60,8 @@ class SettingsScreen extends ConsumerWidget {
                   _BudgetSection(),
                   const SizedBox(height: 12),
                   _ThemeSection(),
+                  const SizedBox(height: 12),
+                  _CurrencySection(),
                   const SizedBox(height: 12),
                   _BudgetRulesSection(),
                   const SizedBox(height: 12),
@@ -422,6 +425,62 @@ class _ThemeOption extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Currency display format section.
+class _CurrencySection extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final current = ref.watch(currencyFormatProvider);
+
+    return _SettingsSection(
+      title: 'DEVISE',
+      icon: Icons.paid_rounded,
+      iconColor: AppColors.revolutGreen,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: CurrencyFormat.values.map((format) {
+            final isSelected = current == format;
+            return GestureDetector(
+              onTap: () => ref
+                  .read(currencyFormatProvider.notifier)
+                  .setFormat(format),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColors.revolutGreen.withValues(alpha: 0.12)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: isSelected
+                        ? AppColors.revolutGreen.withValues(alpha: 0.3)
+                        : context.pockii.border,
+                  ),
+                ),
+                child: Text(
+                  '100 000 ${format.symbol}',
+                  style: AppTypography.revolutLabel.copyWith(
+                    color: isSelected
+                        ? AppColors.revolutGreen
+                        : context.pockii.onSurfaceMuted,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
         ),
       ),
     );

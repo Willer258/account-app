@@ -153,7 +153,7 @@ class _ConversionDialogState extends State<ConversionDialog> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'FCFA',
+                    FcfaFormatter.symbol,
                     style: AppTypography.revolutSubtitle.copyWith(
                       color: AppColors.revolutOnDarkMuted,
                       fontSize: 14,

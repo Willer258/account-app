@@ -10,6 +10,7 @@ import 'core/services/background_task_manager.dart';
 import 'core/services/notification_service.dart';
 import 'core/theme/theme.dart';
 import 'core/theme/theme_provider.dart';
+import 'shared/utils/fcfa_formatter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,6 +78,9 @@ class _PockiiAppState extends ConsumerState<PockiiApp> {
 
     final appThemeMode = ref.watch(themeModeProvider);
     final flutterThemeMode = toFlutterThemeMode(appThemeMode);
+
+    // Sync currency symbol
+    ref.watch(currencySymbolSyncProvider);
 
     return dbAsync.when(
       data: (_) => MaterialApp.router(

@@ -369,7 +369,7 @@ class _TransactionBottomSheetState
                       fontWeight: FontWeight.bold,
                       color: AppColors.revolutOnDarkMuted.withOpacity(0.5),
                     ),
-                    suffixText: 'FCFA',
+                    suffixText: FcfaFormatter.symbol,
                     suffixStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,

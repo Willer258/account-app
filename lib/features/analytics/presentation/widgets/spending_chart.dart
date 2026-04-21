@@ -200,8 +200,8 @@ class _DonutPainter extends CustomPainter {
     );
 
     final subPainter = TextPainter(
-      text: const TextSpan(
-        text: 'FCFA',
+      text: TextSpan(
+        text: FcfaFormatter.symbol,
         style: TextStyle(
           fontFamily: 'Inter',
           fontSize: 11,

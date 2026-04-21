@@ -128,7 +128,7 @@ class _BudgetSetupPageState extends ConsumerState<BudgetSetupPage> {
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
                 fontSize: 40,
               ),
-              suffixText: 'FCFA',
+              suffixText: FcfaFormatter.symbol,
               suffixStyle: AppTypography.title.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),

@@ -10,6 +10,7 @@ import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/pockii_colors.dart';
 import '../../domain/models/onboarding_state.dart';
 import '../providers/onboarding_provider.dart';
+import '../../../../shared/utils/fcfa_formatter.dart';
 
 /// Onboarding screen — Revolut-inspired redesign (US-010).
 ///
@@ -628,7 +629,7 @@ class _EmergencyFundPage extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Objectif (optionnel)',
                 labelStyle: TextStyle(color: context.pockii.onSurfaceMuted),
-                suffixText: 'FCFA',
+                suffixText: FcfaFormatter.symbol,
                 suffixStyle: AppTypography.revolutBody.copyWith(
                   color: AppColors.revolutGreen,
                 ),
@@ -779,7 +780,7 @@ class _BudgetSetupPage extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Revenus mensuels',
                 labelStyle: TextStyle(color: context.pockii.onSurfaceMuted),
-                suffixText: 'FCFA',
+                suffixText: FcfaFormatter.symbol,
                 suffixStyle: AppTypography.revolutBody.copyWith(
                   color: AppColors.revolutBlue,
                 ),

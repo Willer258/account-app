@@ -846,7 +846,7 @@ class _ContributionBottomSheetState extends State<_ContributionBottomSheet> {
                 controller: _amountController,
                 decoration: InputDecoration(
                   labelText: 'Montant',
-                  suffixText: 'FCFA',
+                  suffixText: FcfaFormatter.symbol,
                   helperText: widget.isDeposit
                       ? null
                       : 'Maximum: ${FcfaFormatter.format(maxWithdraw)}',

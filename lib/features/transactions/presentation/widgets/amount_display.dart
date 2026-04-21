@@ -72,7 +72,7 @@ class AmountDisplay extends StatelessWidget {
               const SizedBox(width: 8),
               // Currency suffix
               Text(
-                'FCFA',
+                FcfaFormatter.symbol,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,

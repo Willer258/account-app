@@ -590,7 +590,7 @@ class _MiniStatCard extends StatelessWidget {
             ),
           ),
           Text(
-            'FCFA',
+            FcfaFormatter.symbol,
             style: AppTypography.revolutMicro.copyWith(
               color: context.pockii.onSurfaceMuted,
               fontSize: 10,

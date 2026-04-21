@@ -8,6 +8,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../domain/models/planned_expense_model.dart';
 import '../providers/planned_expense_form_provider.dart';
+import '../../../../shared/utils/fcfa_formatter.dart';
 
 /// Bottom sheet for adding or editing a planned expense.
 class PlannedExpenseFormScreen extends ConsumerStatefulWidget {
@@ -131,7 +132,7 @@ class _PlannedExpenseFormScreenState
                 labelStyle: TextStyle(color: AppColors.revolutOnDarkMuted),
                 hintText: '0',
                 hintStyle: TextStyle(color: AppColors.revolutOnDarkMuted),
-                suffixText: 'FCFA',
+                suffixText: FcfaFormatter.symbol,
                 suffixStyle: TextStyle(
                   color: AppColors.revolutOnDarkMuted,
                   fontSize: 14,

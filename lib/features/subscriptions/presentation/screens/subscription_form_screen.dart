@@ -9,6 +9,7 @@ import '../../domain/models/subscription_frequency.dart';
 import '../../domain/models/subscription_model.dart';
 import '../providers/subscription_form_provider.dart';
 import '../widgets/subscription_category_row.dart';
+import '../../../../shared/utils/fcfa_formatter.dart';
 
 /// Screen for adding or editing a subscription.
 ///
@@ -203,7 +204,7 @@ class _SubscriptionFormScreenState
                   decoration: InputDecoration(
                     labelText: 'Montant',
                     hintText: '0',
-                    suffixText: 'FCFA',
+                    suffixText: FcfaFormatter.symbol,
                     border: const OutlineInputBorder(),
                     errorText: formState.showAmountError ? 'Montant requis' : null,
                   ),

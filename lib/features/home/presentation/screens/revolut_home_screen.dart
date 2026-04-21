@@ -204,7 +204,7 @@ class _HeroSection extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'FCFA',
+                        FcfaFormatter.symbol,
                         style: AppTypography.revolutSubtitle.copyWith(
                           color: isDark
                               ? AppColors.revolutOnDarkMuted

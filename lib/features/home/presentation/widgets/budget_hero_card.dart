@@ -135,7 +135,7 @@ class _BudgetCard extends StatelessWidget {
                       ),
                       // Currency
                       Text(
-                        'FCFA',
+                        FcfaFormatter.symbol,
                         style: AppTypography.body.copyWith(
                           color: statusColor.withValues(alpha: 0.8),
                           fontWeight: FontWeight.w500,

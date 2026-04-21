@@ -290,7 +290,7 @@ class _StatCard extends StatelessWidget {
             ),
           ),
           Text(
-            'FCFA',
+            FcfaFormatter.symbol,
             style: AppTypography.revolutMicro.copyWith(
               color: AppColors.revolutOnDarkMuted,
             ),

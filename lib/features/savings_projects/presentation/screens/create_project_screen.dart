@@ -262,9 +262,9 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
         const SizedBox(height: AppSpacing.sm),
         TextFormField(
           controller: _targetAmountController,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             hintText: 'Montant à atteindre',
-            suffixText: 'FCFA',
+            suffixText: FcfaFormatter.symbol,
           ),
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -474,9 +474,9 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
             // Amount
             TextFormField(
               controller: _autoAmountController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Montant',
-                suffixText: 'FCFA',
+                suffixText: FcfaFormatter.symbol,
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
