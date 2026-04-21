@@ -5,25 +5,17 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/services/clock_service.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/budget_colors.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../domain/models/planned_expense_model.dart';
 import '../providers/planned_expense_form_provider.dart';
 
-/// Screen for adding or editing a planned expense.
-///
-/// Shows a form with description, amount (numeric keypad), expected date,
-/// and optional category.
+/// Bottom sheet for adding or editing a planned expense.
 class PlannedExpenseFormScreen extends ConsumerStatefulWidget {
-  /// Creates a PlannedExpenseFormScreen.
-  ///
-  /// If [expense] is provided, the form is in edit mode.
   const PlannedExpenseFormScreen({
     this.expense,
     super.key,
   });
 
-  /// The expense to edit (null for create mode).
   final PlannedExpenseModel? expense;
 
   @override
@@ -35,13 +27,10 @@ class _PlannedExpenseFormScreenState
     extends ConsumerState<PlannedExpenseFormScreen> {
   final _descriptionController = TextEditingController();
   final _amountController = TextEditingController();
-  final _descriptionFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-
-    // Initialize form after first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final notifier = ref.read(plannedExpenseFormProvider.notifier);
       if (widget.expense != null) {
@@ -51,7 +40,6 @@ class _PlannedExpenseFormScreenState
           _amountController.text = widget.expense!.amountFcfa.toString();
         }
       } else {
-        // Default to tomorrow's date for new planned expenses
         final clock = ref.read(clockProvider);
         final tomorrow = clock.now().add(const Duration(days: 1));
         notifier.initForCreate(defaultDate: tomorrow);
@@ -63,7 +51,6 @@ class _PlannedExpenseFormScreenState
   void dispose() {
     _descriptionController.dispose();
     _amountController.dispose();
-    _descriptionFocusNode.dispose();
     super.dispose();
   }
 
@@ -71,127 +58,219 @@ class _PlannedExpenseFormScreenState
   Widget build(BuildContext context) {
     final formState = ref.watch(plannedExpenseFormProvider);
     final isEditing = widget.expense != null;
+    final dateFormat = DateFormat('EEE d MMM yyyy', 'fr_FR');
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(isEditing ? 'Modifier la dépense' : 'Nouvelle dépense prévue'),
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Description field
-                  _DescriptionField(
-                    controller: _descriptionController,
-                    focusNode: _descriptionFocusNode,
-                    onChanged: (value) {
-                      ref
-                          .read(plannedExpenseFormProvider.notifier)
-                          .setDescription(value);
-                    },
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 4),
 
-                  // Amount input with system keyboard
-                  TextField(
-                    controller: _amountController,
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    decoration: InputDecoration(
-                      labelText: 'Montant',
-                      hintText: '0',
-                      suffixText: 'FCFA',
-                      border: const OutlineInputBorder(),
-                      errorText: formState.amountFcfa == 0 &&
-                              formState.errorMessage != null
-                          ? 'Montant requis'
-                          : null,
-                    ),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    onChanged: (value) {
-                      final amount = int.tryParse(value) ?? 0;
-                      ref
-                          .read(plannedExpenseFormProvider.notifier)
-                          .setAmount(amount);
-                    },
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-
-                  // Expected date picker
-                  _DatePicker(
-                    selectedDate: formState.expectedDate,
-                    onDateSelected: (date) {
-                      ref
-                          .read(plannedExpenseFormProvider.notifier)
-                          .setExpectedDate(date);
-                    },
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-
-                  // Days until due indicator
-                  if (formState.expectedDate != null)
-                    _DaysUntilDueIndicator(
-                      expectedDate: formState.expectedDate!,
-                    ),
-
-                  // Error message
-                  if (formState.errorMessage != null) ...[
-                    const SizedBox(height: AppSpacing.md),
-                    Text(
-                      formState.errorMessage!,
-                      style: TextStyle(
-                        color: AppColors.error,
-                        fontSize: 14,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ],
+            // Title
+            Text(
+              isEditing ? 'Modifier la dépense' : 'Planifier une dépense',
+              style: AppTypography.revolutSubtitle.copyWith(
+                color: AppColors.revolutOnDark,
               ),
             ),
-          ),
+            const SizedBox(height: 20),
 
-          // Submit button
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: formState.isValid && !formState.isSaving
-                      ? _onSubmit
-                      : null,
-                  child: formState.isSaving
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: AppColors.onPrimary,
-                          ),
-                        )
-                      : Text(isEditing ? 'Modifier' : 'Ajouter'),
+            // Description
+            TextField(
+              controller: _descriptionController,
+              onChanged: (value) {
+                ref
+                    .read(plannedExpenseFormProvider.notifier)
+                    .setDescription(value);
+              },
+              style: TextStyle(color: AppColors.revolutOnDark),
+              textCapitalization: TextCapitalization.sentences,
+              maxLength: 200,
+              decoration: InputDecoration(
+                labelText: 'Description',
+                labelStyle: TextStyle(color: AppColors.revolutOnDarkMuted),
+                hintText: 'Ex: Nouveau téléphone',
+                hintStyle: TextStyle(color: AppColors.revolutOnDarkMuted),
+                filled: true,
+                fillColor: AppColors.revolutSurfaceElevated,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                counterStyle: TextStyle(
+                  color: AppColors.revolutOnDarkMuted,
                 ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+
+            // Amount
+            TextField(
+              controller: _amountController,
+              keyboardType: TextInputType.number,
+              style: TextStyle(
+                color: AppColors.revolutOnDark,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              onChanged: (value) {
+                final amount = int.tryParse(value) ?? 0;
+                ref
+                    .read(plannedExpenseFormProvider.notifier)
+                    .setAmount(amount);
+              },
+              decoration: InputDecoration(
+                labelText: 'Montant',
+                labelStyle: TextStyle(color: AppColors.revolutOnDarkMuted),
+                hintText: '0',
+                hintStyle: TextStyle(color: AppColors.revolutOnDarkMuted),
+                suffixText: 'FCFA',
+                suffixStyle: TextStyle(
+                  color: AppColors.revolutOnDarkMuted,
+                  fontSize: 14,
+                ),
+                filled: true,
+                fillColor: AppColors.revolutSurfaceElevated,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Date picker
+            GestureDetector(
+              onTap: () => _pickDate(context),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.revolutSurfaceElevated,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.calendar_today_rounded,
+                      color: AppColors.revolutBlue,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Date prévue',
+                            style: AppTypography.revolutMicro.copyWith(
+                              color: AppColors.revolutOnDarkMuted,
+                              fontSize: 11,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            formState.expectedDate != null
+                                ? dateFormat.format(formState.expectedDate!)
+                                : 'Choisir une date',
+                            style: AppTypography.revolutBody.copyWith(
+                              color: formState.expectedDate != null
+                                  ? AppColors.revolutOnDark
+                                  : AppColors.revolutOnDarkMuted,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (formState.expectedDate != null) ...[
+                      _DaysBadge(expectedDate: formState.expectedDate!),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+
+            // Error
+            if (formState.errorMessage != null) ...[
+              const SizedBox(height: 12),
+              Text(
+                formState.errorMessage!,
+                style: AppTypography.revolutMicro.copyWith(
+                  color: AppColors.revolutRed,
+                  fontSize: 13,
+                ),
+              ),
+            ],
+
+            const SizedBox(height: 24),
+
+            // Submit
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: FilledButton(
+                onPressed: formState.isValid && !formState.isSaving
+                    ? _onSubmit
+                    : null,
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.revolutBlue,
+                  disabledBackgroundColor: AppColors.revolutBorder,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                child: formState.isSaving
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: AppColors.revolutOnDark,
+                        ),
+                      )
+                    : Text(
+                        isEditing ? 'Modifier' : 'Planifier',
+                        style: AppTypography.revolutLabel.copyWith(
+                          color: AppColors.revolutOnDark,
+                          fontSize: 16,
+                        ),
+                      ),
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
       ),
     );
   }
 
+  Future<void> _pickDate(BuildContext context) async {
+    final clock = ref.read(clockProvider);
+    final now = clock.now();
+    final formState = ref.read(plannedExpenseFormProvider);
+
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: formState.expectedDate ?? now.add(const Duration(days: 1)),
+      firstDate: now,
+      lastDate: now.add(const Duration(days: 365)),
+      locale: const Locale('fr', 'FR'),
+    );
+
+    if (picked != null) {
+      ref.read(plannedExpenseFormProvider.notifier).setExpectedDate(picked);
+    }
+  }
+
   Future<void> _onSubmit() async {
-    // Dismiss keyboard
     FocusScope.of(context).unfocus();
 
     final clock = ref.read(clockProvider);
@@ -205,121 +284,9 @@ class _PlannedExpenseFormScreenState
   }
 }
 
-/// Text field for description.
-class _DescriptionField extends StatelessWidget {
-  const _DescriptionField({
-    required this.controller,
-    required this.focusNode,
-    required this.onChanged,
-  });
-
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final ValueChanged<String> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      focusNode: focusNode,
-      onChanged: onChanged,
-      decoration: const InputDecoration(
-        labelText: 'Description',
-        hintText: 'Ex: Nouveau téléphone, Réparation voiture...',
-        border: OutlineInputBorder(),
-      ),
-      textCapitalization: TextCapitalization.sentences,
-      maxLength: 200,
-    );
-  }
-}
-
-/// Date picker for expected date.
-class _DatePicker extends ConsumerWidget {
-  const _DatePicker({
-    required this.selectedDate,
-    required this.onDateSelected,
-  });
-
-  final DateTime? selectedDate;
-  final ValueChanged<DateTime> onDateSelected;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final clock = ref.watch(clockProvider);
-    final now = clock.now();
-    final dateFormat = DateFormat('EEEE d MMMM yyyy', 'fr_FR');
-
-    return InkWell(
-      onTap: () async {
-        final picked = await showDatePicker(
-          context: context,
-          initialDate: selectedDate ?? now.add(const Duration(days: 1)),
-          firstDate: now, // Can't select past dates
-          lastDate: now.add(const Duration(days: 365)), // Max 1 year ahead
-          locale: const Locale('fr', 'FR'),
-        );
-        if (picked != null) {
-          onDateSelected(picked);
-        }
-      },
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        decoration: BoxDecoration(
-          border: Border.all(color: AppColors.outlineVariant),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.calendar_today,
-              color: AppColors.primary,
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Date prévue',
-                    style: TextStyle(
-                      color: AppColors.onSurfaceVariant,
-                      fontSize: 12,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    selectedDate != null
-                        ? dateFormat.format(selectedDate!)
-                        : 'Sélectionner une date',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: selectedDate != null
-                          ? FontWeight.w500
-                          : FontWeight.normal,
-                      color: selectedDate != null
-                          ? AppColors.onSurface
-                          : AppColors.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Icon(
-              Icons.chevron_right,
-              color: AppColors.onSurfaceVariant,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Indicator showing days until the expense is due.
-class _DaysUntilDueIndicator extends ConsumerWidget {
-  const _DaysUntilDueIndicator({required this.expectedDate});
+/// Small badge showing days until due.
+class _DaysBadge extends ConsumerWidget {
+  const _DaysBadge({required this.expectedDate});
 
   final DateTime expectedDate;
 
@@ -327,62 +294,27 @@ class _DaysUntilDueIndicator extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final clock = ref.watch(clockProvider);
     final now = clock.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final dueDate = DateTime(
-      expectedDate.year,
-      expectedDate.month,
-      expectedDate.day,
-    );
-    final daysUntil = dueDate.difference(today).inDays;
-
-    String message;
-    Color color;
-    IconData icon;
-
-    if (daysUntil == 0) {
-      message = 'Prévu pour aujourd\'hui';
-      color = BudgetColors.warning;
-      icon = Icons.today;
-    } else if (daysUntil == 1) {
-      message = 'Prévu pour demain';
-      color = BudgetColors.warning;
-      icon = Icons.schedule;
-    } else if (daysUntil < 0) {
-      message = 'Date passée';
-      color = AppColors.error;
-      icon = Icons.error_outline;
-    } else if (daysUntil <= 7) {
-      message = 'Dans $daysUntil jours';
-      color = BudgetColors.warning;
-      icon = Icons.schedule;
-    } else {
-      message = 'Dans $daysUntil jours';
-      color = AppColors.primary;
-      icon = Icons.event;
-    }
+    final days = expectedDate.difference(DateTime(now.year, now.month, now.day)).inDays;
+    final isUrgent = days <= 3;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.md,
-        vertical: AppSpacing.sm,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
+        color: isUrgent
+            ? AppColors.revolutAmber.withValues(alpha: 0.12)
+            : AppColors.revolutBlue.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16, color: color),
-          const SizedBox(width: AppSpacing.xs),
-          Text(
-            message,
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
+      child: Text(
+        days == 0
+            ? 'Aujourd\'hui'
+            : days == 1
+                ? 'Demain'
+                : 'Dans $days j',
+        style: AppTypography.revolutLabel.copyWith(
+          color: isUrgent ? AppColors.revolutAmber : AppColors.revolutBlue,
+          fontSize: 11,
+        ),
       ),
     );
   }

@@ -39,13 +39,13 @@ class SubscriptionTile extends StatelessWidget {
           height: 48,
           decoration: BoxDecoration(
             color: isInactive
-                ? AppColors.outlineVariant
-                : AppColors.primary.withValues(alpha: 0.1),
+                ? AppColors.revolutBorder
+                : AppColors.revolutBlue.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             category?.icon ?? Icons.credit_card,
-            color: isInactive ? AppColors.onSurfaceVariant : AppColors.primary,
+            color: isInactive ? AppColors.revolutOnDarkMuted : AppColors.revolutBlue,
           ),
         ),
         title: Row(
@@ -68,14 +68,14 @@ class SubscriptionTile extends StatelessWidget {
                   vertical: 2,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.outlineVariant,
+                  color: AppColors.revolutBorder,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
                   'Inactif',
                   style: TextStyle(
                     fontSize: 10,
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                   ),
                 ),
               ),
@@ -84,7 +84,7 @@ class SubscriptionTile extends StatelessWidget {
         subtitle: Text(
           _buildSubtitle(),
           style: TextStyle(
-            color: AppColors.onSurfaceVariant,
+            color: AppColors.revolutOnDarkMuted,
           ),
         ),
         trailing: Column(
@@ -96,14 +96,14 @@ class SubscriptionTile extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: isInactive ? AppColors.onSurfaceVariant : AppColors.onSurface,
+                color: isInactive ? AppColors.revolutOnDarkMuted : AppColors.revolutOnDark,
               ),
             ),
             Text(
               _getFrequencyShort(),
               style: TextStyle(
                 fontSize: 12,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
             ),
           ],

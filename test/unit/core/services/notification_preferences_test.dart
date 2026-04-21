@@ -189,6 +189,9 @@ void main() {
       expect(defaults.budgetWarningsEnabled, isTrue);
       expect(defaults.subscriptionRemindersEnabled, isTrue);
       expect(defaults.streakCelebrationsEnabled, isTrue);
+      expect(defaults.plannedExpenseRemindersEnabled, isTrue);
+      expect(defaults.morningTipsEnabled, isTrue);
+      expect(defaults.spendingAnomalyEnabled, isTrue);
     });
 
     test('copyWith updates specified fields', () {
@@ -196,6 +199,9 @@ void main() {
         budgetWarningsEnabled: true,
         subscriptionRemindersEnabled: true,
         streakCelebrationsEnabled: true,
+        plannedExpenseRemindersEnabled: true,
+        morningTipsEnabled: true,
+        spendingAnomalyEnabled: true,
       );
 
       final updated = original.copyWith(budgetWarningsEnabled: false);
@@ -203,6 +209,9 @@ void main() {
       expect(updated.budgetWarningsEnabled, isFalse);
       expect(updated.subscriptionRemindersEnabled, isTrue);
       expect(updated.streakCelebrationsEnabled, isTrue);
+      expect(updated.plannedExpenseRemindersEnabled, isTrue);
+      expect(updated.morningTipsEnabled, isTrue);
+      expect(updated.spendingAnomalyEnabled, isTrue);
     });
 
     test('copyWith preserves unspecified fields', () {
@@ -210,6 +219,9 @@ void main() {
         budgetWarningsEnabled: false,
         subscriptionRemindersEnabled: false,
         streakCelebrationsEnabled: false,
+        plannedExpenseRemindersEnabled: false,
+        morningTipsEnabled: false,
+        spendingAnomalyEnabled: false,
       );
 
       final updated = original.copyWith(streakCelebrationsEnabled: true);
@@ -217,6 +229,9 @@ void main() {
       expect(updated.budgetWarningsEnabled, isFalse);
       expect(updated.subscriptionRemindersEnabled, isFalse);
       expect(updated.streakCelebrationsEnabled, isTrue);
+      expect(updated.plannedExpenseRemindersEnabled, isFalse);
+      expect(updated.morningTipsEnabled, isFalse);
+      expect(updated.spendingAnomalyEnabled, isFalse);
     });
   });
 

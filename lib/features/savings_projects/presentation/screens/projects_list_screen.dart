@@ -21,13 +21,6 @@ class ProjectsListScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mes projets'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.archive_outlined),
-            onPressed: () => _showArchivedProjects(context),
-            tooltip: 'Projets archivés',
-          ),
-        ],
       ),
       body: projectsAsync.when(
         data: (projects) {
@@ -60,6 +53,9 @@ class ProjectsListScreen extends ConsumerWidget {
                       onTap: () => _openProject(context, project.id),
                     ),
                   )),
+
+              // Space for FAB
+              const SizedBox(height: 72),
             ],
           );
         },
@@ -68,7 +64,7 @@ class ProjectsListScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.error_outline, size: 48, color: AppColors.error),
+              Icon(Icons.error_outline, size: 48, color: AppColors.revolutRed),
               const SizedBox(height: AppSpacing.md),
               Text('Erreur: $error'),
               const SizedBox(height: AppSpacing.md),
@@ -96,9 +92,6 @@ class ProjectsListScreen extends ConsumerWidget {
     context.push('/projects/$projectId');
   }
 
-  void _showArchivedProjects(BuildContext context) {
-    context.push('/projects/archived');
-  }
 }
 
 /// Summary statistics card.
@@ -116,13 +109,13 @@ class _StatsSummary extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.primary.withValues(alpha: 0.1),
-            AppColors.primaryContainer.withValues(alpha: 0.2),
+            AppColors.revolutBlue.withValues(alpha: 0.1),
+            AppColors.revolutSurface.withValues(alpha: 0.2),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.2),
+          color: AppColors.revolutBlue.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -138,7 +131,7 @@ class _StatsSummary extends StatelessWidget {
                       'Total épargné',
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.onSurfaceVariant,
+                        color: AppColors.revolutOnDarkMuted,
                       ),
                     ),
                     Text(
@@ -146,7 +139,7 @@ class _StatsSummary extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
+                        color: AppColors.revolutBlue,
                       ),
                     ),
                   ],
@@ -158,7 +151,7 @@ class _StatsSummary extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: AppColors.revolutSurface,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -169,14 +162,14 @@ class _StatsSummary extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
+                        color: AppColors.revolutBlue,
                       ),
                     ),
                     Text(
                       ' projet${stats.activeProjects > 1 ? 's' : ''} actif${stats.activeProjects > 1 ? 's' : ''}',
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.onSurfaceVariant,
+                        color: AppColors.revolutOnDarkMuted,
                       ),
                     ),
                   ],
@@ -190,7 +183,7 @@ class _StatsSummary extends StatelessWidget {
           Container(
             height: 8,
             decoration: BoxDecoration(
-              color: AppColors.outlineVariant.withValues(alpha: 0.3),
+              color: AppColors.revolutBorder.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(4),
             ),
             child: FractionallySizedBox(
@@ -199,7 +192,7 @@ class _StatsSummary extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [AppColors.primary, AppColors.success],
+                    colors: [AppColors.revolutBlue, AppColors.revolutGreen],
                   ),
                   borderRadius: BorderRadius.circular(4),
                 ),
@@ -215,7 +208,7 @@ class _StatsSummary extends StatelessWidget {
               'Objectif total: ${FcfaFormatter.formatCompact(stats.totalTarget)}',
               style: TextStyle(
                 fontSize: 10,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
             ),
           ),

@@ -43,21 +43,12 @@ class _TutorialBottomSheetState extends State<TutorialBottomSheet> {
       builder: (context, scrollController) {
         return Container(
           decoration: const BoxDecoration(
-            color: AppColors.background,
+            color: AppColors.revolutDark,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: Column(
             children: [
-              // Handle
-              Container(
-                margin: const EdgeInsets.only(top: 12),
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.outlineVariant,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
+              const SizedBox(height: 8),
 
               // Header
               Padding(
@@ -84,7 +75,7 @@ class _TutorialBottomSheetState extends State<TutorialBottomSheet> {
                             'Guide d\'utilisation',
                             style: TextStyle(
                               fontSize: 12,
-                              color: AppColors.onSurfaceVariant,
+                              color: AppColors.revolutOnDarkMuted,
                             ),
                           ),
                         ],
@@ -109,8 +100,8 @@ class _TutorialBottomSheetState extends State<TutorialBottomSheet> {
                     height: 8,
                     decoration: BoxDecoration(
                       color: index == _currentSection
-                          ? AppColors.primary
-                          : AppColors.outlineVariant,
+                          ? AppColors.revolutBlue
+                          : AppColors.revolutBorder,
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
@@ -136,7 +127,7 @@ class _TutorialBottomSheetState extends State<TutorialBottomSheet> {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primaryContainer.withValues(alpha: 0.5),
+                          color: AppColors.revolutSurface.withValues(alpha: 0.5),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
@@ -144,7 +135,7 @@ class _TutorialBottomSheetState extends State<TutorialBottomSheet> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.primary,
+                            color: AppColors.revolutBlue,
                           ),
                         ),
                       ),
@@ -163,10 +154,10 @@ class _TutorialBottomSheetState extends State<TutorialBottomSheet> {
               Container(
                 padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: AppColors.revolutSurface,
                   border: Border(
                     top: BorderSide(
-                      color: AppColors.outlineVariant,
+                      color: AppColors.revolutBorder,
                       width: 0.5,
                     ),
                   ),
@@ -256,7 +247,7 @@ class _FormattedContent extends StatelessWidget {
               text.startsWith('✅') ? '✅' : '•',
               style: TextStyle(
                 fontSize: 14,
-                color: AppColors.primary,
+                color: AppColors.revolutBlue,
               ),
             ),
           ),
@@ -311,7 +302,7 @@ class _FormattedContent extends StatelessWidget {
     return RichText(
       text: TextSpan(
         style: TextStyle(
-          color: AppColors.onSurface,
+          color: AppColors.revolutOnDark,
           fontSize: 14,
           height: 1.5,
         ),
@@ -339,7 +330,7 @@ class TutorialHelpButton extends StatelessWidget {
       icon: Icon(
         Icons.help_outline,
         size: size,
-        color: AppColors.primary,
+        color: AppColors.revolutBlue,
       ),
       padding: EdgeInsets.zero,
       constraints: BoxConstraints(

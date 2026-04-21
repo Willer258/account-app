@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../../core/router/app_router.dart';
 import '../../../../core/services/pattern_analysis_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../history/presentation/providers/history_provider.dart';
 
 /// Medal emojis for ranking.
 const List<String> _medals = ['🥇', '🥈', '🥉'];
@@ -40,9 +37,9 @@ class TopCategoriesCard extends ConsumerWidget {
         return Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.revolutSurface,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.outlineVariant),
+            border: Border.all(color: AppColors.revolutBorder),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +49,7 @@ class TopCategoriesCard extends ConsumerWidget {
                 children: [
                   Icon(
                     Icons.emoji_events,
-                    color: AppColors.primary,
+                    color: AppColors.revolutBlue,
                     size: 24,
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -73,11 +70,6 @@ class TopCategoriesCard extends ConsumerWidget {
                 (index) => _TopCategoryItem(
                   rank: index,
                   category: topCategories[index],
-                  onTap: () => _navigateToFilteredHistory(
-                    context,
-                    ref,
-                    topCategories[index].categoryId,
-                  ),
                 ),
               ),
             ],
@@ -92,16 +84,6 @@ class TopCategoriesCard extends ConsumerWidget {
     );
   }
 
-  void _navigateToFilteredHistory(
-    BuildContext context,
-    WidgetRef ref,
-    String categoryId,
-  ) {
-    // Set the category filter
-    ref.read(historyCategoryFilterProvider.notifier).state = categoryId;
-    // Navigate to history
-    context.go(AppRoutes.history);
-  }
 }
 
 /// Individual top category item.
@@ -109,83 +91,65 @@ class _TopCategoryItem extends StatelessWidget {
   const _TopCategoryItem({
     required this.rank,
     required this.category,
-    required this.onTap,
   });
 
   final int rank;
   final CategorySpending category;
-  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppSpacing.sm,
-            horizontal: AppSpacing.xs,
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: AppSpacing.sm,
+        horizontal: AppSpacing.xs,
+      ),
+      child: Row(
+        children: [
+          // Medal
+          Text(
+            _medals[rank],
+            style: const TextStyle(fontSize: 24),
           ),
-          child: Row(
-            children: [
-              // Medal
-              Text(
-                _medals[rank],
-                style: const TextStyle(fontSize: 24),
-              ),
 
-              const SizedBox(width: AppSpacing.sm),
+          const SizedBox(width: AppSpacing.sm),
 
-              // Category icon
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: _getRankColor(rank).withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  category.categoryIcon,
-                  size: 20,
-                  color: _getRankColor(rank),
-                ),
-              ),
-
-              const SizedBox(width: AppSpacing.sm),
-
-              // Category name
-              Expanded(
-                child: Text(
-                  category.categoryLabel,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-
-              // Amount
-              Text(
-                _formatAmount(category.totalAmount),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: AppColors.onSurface,
-                ),
-              ),
-
-              const SizedBox(width: AppSpacing.xs),
-
-              // Chevron
-              Icon(
-                Icons.chevron_right,
-                size: 20,
-                color: AppColors.onSurfaceVariant,
-              ),
-            ],
+          // Category icon
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: _getRankColor(rank).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              category.categoryIcon,
+              size: 20,
+              color: _getRankColor(rank),
+            ),
           ),
-        ),
+
+          const SizedBox(width: AppSpacing.sm),
+
+          // Category name
+          Expanded(
+            child: Text(
+              category.categoryLabel,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
+              ),
+            ),
+          ),
+
+          // Amount
+          Text(
+            _formatAmount(category.totalAmount),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+              color: AppColors.revolutOnDark,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -199,7 +163,7 @@ class _TopCategoryItem extends StatelessWidget {
       case 2:
         return const Color(0xFFCD7F32); // Bronze
       default:
-        return AppColors.primary;
+        return AppColors.revolutBlue;
     }
   }
 

@@ -27,7 +27,7 @@ class CategoryDetailDialog extends ConsumerWidget {
   static Future<void> show(BuildContext context, String categoryId) {
     return showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.revolutSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -77,13 +77,13 @@ class _DetailContent extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(AppSpacing.sm),
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
+                color: AppColors.revolutBlue.withOpacity( 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 detail.spending.categoryIcon,
                 size: 32,
-                color: AppColors.primary,
+                color: AppColors.revolutBlue,
               ),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -100,7 +100,7 @@ class _DetailContent extends StatelessWidget {
                   Text(
                     '${detail.spending.transactionCount} transactions',
                     style: TextStyle(
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                       fontSize: 14,
                     ),
                   ),
@@ -172,7 +172,7 @@ class _StatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
+        color: AppColors.revolutSurfaceElevated,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -182,7 +182,7 @@ class _StatCard extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: 12,
-              color: AppColors.onSurfaceVariant,
+              color: AppColors.revolutOnDarkMuted,
             ),
           ),
           const SizedBox(height: AppSpacing.xs),
@@ -198,7 +198,7 @@ class _StatCard extends StatelessWidget {
             subValue,
             style: TextStyle(
               fontSize: 11,
-              color: AppColors.onSurfaceVariant,
+              color: AppColors.revolutOnDarkMuted,
             ),
           ),
         ],
@@ -220,10 +220,10 @@ class _TrendCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: detail.trendColor.withValues(alpha: 0.1),
+        color: detail.trendColor.withOpacity( 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: detail.trendColor.withValues(alpha: 0.3),
+          color: detail.trendColor.withOpacity( 0.3),
         ),
       ),
       child: Row(
@@ -231,7 +231,7 @@ class _TrendCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppSpacing.sm),
             decoration: BoxDecoration(
-              color: detail.trendColor.withValues(alpha: 0.2),
+              color: detail.trendColor.withOpacity( 0.2),
               shape: BoxShape.circle,
             ),
             child: Text(
@@ -252,7 +252,7 @@ class _TrendCard extends StatelessWidget {
                   'Tendance',
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                   ),
                 ),
                 const SizedBox(height: 2),

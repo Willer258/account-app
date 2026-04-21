@@ -44,9 +44,9 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
     }
   }
 
-  /// Skip intro and go directly to budget setup (last page)
+  /// Skip intro and go directly to budget setup (page 3)
   void skipToSetup() {
-    state = state.copyWith(currentPage: OnboardingState.totalPages - 1);
+    state = state.copyWith(currentPage: 3);
   }
 
   /// Update the budget amount

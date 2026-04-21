@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/router/app_router.dart';
 import '../../../../core/services/month_summary_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -55,7 +56,7 @@ class MonthEndSummaryCard extends ConsumerWidget {
                     vertical: AppSpacing.xs,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
+                    color: AppColors.revolutBlue.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -64,7 +65,7 @@ class MonthEndSummaryCard extends ConsumerWidget {
                       Icon(
                         Icons.calendar_month,
                         size: 16,
-                        color: AppColors.primary,
+                        color: AppColors.revolutBlue,
                       ),
                       const SizedBox(width: AppSpacing.xs),
                       Text(
@@ -72,7 +73,7 @@ class MonthEndSummaryCard extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.primary,
+                          color: AppColors.revolutBlue,
                         ),
                       ),
                     ],
@@ -84,7 +85,7 @@ class MonthEndSummaryCard extends ConsumerWidget {
                   onPressed: onDismiss,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
-                  color: AppColors.onSurfaceVariant,
+                  color: AppColors.revolutOnDarkMuted,
                 ),
               ],
             ),
@@ -99,7 +100,7 @@ class MonthEndSummaryCard extends ConsumerWidget {
                     'Solde final',
                     style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xs),
@@ -132,7 +133,7 @@ class MonthEndSummaryCard extends ConsumerWidget {
                 Container(
                   width: 1,
                   height: 40,
-                  color: AppColors.outlineVariant,
+                  color: AppColors.revolutBorder,
                 ),
                 Expanded(
                   child: _StatItem(
@@ -152,14 +153,14 @@ class MonthEndSummaryCard extends ConsumerWidget {
                   Icon(
                     Icons.trending_up,
                     size: 16,
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                   ),
                   const SizedBox(width: AppSpacing.xs),
                   Text(
                     'Top catégorie: ',
                     style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                   ),
                   Text(
@@ -175,7 +176,7 @@ class MonthEndSummaryCard extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                   ),
                 ],
@@ -191,8 +192,8 @@ class MonthEndSummaryCard extends ConsumerWidget {
                   child: OutlinedButton(
                     onPressed: onDismiss,
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.onSurfaceVariant,
-                      side: BorderSide(color: AppColors.outlineVariant),
+                      foregroundColor: AppColors.revolutOnDarkMuted,
+                      side: BorderSide(color: AppColors.revolutBorder),
                       padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                     ),
                     child: const Text('Fermer'),
@@ -201,9 +202,9 @@ class MonthEndSummaryCard extends ConsumerWidget {
                 const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: FilledButton(
-                    onPressed: () => context.push('/patterns'),
+                    onPressed: () => context.push(AppRoutes.patterns),
                     style: FilledButton.styleFrom(
-                      backgroundColor: AppColors.primary,
+                      backgroundColor: AppColors.revolutBlue,
                       padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                     ),
                     child: const Text('Voir details'),
@@ -237,7 +238,7 @@ class _StatItem extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: 11,
-            color: AppColors.onSurfaceVariant,
+            color: AppColors.revolutOnDarkMuted,
           ),
         ),
         const SizedBox(height: 2),

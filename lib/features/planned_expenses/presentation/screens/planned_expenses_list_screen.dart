@@ -69,7 +69,10 @@ class PlannedExpensesListScreen extends ConsumerWidget {
                 }
 
                 return ListView.separated(
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                  padding: const EdgeInsets.only(
+                    top: AppSpacing.sm,
+                    bottom: 72,
+                  ),
                   itemCount: expenses.length,
                   separatorBuilder: (_, __) => const Divider(height: 1),
                   itemBuilder: (context, index) {
@@ -97,7 +100,7 @@ class PlannedExpensesListScreen extends ConsumerWidget {
                     const Icon(
                       Icons.error_outline,
                       size: 48,
-                      color: AppColors.error,
+                      color: AppColors.revolutRed,
                     ),
                     const SizedBox(height: AppSpacing.md),
                     Text(
@@ -128,32 +131,30 @@ class PlannedExpensesListScreen extends ConsumerWidget {
   }
 
   Future<void> _navigateToAddExpense(BuildContext context) async {
-    final result = await Navigator.of(context).push<bool>(
-      MaterialPageRoute(
-        builder: (context) => const PlannedExpenseFormScreen(),
+    await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.revolutSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+      builder: (context) => const PlannedExpenseFormScreen(),
     );
-
-    // If expense was added, the providers will automatically update
-    if (result == true && context.mounted) {
-      // Optional: Show feedback
-    }
   }
 
   Future<void> _navigateToEditExpense(
     BuildContext context,
     PlannedExpenseModel expense,
   ) async {
-    final result = await Navigator.of(context).push<bool>(
-      MaterialPageRoute(
-        builder: (context) => PlannedExpenseFormScreen(expense: expense),
+    await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.revolutSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+      builder: (context) => PlannedExpenseFormScreen(expense: expense),
     );
-
-    // If expense was updated, the providers will automatically update
-    if (result == true && context.mounted) {
-      // Optional: Show feedback
-    }
   }
 
   Future<void> _showMarkAsPaidDialog(
@@ -189,7 +190,7 @@ class PlannedExpensesListScreen extends ConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(conversionResult.errorMessage ?? 'Erreur'),
-            backgroundColor: AppColors.error,
+            backgroundColor: AppColors.revolutRed,
           ),
         );
       }
@@ -218,7 +219,7 @@ class PlannedExpensesListScreen extends ConsumerWidget {
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: FilledButton.styleFrom(
-              backgroundColor: AppColors.error,
+              backgroundColor: AppColors.revolutRed,
             ),
             child: const Text('Oui, annuler'),
           ),
@@ -241,7 +242,7 @@ class PlannedExpensesListScreen extends ConsumerWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Erreur lors de l\'annulation'),
-              backgroundColor: AppColors.error,
+              backgroundColor: AppColors.revolutRed,
             ),
           );
         }
@@ -291,7 +292,7 @@ class _TotalPendingCard extends StatelessWidget {
                 Text(
                   'Total prévu',
                   style: TextStyle(
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                     fontSize: 14,
                   ),
                 ),
@@ -311,7 +312,7 @@ class _TotalPendingCard extends StatelessWidget {
                   ),
                   error: (_, __) => const Text(
                     'Erreur',
-                    style: TextStyle(color: AppColors.error),
+                    style: TextStyle(color: AppColors.revolutRed),
                   ),
                 ),
               ],
@@ -366,7 +367,7 @@ class _EmptyState extends StatelessWidget {
             Icon(
               Icons.event_available,
               size: 64,
-              color: AppColors.outlineVariant,
+              color: AppColors.revolutBorder,
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
@@ -374,7 +375,7 @@ class _EmptyState extends StatelessWidget {
                   ? 'Aucune dépense prévue'
                   : 'Aucune dépense en attente',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                   ),
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -382,7 +383,7 @@ class _EmptyState extends StatelessWidget {
               'Planifiez vos dépenses futures pour\nmieux gérer votre budget.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
             ),
             const SizedBox(height: AppSpacing.lg),

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/pockii_colors.dart';
 
 /// A glassmorphic card widget inspired by Revolut's design system.
 ///
@@ -81,15 +82,15 @@ class GlassmorphicCard extends StatelessWidget {
   }
 }
 
-/// A dark Revolut-style card (no blur, solid dark background).
+/// A Revolut-style card that adapts to light/dark theme.
 class RevolutCard extends StatelessWidget {
   const RevolutCard({
     super.key,
     required this.child,
     this.padding = const EdgeInsets.all(20),
     this.borderRadius = 20,
-    this.backgroundColor = AppColors.revolutSurface,
-    this.borderColor = AppColors.revolutBorder,
+    this.backgroundColor,
+    this.borderColor,
     this.gradient,
     this.width,
     this.height,
@@ -101,8 +102,8 @@ class RevolutCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
   final double borderRadius;
-  final Color backgroundColor;
-  final Color borderColor;
+  final Color? backgroundColor;
+  final Color? borderColor;
   final Gradient? gradient;
   final double? width;
   final double? height;
@@ -112,6 +113,9 @@ class RevolutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final effectiveBg = backgroundColor ?? context.pockii.surface;
+    final effectiveBorder = borderColor ?? context.pockii.border;
+
     Widget card = Material(
       color: Colors.transparent,
       elevation: elevation,
@@ -121,9 +125,9 @@ class RevolutCard extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           gradient: gradient,
-          color: gradient == null ? backgroundColor : null,
+          color: gradient == null ? effectiveBg : null,
           borderRadius: BorderRadius.circular(borderRadius),
-          border: Border.all(color: borderColor, width: 1.0),
+          border: Border.all(color: effectiveBorder, width: 1.0),
         ),
         padding: padding,
         child: child,

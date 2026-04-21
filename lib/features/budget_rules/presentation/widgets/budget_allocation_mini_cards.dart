@@ -69,21 +69,14 @@ class _CircularBudgetCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isOver
-              ? AppColors.error.withValues(alpha: 0.3)
-              : AppColors.outlineVariant.withValues(alpha: 0.5),
+              ? AppColors.revolutRed.withOpacity(0.3)
+              : AppColors.revolutBorder,
           width: 1,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -104,7 +97,7 @@ class _CircularBudgetCard extends StatelessWidget {
                     strokeWidth: 6,
                     backgroundColor: Colors.transparent,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      AppColors.outlineVariant.withValues(alpha: 0.2),
+                      AppColors.revolutBorder,
                     ),
                   ),
                 ),
@@ -126,9 +119,10 @@ class _CircularBudgetCard extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      category.emoji,
-                      style: const TextStyle(fontSize: 16),
+                    Icon(
+                      category.icon,
+                      size: 16,
+                      color: isOver ? AppColors.error : category.color,
                     ),
                     Text(
                       '$percentage%',
@@ -150,7 +144,7 @@ class _CircularBudgetCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w600,
-              color: AppColors.onSurface,
+              color: AppColors.revolutOnDark,
             ),
             textAlign: TextAlign.center,
             maxLines: 1,
@@ -163,7 +157,7 @@ class _CircularBudgetCard extends StatelessWidget {
                 : FcfaFormatter.formatCompact(categoryAllocation.remaining),
             style: TextStyle(
               fontSize: 10,
-              color: isOver ? AppColors.error : AppColors.onSurfaceVariant,
+              color: isOver ? AppColors.error : AppColors.revolutOnDarkMuted,
             ),
             textAlign: TextAlign.center,
           ),

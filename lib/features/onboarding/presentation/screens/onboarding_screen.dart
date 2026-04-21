@@ -126,10 +126,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                 _TopBar(
                   currentPage: state.currentPage,
                   totalPages: _totalPages,
-                  onSkip: state.currentPage < _totalPages - 2
+                  onSkip: state.currentPage < 3
                       ? () {
                           _pageController.animateToPage(
-                            _totalPages - 2,
+                            3,
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOutCubic,
                           );

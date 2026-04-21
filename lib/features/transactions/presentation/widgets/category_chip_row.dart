@@ -152,12 +152,12 @@ class _CategoryChipState extends State<_CategoryChip>
             vertical: AppSpacing.sm,
           ),
           decoration: BoxDecoration(
-            color: widget.isSelected ? AppColors.primary : Colors.transparent,
+            color: widget.isSelected ? AppColors.revolutBlue : Colors.transparent,
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: widget.isSelected
-                  ? AppColors.primary
-                  : AppColors.outlineVariant,
+                  ? AppColors.revolutBlue
+                  : AppColors.revolutBorder,
             ),
           ),
           child: Row(
@@ -167,8 +167,8 @@ class _CategoryChipState extends State<_CategoryChip>
                 widget.category.icon,
                 size: 20,
                 color: widget.isSelected
-                    ? AppColors.onPrimary
-                    : AppColors.onSurfaceVariant,
+                    ? AppColors.revolutOnDark
+                    : AppColors.revolutOnDarkMuted,
               ),
               const SizedBox(width: AppSpacing.xs),
               Text(
@@ -177,8 +177,8 @@ class _CategoryChipState extends State<_CategoryChip>
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: widget.isSelected
-                      ? AppColors.onPrimary
-                      : AppColors.onSurface,
+                      ? AppColors.revolutOnDark
+                      : AppColors.revolutOnDark,
                 ),
               ),
             ],

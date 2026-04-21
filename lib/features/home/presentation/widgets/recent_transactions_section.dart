@@ -59,11 +59,11 @@ class RecentTransactionsSection extends ConsumerWidget {
                     ),
               ),
               TextButton(
-                onPressed: () => context.go(AppRoutes.history),
+                onPressed: () => context.push(AppRoutes.history),
                 child: Text(
                   'Voir tout',
                   style: TextStyle(
-                    color: AppColors.primary,
+                    color: AppColors.revolutBlue,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -75,10 +75,10 @@ class RecentTransactionsSection extends ConsumerWidget {
         // Transaction list
         Container(
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.revolutSurface,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppColors.outlineVariant.withValues(alpha: 0.5),
+              color: AppColors.revolutBorder.withValues(alpha: 0.5),
             ),
           ),
           child: ClipRRect(
@@ -91,7 +91,7 @@ class RecentTransactionsSection extends ConsumerWidget {
                     Divider(
                       height: 1,
                       indent: 72,
-                      color: AppColors.outlineVariant.withValues(alpha: 0.5),
+                      color: AppColors.revolutBorder.withValues(alpha: 0.5),
                     ),
                 ],
               ],

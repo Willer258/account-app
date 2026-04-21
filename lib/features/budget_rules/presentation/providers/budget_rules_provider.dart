@@ -122,15 +122,19 @@ final budgetRuleSettingsAsyncProvider =
 /// Provider for budget rule settings with notifier.
 final budgetRuleSettingsProvider =
     StateNotifierProvider<BudgetRuleNotifier, BudgetRuleSettings>((ref) {
-  // Initialize with default settings
   final notifier = BudgetRuleNotifier(ref);
 
-  // Load actual settings async
-  ref.listen(budgetRulesRepositoryProvider, (_, next) {
-    next.whenData((repo) {
+  // Load settings eagerly
+  Future<void> loadSettings() async {
+    try {
+      final repo = await ref.read(budgetRulesRepositoryProvider.future);
       notifier.loadFromRepository(repo);
-    });
-  });
+    } catch (_) {
+      // Will retry on next access
+    }
+  }
+
+  loadSettings();
 
   return notifier;
 });
@@ -145,15 +149,19 @@ final emergencyFundSettingsAsyncProvider =
 /// Provider for emergency fund settings with notifier.
 final emergencyFundSettingsProvider =
     StateNotifierProvider<EmergencyFundNotifier, EmergencyFundSettings>((ref) {
-  // Initialize with default settings
   final notifier = EmergencyFundNotifier(ref);
 
-  // Load actual settings async
-  ref.listen(budgetRulesRepositoryProvider, (_, next) {
-    next.whenData((repo) {
+  // Load settings eagerly
+  Future<void> loadSettings() async {
+    try {
+      final repo = await ref.read(budgetRulesRepositoryProvider.future);
       notifier.loadFromRepository(repo);
-    });
-  });
+    } catch (_) {
+      // Will retry on next access
+    }
+  }
+
+  loadSettings();
 
   return notifier;
 });

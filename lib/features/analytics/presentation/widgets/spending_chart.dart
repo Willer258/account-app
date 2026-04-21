@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -65,15 +66,17 @@ class _SpendingDonutChartState extends State<SpendingDonutChart>
     return Column(
       children: [
         // Donut chart
-        AnimatedBuilder(
-          animation: _animation,
-          builder: (context, _) => CustomPaint(
-            size: const Size(200, 200),
-            painter: _DonutPainter(
-              categoryTotals: widget.categoryTotals,
-              total: widget.total,
-              progress: _animation.value,
-              colorForCategory: _colorForCategory,
+        Center(
+          child: AnimatedBuilder(
+            animation: _animation,
+            builder: (context, _) => CustomPaint(
+              size: const Size(200, 200),
+              painter: _DonutPainter(
+                categoryTotals: widget.categoryTotals,
+                total: widget.total,
+                progress: _animation.value,
+                colorForCategory: _colorForCategory,
+              ),
             ),
           ),
         ),
@@ -188,7 +191,7 @@ class _DonutPainter extends CustomPainter {
           ),
         ],
       ),
-      textDirection: TextDirection.ltr,
+      textDirection: ui.TextDirection.ltr,
     );
     textPainter.layout();
     textPainter.paint(
@@ -206,7 +209,7 @@ class _DonutPainter extends CustomPainter {
           color: AppColors.revolutOnDarkMuted,
         ),
       ),
-      textDirection: TextDirection.ltr,
+      textDirection: ui.TextDirection.ltr,
     );
     subPainter.layout();
     subPainter.paint(canvas, center - Offset(subPainter.width / 2, -4));
@@ -373,7 +376,7 @@ class _BarChartPainter extends CustomPainter {
             color: AppColors.revolutOnDarkMuted,
           ),
         ),
-        textDirection: TextDirection.ltr,
+        textDirection: ui.TextDirection.ltr,
       );
       textPainter.layout();
       textPainter.paint(

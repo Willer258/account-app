@@ -7,6 +7,7 @@ import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../core/services/clock_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../shared/utils/fcfa_formatter.dart';
 import '../../../budget_rules/domain/enums/expense_category.dart';
 import '../../../budget_rules/presentation/providers/budget_rules_provider.dart';
@@ -49,7 +50,7 @@ class TransactionBottomSheet extends ConsumerStatefulWidget {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.revolutSurfaceElevated,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -67,7 +68,7 @@ class TransactionBottomSheet extends ConsumerStatefulWidget {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.revolutSurfaceElevated,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -228,7 +229,7 @@ class _TransactionBottomSheetState
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: ${e.message}'),
-            backgroundColor: AppColors.error,
+            backgroundColor: AppColors.revolutRed,
             duration: const Duration(seconds: 3),
             behavior: SnackBarBehavior.floating,
           ),
@@ -358,22 +359,21 @@ class _TransactionBottomSheetState
                   controller: _amountController,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+                  style: AppTypography.revolutTitle.copyWith(
+                    color: AppColors.revolutOnDark,
                   ),
                   decoration: InputDecoration(
                     hintText: '0',
                     hintStyle: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.onSurfaceVariant.withValues(alpha: 0.5),
+                      color: AppColors.revolutOnDarkMuted.withOpacity(0.5),
                     ),
                     suffixText: 'FCFA',
                     suffixStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                     border: const OutlineInputBorder(),
                     errorText:
@@ -390,6 +390,28 @@ class _TransactionBottomSheetState
               ),
 
               const SizedBox(height: AppSpacing.md),
+
+              // Quick amount chips
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final amount in const [500, 1000, 2000, 5000, 10000, 25000])
+                      _QuickAmountChip(
+                        amount: amount,
+                        onTap: () {
+                          _amountController.text = amount.toString();
+                          formNotifier.setAmount(amount);
+                          HapticFeedback.selectionClick();
+                        },
+                      ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: AppSpacing.sm),
 
               // Category chips (different categories for expense vs income)
               CategoryChipRow(
@@ -462,8 +484,8 @@ class _TransactionBottomSheetState
                       : null,
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(AppSpacing.touchTarget),
-                    backgroundColor: AppColors.primary,
-                    disabledBackgroundColor: AppColors.outlineVariant,
+                    backgroundColor: AppColors.revolutBlue,
+                    disabledBackgroundColor: AppColors.revolutBorder,
                   ),
                   child: _isSubmitting
                       ? const SizedBox(
@@ -471,7 +493,7 @@ class _TransactionBottomSheetState
                           width: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: AppColors.onPrimary,
+                            color: AppColors.revolutOnDark,
                           ),
                         )
                       : Text(
@@ -523,10 +545,10 @@ class _EmergencyFundOption extends ConsumerWidget {
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.sm),
           decoration: BoxDecoration(
-            color: AppColors.success.withValues(alpha: 0.1),
+            color: AppColors.revolutGreen.withOpacity(0.15),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: AppColors.success.withValues(alpha: 0.3),
+              color: AppColors.revolutGreen.withOpacity(0.3),
               width: 1,
             ),
           ),
@@ -535,11 +557,11 @@ class _EmergencyFundOption extends ConsumerWidget {
               Checkbox(
                 value: isChecked,
                 onChanged: onChanged,
-                activeColor: AppColors.success,
+                activeColor: AppColors.revolutGreen,
                 visualDensity: VisualDensity.compact,
               ),
               const SizedBox(width: AppSpacing.xs),
-              const Text('🛡️', style: TextStyle(fontSize: 18)),
+              const Icon(Icons.shield_rounded, size: 18, color: AppColors.revolutGreen),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Column(
@@ -556,7 +578,7 @@ class _EmergencyFundOption extends ConsumerWidget {
                       '${settings.monthsSaved.toStringAsFixed(1)}/${settings.targetMonths} mois épargnés',
                       style: TextStyle(
                         fontSize: 11,
-                        color: AppColors.onSurfaceVariant,
+                        color: AppColors.revolutOnDarkMuted,
                       ),
                     ),
                   ],
@@ -615,22 +637,23 @@ class _BudgetCategoryFeedback extends ConsumerWidget {
         padding: const EdgeInsets.all(AppSpacing.sm),
         decoration: BoxDecoration(
           color: willExceed
-              ? AppColors.error.withValues(alpha: 0.1)
+              ? AppColors.revolutRed.withOpacity(0.15)
               : budgetCategory.color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: willExceed
-                ? AppColors.error.withValues(alpha: 0.3)
+                ? AppColors.revolutRed.withOpacity(0.3)
                 : budgetCategory.color.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
         child: Row(
           children: [
-            // Category emoji
-            Text(
-              budgetCategory.emoji,
-              style: const TextStyle(fontSize: 20),
+            // Category icon
+            Icon(
+              budgetCategory.icon,
+              size: 20,
+              color: budgetCategory.color,
             ),
             const SizedBox(width: AppSpacing.sm),
             // Info
@@ -643,7 +666,7 @@ class _BudgetCategoryFeedback extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: willExceed ? AppColors.error : budgetCategory.color,
+                      color: willExceed ? AppColors.revolutRed : budgetCategory.color,
                     ),
                   ),
                   Text(
@@ -653,8 +676,8 @@ class _BudgetCategoryFeedback extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 11,
                       color: willExceed
-                          ? AppColors.error
-                          : AppColors.onSurfaceVariant,
+                          ? AppColors.revolutRed
+                          : AppColors.revolutOnDarkMuted,
                     ),
                   ),
                 ],
@@ -670,9 +693,9 @@ class _BudgetCategoryFeedback extends ConsumerWidget {
                   CircularProgressIndicator(
                     value: (newTotal / target).clamp(0.0, 1.0),
                     strokeWidth: 4,
-                    backgroundColor: AppColors.outlineVariant.withValues(alpha: 0.3),
+                    backgroundColor: AppColors.revolutBorder,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      willExceed ? AppColors.error : budgetCategory.color,
+                      willExceed ? AppColors.revolutRed : budgetCategory.color,
                     ),
                   ),
                   Text(
@@ -680,13 +703,47 @@ class _BudgetCategoryFeedback extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 9,
                       fontWeight: FontWeight.w600,
-                      color: willExceed ? AppColors.error : budgetCategory.color,
+                      color: willExceed ? AppColors.revolutRed : budgetCategory.color,
                     ),
                   ),
                 ],
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Quick amount selection chip.
+class _QuickAmountChip extends StatelessWidget {
+  const _QuickAmountChip({
+    required this.amount,
+    required this.onTap,
+  });
+
+  final int amount;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final label = amount >= 1000 ? '${amount ~/ 1000}K' : amount.toString();
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.revolutBlue.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: AppColors.revolutBlue.withOpacity(0.25)),
+        ),
+        child: Text(
+          '$label F',
+          style: AppTypography.revolutLabel.copyWith(
+            color: AppColors.revolutBlue,
+            fontSize: 13,
+          ),
         ),
       ),
     );

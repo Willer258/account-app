@@ -61,10 +61,10 @@ class AmountDisplay extends StatelessWidget {
                       fontSize: 40,
                       fontWeight: FontWeight.w600,
                       color: showError
-                          ? AppColors.error
+                          ? AppColors.revolutRed
                           : (amountFcfa == 0
-                              ? AppColors.onSurfaceVariant
-                              : AppColors.onSurface),
+                              ? AppColors.revolutOnDarkMuted
+                              : AppColors.revolutOnDark),
                     ),
                   ),
                 ),
@@ -76,7 +76,7 @@ class AmountDisplay extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  color: showError ? AppColors.error : AppColors.onSurfaceVariant,
+                  color: showError ? AppColors.revolutRed : AppColors.revolutOnDarkMuted,
                 ),
               ),
             ],
@@ -90,7 +90,7 @@ class AmountDisplay extends StatelessWidget {
               errorMessage!,
               style: TextStyle(
                 fontSize: 12,
-                color: AppColors.error,
+                color: AppColors.revolutRed,
               ),
             ),
           ),

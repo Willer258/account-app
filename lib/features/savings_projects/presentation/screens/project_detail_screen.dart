@@ -70,7 +70,7 @@ class ProjectDetailScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.onSurface,
+                          color: AppColors.revolutOnDark,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.sm),
@@ -91,7 +91,7 @@ class ProjectDetailScreen extends ConsumerWidget {
                         child: Container(
                           padding: const EdgeInsets.all(AppSpacing.lg),
                           decoration: BoxDecoration(
-                            color: AppColors.surface,
+                            color: AppColors.revolutSurface,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Column(
@@ -99,13 +99,13 @@ class ProjectDetailScreen extends ConsumerWidget {
                               Icon(
                                 Icons.history,
                                 size: 32,
-                                color: AppColors.onSurfaceVariant,
+                                color: AppColors.revolutOnDarkMuted,
                               ),
                               const SizedBox(height: AppSpacing.sm),
                               Text(
                                 'Aucune cotisation',
                                 style: TextStyle(
-                                  color: AppColors.onSurfaceVariant,
+                                  color: AppColors.revolutOnDarkMuted,
                                 ),
                               ),
                             ],
@@ -140,7 +140,7 @@ class ProjectDetailScreen extends ConsumerWidget {
 
               // Bottom padding
               const SliverToBoxAdapter(
-                child: SizedBox(height: 100),
+                child: SizedBox(height: 24),
               ),
             ],
           ),
@@ -180,7 +180,7 @@ class ProjectDetailScreen extends ConsumerWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('${FcfaFormatter.formatCompact(amount)} ajoutés!'),
-                backgroundColor: AppColors.success,
+                backgroundColor: AppColors.revolutGreen,
               ),
             );
           }
@@ -218,7 +218,7 @@ class ProjectDetailScreen extends ConsumerWidget {
                 FilledButton(
                   onPressed: () => Navigator.pop(context, true),
                   style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.error,
+                    backgroundColor: AppColors.revolutRed,
                   ),
                   child: const Text('Retirer'),
                 ),
@@ -238,7 +238,7 @@ class ProjectDetailScreen extends ConsumerWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('${FcfaFormatter.formatCompact(amount)} retirés'),
-                  backgroundColor: AppColors.error,
+                  backgroundColor: AppColors.revolutRed,
                 ),
               );
             }
@@ -383,7 +383,7 @@ class _ProgressSection extends StatelessWidget {
                     'épargné',
                     style: TextStyle(
                       fontSize: 11,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                   ),
                 ],
@@ -393,7 +393,7 @@ class _ProgressSection extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: isGoalReached
-                      ? AppColors.success
+                      ? AppColors.revolutGreen
                       : project.color.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -421,7 +421,7 @@ class _ProgressSection extends StatelessWidget {
                     'objectif',
                     style: TextStyle(
                       fontSize: 11,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                   ),
                 ],
@@ -449,7 +449,7 @@ class _ProgressSection extends StatelessWidget {
                       child: Container(
                         height: 8,
                         decoration: BoxDecoration(
-                          color: AppColors.outlineVariant.withValues(alpha: 0.3),
+                          color: AppColors.revolutBorder.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
@@ -462,7 +462,7 @@ class _ProgressSection extends StatelessWidget {
                         width: runnerPosition,
                         height: 8,
                         decoration: BoxDecoration(
-                          color: isGoalReached ? AppColors.success : project.color,
+                          color: isGoalReached ? AppColors.revolutGreen : project.color,
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
@@ -471,13 +471,13 @@ class _ProgressSection extends StatelessWidget {
                     const Positioned(
                       left: 0,
                       top: 0,
-                      child: Text('🚩', style: TextStyle(fontSize: 16)),
+                      child: Icon(Icons.flag_rounded, size: 16, color: AppColors.revolutBlue),
                     ),
                     // Finish flag
                     const Positioned(
                       right: 0,
                       top: 0,
-                      child: Text('🏁', style: TextStyle(fontSize: 16)),
+                      child: Icon(Icons.flag_circle_rounded, size: 16, color: AppColors.revolutGreen),
                     ),
                     // Runner (flipped to face right)
                     Positioned(
@@ -504,7 +504,7 @@ class _ProgressSection extends StatelessWidget {
               'Plus que ${FcfaFormatter.formatCompact(project.remainingAmountFcfa)} !',
               style: TextStyle(
                 fontSize: 12,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
               textAlign: TextAlign.center,
             ),
@@ -566,10 +566,10 @@ class _AutoContributionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.outlineVariant.withValues(alpha: 0.5),
+          color: AppColors.revolutBorder.withValues(alpha: 0.5),
         ),
       ),
       child: Row(
@@ -595,14 +595,14 @@ class _AutoContributionCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.onSurface,
+                    color: AppColors.revolutOnDark,
                   ),
                 ),
                 Text(
                   '${FcfaFormatter.formatCompact(project.autoContributionAmountFcfa)} / ${project.autoContributionFrequency?.displayName.toLowerCase() ?? 'mois'}',
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                   ),
                 ),
               ],
@@ -616,7 +616,7 @@ class _AutoContributionCard extends StatelessWidget {
                   'Prochain',
                   style: TextStyle(
                     fontSize: 10,
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                   ),
                 ),
                 Text(
@@ -658,7 +658,7 @@ class _ContributionTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppSpacing.xs),
       padding: const EdgeInsets.all(AppSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -669,10 +669,10 @@ class _ContributionTile extends StatelessWidget {
             height: 32,
             decoration: BoxDecoration(
               color: isFailed
-                  ? AppColors.error.withValues(alpha: 0.1)
+                  ? AppColors.revolutRed.withValues(alpha: 0.1)
                   : isDeposit
-                      ? AppColors.success.withValues(alpha: 0.1)
-                      : AppColors.error.withValues(alpha: 0.1),
+                      ? AppColors.revolutGreen.withValues(alpha: 0.1)
+                      : AppColors.revolutRed.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
@@ -683,10 +683,10 @@ class _ContributionTile extends StatelessWidget {
                       : Icons.arrow_upward,
               size: 16,
               color: isFailed
-                  ? AppColors.error
+                  ? AppColors.revolutRed
                   : isDeposit
-                      ? AppColors.success
-                      : AppColors.error,
+                      ? AppColors.revolutGreen
+                      : AppColors.revolutRed,
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
@@ -701,7 +701,7 @@ class _ContributionTile extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.onSurface,
+                    color: AppColors.revolutOnDark,
                   ),
                 ),
                 if (contribution.note != null)
@@ -709,7 +709,7 @@ class _ContributionTile extends StatelessWidget {
                     contribution.note!,
                     style: TextStyle(
                       fontSize: 11,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -728,14 +728,14 @@ class _ContributionTile extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
-                    color: isDeposit ? AppColors.success : AppColors.error,
+                    color: isDeposit ? AppColors.revolutGreen : AppColors.revolutRed,
                   ),
                 ),
               Text(
                 _formatDate(contribution.date),
                 style: TextStyle(
                   fontSize: 10,
-                  color: AppColors.onSurfaceVariant,
+                  color: AppColors.revolutOnDarkMuted,
                 ),
               ),
             ],
@@ -788,7 +788,7 @@ class _ContributionBottomSheetState extends State<_ContributionBottomSheet> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: SafeArea(
@@ -798,18 +798,7 @@ class _ContributionBottomSheetState extends State<_ContributionBottomSheet> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Handle
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: AppColors.outlineVariant,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.sm),
 
               // Title
               Row(
@@ -835,14 +824,14 @@ class _ContributionBottomSheetState extends State<_ContributionBottomSheet> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.onSurface,
+                            color: AppColors.revolutOnDark,
                           ),
                         ),
                         Text(
                           widget.project.name,
                           style: TextStyle(
                             fontSize: 12,
-                            color: AppColors.onSurfaceVariant,
+                            color: AppColors.revolutOnDarkMuted,
                           ),
                         ),
                       ],
@@ -883,7 +872,7 @@ class _ContributionBottomSheetState extends State<_ContributionBottomSheet> {
                 child: FilledButton(
                   onPressed: _isLoading ? null : _submit,
                   style: FilledButton.styleFrom(
-                    backgroundColor: widget.isDeposit ? color : AppColors.error,
+                    backgroundColor: widget.isDeposit ? color : AppColors.revolutRed,
                   ),
                   child: _isLoading
                       ? const SizedBox(

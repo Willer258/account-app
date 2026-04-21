@@ -149,7 +149,7 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: AppColors.onSurface,
+            color: AppColors.revolutOnDark,
           ),
         ),
         const SizedBox(height: AppSpacing.sm),
@@ -169,19 +169,19 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
                     style: TextStyle(
                       color: isSelected
                           ? AppColors.onPrimary
-                          : AppColors.onSurface,
+                          : AppColors.revolutOnDark,
                       fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                     ),
                   ),
                 ],
               ),
               selected: isSelected,
-              selectedColor: AppColors.primary,
-              backgroundColor: AppColors.surface,
+              selectedColor: AppColors.revolutBlue,
+              backgroundColor: AppColors.revolutSurface,
               side: BorderSide(
                 color: isSelected
-                    ? AppColors.primary
-                    : AppColors.outlineVariant,
+                    ? AppColors.revolutBlue
+                    : AppColors.revolutBorder,
               ),
               onSelected: (selected) {
                 if (selected) {
@@ -214,7 +214,7 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: AppColors.onSurface,
+            color: AppColors.revolutOnDark,
           ),
         ),
         const SizedBox(height: AppSpacing.sm),
@@ -256,7 +256,7 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: AppColors.onSurface,
+            color: AppColors.revolutOnDark,
           ),
         ),
         const SizedBox(height: AppSpacing.sm),
@@ -297,7 +297,7 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: AppColors.onSurface,
+            color: AppColors.revolutOnDark,
           ),
         ),
         const SizedBox(height: AppSpacing.sm),
@@ -318,12 +318,12 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? _selectedColor.withValues(alpha: 0.2)
-                      : AppColors.surface,
+                      : AppColors.revolutSurface,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: isSelected
                         ? _selectedColor
-                        : AppColors.outlineVariant.withValues(alpha: 0.5),
+                        : AppColors.revolutBorder.withValues(alpha: 0.5),
                     width: isSelected ? 2 : 1,
                   ),
                 ),
@@ -353,7 +353,7 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: AppColors.onSurface,
+                color: AppColors.revolutOnDark,
               ),
             ),
             if (_targetDate != null)
@@ -374,10 +374,10 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
           child: Container(
             padding: const EdgeInsets.all(AppSpacing.md),
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: AppColors.revolutSurface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: AppColors.outlineVariant.withValues(alpha: 0.5),
+                color: AppColors.revolutBorder.withValues(alpha: 0.5),
               ),
             ),
             child: Row(
@@ -386,7 +386,7 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
                   Icons.calendar_today,
                   color: _targetDate != null
                       ? _selectedColor
-                      : AppColors.onSurfaceVariant,
+                      : AppColors.revolutOnDarkMuted,
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 Text(
@@ -395,8 +395,8 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
                       : 'Choisir une date',
                   style: TextStyle(
                     color: _targetDate != null
-                        ? AppColors.onSurface
-                        : AppColors.onSurfaceVariant,
+                        ? AppColors.revolutOnDark
+                        : AppColors.revolutOnDarkMuted,
                   ),
                 ),
               ],
@@ -411,12 +411,12 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: _autoContributionEnabled
               ? _selectedColor.withValues(alpha: 0.5)
-              : AppColors.outlineVariant.withValues(alpha: 0.5),
+              : AppColors.revolutBorder.withValues(alpha: 0.5),
         ),
       ),
       child: Column(
@@ -429,7 +429,7 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
                 Icons.autorenew,
                 color: _autoContributionEnabled
                     ? _selectedColor
-                    : AppColors.onSurfaceVariant,
+                    : AppColors.revolutOnDarkMuted,
               ),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
@@ -441,14 +441,14 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.onSurface,
+                        color: AppColors.revolutOnDark,
                       ),
                     ),
                     Text(
                       'Prélèvement régulier sur ton budget',
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.onSurfaceVariant,
+                        color: AppColors.revolutOnDarkMuted,
                       ),
                     ),
                   ],
@@ -500,7 +500,7 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
               'Fréquence',
               style: TextStyle(
                 fontSize: 12,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
             ),
             const SizedBox(height: AppSpacing.xs),
@@ -514,17 +514,17 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
                     style: TextStyle(
                       color: isSelected
                           ? AppColors.onPrimary
-                          : AppColors.onSurface,
+                          : AppColors.revolutOnDark,
                       fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                     ),
                   ),
                   selected: isSelected,
-                  selectedColor: AppColors.primary,
-                  backgroundColor: AppColors.surface,
+                  selectedColor: AppColors.revolutBlue,
+                  backgroundColor: AppColors.revolutSurface,
                   side: BorderSide(
                     color: isSelected
-                        ? AppColors.primary
-                        : AppColors.outlineVariant,
+                        ? AppColors.revolutBlue
+                        : AppColors.revolutBorder,
                   ),
                   onSelected: (selected) {
                     if (selected) {
@@ -615,7 +615,7 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: $e'),
-            backgroundColor: AppColors.error,
+            backgroundColor: AppColors.revolutRed,
           ),
         );
       }

@@ -40,17 +40,17 @@ class UpcomingExpensePreview extends ConsumerWidget {
           padding: const EdgeInsets.all(AppSpacing.sm),
           decoration: BoxDecoration(
             color: isOverdue
-                ? AppColors.error.withValues(alpha: 0.1)
+                ? AppColors.revolutRed.withValues(alpha: 0.1)
                 : isDueToday
                     ? const Color(0xFFFF9800).withValues(alpha: 0.1)
-                    : AppColors.surface,
+                    : AppColors.revolutSurface,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: isOverdue
-                  ? AppColors.error.withValues(alpha: 0.3)
+                  ? AppColors.revolutRed.withValues(alpha: 0.3)
                   : isDueToday
                       ? const Color(0xFFFF9800).withValues(alpha: 0.3)
-                      : AppColors.outlineVariant.withValues(alpha: 0.5),
+                      : AppColors.revolutBorder.withValues(alpha: 0.5),
               width: 1,
             ),
           ),
@@ -62,10 +62,10 @@ class UpcomingExpensePreview extends ConsumerWidget {
                 height: 36,
                 decoration: BoxDecoration(
                   color: isOverdue
-                      ? AppColors.error.withValues(alpha: 0.1)
+                      ? AppColors.revolutRed.withValues(alpha: 0.1)
                       : isDueToday
                           ? const Color(0xFFFF9800).withValues(alpha: 0.1)
-                          : AppColors.primary.withValues(alpha: 0.1),
+                          : AppColors.revolutBlue.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Center(
@@ -75,10 +75,10 @@ class UpcomingExpensePreview extends ConsumerWidget {
                         : Icons.calendar_today,
                     size: 18,
                     color: isOverdue
-                        ? AppColors.error
+                        ? AppColors.revolutRed
                         : isDueToday
                             ? const Color(0xFFFF9800)
-                            : AppColors.primary,
+                            : AppColors.revolutBlue,
                   ),
                 ),
               ),
@@ -94,7 +94,7 @@ class UpcomingExpensePreview extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.onSurface,
+                        color: AppColors.revolutOnDark,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -104,10 +104,10 @@ class UpcomingExpensePreview extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 10,
                         color: isOverdue
-                            ? AppColors.error
+                            ? AppColors.revolutRed
                             : isDueToday
                                 ? const Color(0xFFFF9800)
-                                : AppColors.onSurfaceVariant,
+                                : AppColors.revolutOnDarkMuted,
                       ),
                     ),
                   ],
@@ -120,10 +120,10 @@ class UpcomingExpensePreview extends ConsumerWidget {
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
                   color: isOverdue
-                      ? AppColors.error
+                      ? AppColors.revolutRed
                       : isDueToday
                           ? const Color(0xFFFF9800)
-                          : AppColors.onSurface,
+                          : AppColors.revolutOnDark,
                 ),
               ),
             ],

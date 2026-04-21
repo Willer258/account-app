@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../shared/utils/fcfa_formatter.dart';
 import '../../domain/models/planned_expense_model.dart';
 
@@ -13,36 +13,31 @@ class ConversionDialogResult {
     required this.adjustedAmount,
   });
 
-  /// Whether the user confirmed the conversion.
   final bool confirmed;
-
-  /// The adjusted amount (may differ from original).
   final int adjustedAmount;
 }
 
-/// Dialog for confirming planned expense conversion with amount adjustment.
-///
-/// Allows users to adjust the actual amount paid before converting
-/// the planned expense to a transaction.
-///
-/// Returns [ConversionDialogResult] with confirmed=true and the adjusted amount,
-/// or confirmed=false if cancelled.
+/// Bottom sheet for confirming planned expense payment with amount adjustment.
 class ConversionDialog extends StatefulWidget {
   const ConversionDialog({
     required this.expense,
     super.key,
   });
 
-  /// The planned expense to convert.
   final PlannedExpenseModel expense;
 
-  /// Shows the conversion dialog and returns the result.
+  /// Shows the conversion bottom sheet and returns the result.
   static Future<ConversionDialogResult?> show(
     BuildContext context,
     PlannedExpenseModel expense,
   ) {
-    return showDialog<ConversionDialogResult>(
+    return showModalBottomSheet<ConversionDialogResult>(
       context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.revolutSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (context) => ConversionDialog(expense: expense),
     );
   }
@@ -64,9 +59,18 @@ class _ConversionDialogState extends State<ConversionDialog> {
   void _appendDigit(int digit) {
     HapticFeedback.selectionClick();
     setState(() {
-      // Cap at 9 digits (max 999,999,999)
       if (_adjustedAmount.toString().length < 9) {
         _adjustedAmount = _adjustedAmount * 10 + digit;
+      }
+    });
+  }
+
+  void _appendZeros(int count) {
+    HapticFeedback.selectionClick();
+    setState(() {
+      final newStr = '$_adjustedAmount${'0' * count}';
+      if (newStr.length <= 9) {
+        _adjustedAmount = int.parse(newStr);
       }
     });
   }
@@ -82,228 +86,261 @@ class _ConversionDialogState extends State<ConversionDialog> {
     setState(() {
       _isAdjusting = !_isAdjusting;
       if (_isAdjusting) {
-        // Reset to 0 when entering adjustment mode
         _adjustedAmount = 0;
       } else {
-        // Restore original amount when cancelling
         _adjustedAmount = widget.expense.amountFcfa;
       }
     });
   }
 
   void _confirm() {
-    if (_adjustedAmount <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Montant invalide')),
-      );
-      return;
-    }
+    if (_adjustedAmount <= 0) return;
     Navigator.of(context).pop(
-      ConversionDialogResult(
-        confirmed: true,
-        adjustedAmount: _adjustedAmount,
-      ),
-    );
-  }
-
-  void _cancel() {
-    Navigator.of(context).pop(
-      ConversionDialogResult(
-        confirmed: false,
-        adjustedAmount: _adjustedAmount,
-      ),
+      ConversionDialogResult(confirmed: true, adjustedAmount: _adjustedAmount),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final amountDifference = _adjustedAmount - widget.expense.amountFcfa;
-    final hasAdjustment = amountDifference != 0;
+    final diff = _adjustedAmount - widget.expense.amountFcfa;
+    final hasDiff = diff != 0 && _isAdjusting;
 
-    return AlertDialog(
-      title: const Text('Marquer comme payé'),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Expense description
-            Text(
-              widget.expense.description,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 20),
+
+          // Title
+          Text(
+            'Valider le paiement',
+            style: AppTypography.revolutSubtitle.copyWith(
+              color: AppColors.revolutOnDark,
             ),
-            const SizedBox(height: AppSpacing.md),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            widget.expense.description,
+            style: AppTypography.revolutBody.copyWith(
+              color: AppColors.revolutOnDarkMuted,
+              fontSize: 14,
+            ),
+          ),
 
-            // Amount display
-            Container(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              decoration: BoxDecoration(
-                color: AppColors.surfaceVariant,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
+          const SizedBox(height: 24),
+
+          // Amount display
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
                 children: [
                   Text(
-                    _isAdjusting ? 'Montant ajusté' : 'Montant prévu',
-                    style: const TextStyle(
-                      color: AppColors.onSurfaceVariant,
-                      fontSize: 12,
+                    FcfaFormatter.formatCompact(_adjustedAmount),
+                    style: AppTypography.revolutDisplay.copyWith(
+                      color: _adjustedAmount > 0
+                          ? AppColors.revolutOnDark
+                          : AppColors.revolutOnDarkMuted,
+                      fontSize: 44,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xs),
+                  const SizedBox(width: 8),
                   Text(
-                    FcfaFormatter.format(_adjustedAmount),
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                    'FCFA',
+                    style: AppTypography.revolutSubtitle.copyWith(
+                      color: AppColors.revolutOnDarkMuted,
+                      fontSize: 14,
                     ),
                   ),
-                  if (hasAdjustment) ...[
-                    const SizedBox(height: AppSpacing.xs),
-                    Text(
-                      'Prévu: ${FcfaFormatter.format(widget.expense.amountFcfa)}',
-                      style: const TextStyle(
-                        color: AppColors.onSurfaceVariant,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Text(
-                      amountDifference > 0
-                          ? '+${FcfaFormatter.format(amountDifference)}'
-                          : FcfaFormatter.format(amountDifference),
-                      style: TextStyle(
-                        color: amountDifference > 0
-                            ? AppColors.error
-                            : AppColors.success,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.md),
+          ),
 
-            // Adjust button
-            if (!_isAdjusting)
-              TextButton.icon(
-                onPressed: _toggleAdjusting,
-                icon: const Icon(Icons.edit, size: 18),
-                label: const Text('Ajuster le montant'),
-              ),
+          const SizedBox(height: 8),
 
-            // Numeric keypad for adjustment
-            if (_isAdjusting) ...[
-              const SizedBox(height: AppSpacing.sm),
-              _NumericKeypad(
-                onDigitPressed: _appendDigit,
-                onDeletePressed: _deleteDigit,
+          // Diff badge or adjust button
+          if (hasDiff)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: diff > 0
+                    ? AppColors.revolutRed.withValues(alpha: 0.12)
+                    : AppColors.revolutGreen.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(12),
               ),
-              const SizedBox(height: AppSpacing.sm),
-              TextButton(
-                onPressed: _toggleAdjusting,
-                child: const Text('Utiliser le montant prévu'),
+              child: Text(
+                'Prévu: ${FcfaFormatter.format(widget.expense.amountFcfa)} (${diff > 0 ? '+' : ''}${FcfaFormatter.format(diff)})',
+                style: AppTypography.revolutMicro.copyWith(
+                  color: diff > 0
+                      ? AppColors.revolutRed
+                      : AppColors.revolutGreen,
+                  fontSize: 12,
+                ),
               ),
-            ],
+            )
+          else if (!_isAdjusting)
+            GestureDetector(
+              onTap: _toggleAdjusting,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.edit_rounded,
+                    color: AppColors.revolutBlue,
+                    size: 14,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Ajuster le montant',
+                    style: AppTypography.revolutLabel.copyWith(
+                      color: AppColors.revolutBlue,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+          // Keypad (only when adjusting)
+          if (_isAdjusting) ...[
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  _buildRow([1, 2, 3]),
+                  _buildRow([4, 5, 6]),
+                  _buildRow([7, 8, 9]),
+                  Row(
+                    children: [
+                      _buildSpecialKey('000', onTap: () => _appendZeros(3)),
+                      _buildDigitKey(0),
+                      _buildIconKey(
+                        Icons.backspace_outlined,
+                        onTap: _deleteDigit,
+                        onLongPress: () {
+                          HapticFeedback.mediumImpact();
+                          setState(() => _adjustedAmount = 0);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            GestureDetector(
+              onTap: _toggleAdjusting,
+              child: Text(
+                'Montant prévu',
+                style: AppTypography.revolutLabel.copyWith(
+                  color: AppColors.revolutOnDarkMuted,
+                  fontSize: 13,
+                ),
+              ),
+            ),
           ],
-        ),
+
+          const SizedBox(height: 20),
+
+          // Confirm button
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+            child: SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: FilledButton(
+                onPressed: _adjustedAmount > 0 ? _confirm : null,
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.revolutGreen,
+                  disabledBackgroundColor: AppColors.revolutBorder,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                child: Text(
+                  'Confirmer le paiement',
+                  style: AppTypography.revolutLabel.copyWith(
+                    color: AppColors.revolutOnDark,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: _cancel,
-          child: const Text('Annuler'),
-        ),
-        FilledButton(
-          onPressed: _adjustedAmount > 0 ? _confirm : null,
-          child: const Text('Confirmer'),
-        ),
-      ],
-    );
-  }
-}
-
-/// Simple numeric keypad for amount adjustment.
-class _NumericKeypad extends StatelessWidget {
-  const _NumericKeypad({
-    required this.onDigitPressed,
-    required this.onDeletePressed,
-  });
-
-  final ValueChanged<int> onDigitPressed;
-  final VoidCallback onDeletePressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildRow([1, 2, 3]),
-        const SizedBox(height: AppSpacing.xs),
-        _buildRow([4, 5, 6]),
-        const SizedBox(height: AppSpacing.xs),
-        _buildRow([7, 8, 9]),
-        const SizedBox(height: AppSpacing.xs),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildEmptyKey(),
-            _buildDigitKey(0),
-            _buildDeleteKey(),
-          ],
-        ),
-      ],
     );
   }
 
   Widget _buildRow(List<int> digits) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: digits.map(_buildDigitKey).toList(),
-    );
+    return Row(children: digits.map(_buildDigitKey).toList());
   }
 
   Widget _buildDigitKey(int digit) {
-    return SizedBox(
-      width: 56,
-      height: 48,
-      child: TextButton(
-        onPressed: () => onDigitPressed(digit),
-        style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-        child: Text(
-          digit.toString(),
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => _appendDigit(digit),
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          height: 52,
+          alignment: Alignment.center,
+          child: Text(
+            digit.toString(),
+            style: AppTypography.revolutSubtitle.copyWith(
+              color: AppColors.revolutOnDark,
+              fontSize: 22,
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildDeleteKey() {
-    return SizedBox(
-      width: 56,
-      height: 48,
-      child: TextButton(
-        onPressed: onDeletePressed,
-        style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+  Widget _buildSpecialKey(String label, {required VoidCallback onTap}) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          height: 52,
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            style: AppTypography.revolutLabel.copyWith(
+              color: AppColors.revolutOnDarkMuted,
+              fontSize: 16,
+            ),
           ),
         ),
-        child: const Icon(Icons.backspace_outlined, size: 22),
       ),
     );
   }
 
-  Widget _buildEmptyKey() {
-    return const SizedBox(width: 56, height: 48);
+  Widget _buildIconKey(
+    IconData icon, {
+    required VoidCallback onTap,
+    VoidCallback? onLongPress,
+  }) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          height: 52,
+          alignment: Alignment.center,
+          child: Icon(icon, color: AppColors.revolutOnDarkMuted, size: 22),
+        ),
+      ),
+    );
   }
 }

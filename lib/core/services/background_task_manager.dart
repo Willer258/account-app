@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
+import '../../features/tips/services/morning_notification_service.dart';
+import '../../features/tips/services/spending_anomaly_service.dart';
 import '../database/app_database.dart';
 import '../database/daos/app_settings_dao.dart';
 import '../database/daos/budget_periods_dao.dart';
@@ -92,6 +95,7 @@ class BackgroundTaskManager {
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
+    AppDatabase? db;
     try {
       // Initialize services in the background isolate
       final clock = SystemClock();
@@ -101,7 +105,7 @@ void callbackDispatcher() {
       final encryptionKey = await encryptionService.getOrCreateKey();
 
       // Initialize encrypted database
-      final db = AppDatabase(encryptionKey: encryptionKey);
+      db = AppDatabase(encryptionKey: encryptionKey);
 
       // Initialize DAOs
       final streaksDao = StreaksDao(db, clock: clock);
@@ -163,8 +167,8 @@ void callbackDispatcher() {
           notificationLimiter,
         );
       }
-      // Planned expense reminders (reuse subscription reminder preference)
-      if (await notificationPrefs.areSubscriptionRemindersEnabled()) {
+      // Planned expense reminders
+      if (await notificationPrefs.arePlannedExpenseRemindersEnabled()) {
         await _executePlannedExpenseReminder(
           plannedExpensesDao,
           clock,
@@ -174,13 +178,34 @@ void callbackDispatcher() {
         );
       }
 
-      // Close database
-      await db.close();
+      // Morning tip notification (daily at 8 AM)
+      if (await notificationPrefs.areMorningTipsEnabled()) {
+        await _executeMorningNotification(
+          budgetPeriodsDao,
+          transactionsDao,
+          subscriptionsDao,
+          clock,
+          notificationService,
+          notificationLimiter,
+        );
+      }
+
+      // Spending anomaly detection (daily)
+      if (await notificationPrefs.areSpendingAnomalyEnabled()) {
+        await _executeSpendingAnomalyCheck(
+          transactionsDao,
+          clock,
+          notificationService,
+          notificationLimiter,
+        );
+      }
 
       return true;
     } catch (e) {
-      // Log error but don't crash - return true to prevent retry spam
+      // Silently fail - return true to prevent retry spam
       return true;
+    } finally {
+      await db?.close();
     }
   });
 }
@@ -631,6 +656,163 @@ Future<void> _executePlannedExpenseReminder(
           toRemind.map((e) => e.id).toList(),
         );
       }
+    }
+  } catch (e) {
+    // Silently fail - don't crash the background task
+  }
+}
+
+/// Send morning notification with budget summary and tip.
+///
+/// Sends once per day at 8 AM with remaining budget info and a contextual tip.
+Future<void> _executeMorningNotification(
+  BudgetPeriodsDao budgetPeriodsDao,
+  TransactionsDao transactionsDao,
+  SubscriptionsDao subscriptionsDao,
+  Clock clock,
+  NotificationService notificationService,
+  NotificationLimiter limiter,
+) async {
+  try {
+    final now = clock.now();
+
+    // Initialize SharedPreferences for the morning notification service
+    final prefs = await SharedPreferences.getInstance();
+    final morningService = MorningNotificationService(
+      notificationService: notificationService,
+      prefs: prefs,
+    );
+
+    // Check if it's time to send (8 AM + not already sent today)
+    if (!morningService.shouldSendMorningNotification(now)) return;
+
+    // Check notification limit
+    final canSend = await limiter.canSendNotification();
+    if (canSend != NotificationLimitResult.allowed) return;
+
+    // Calculate budget data
+    final budgetPeriod = await budgetPeriodsDao.getCurrentBudgetPeriod(now);
+    if (budgetPeriod == null) return;
+
+    final monthStart = DateTime(now.year, now.month);
+    final monthEnd = DateTime(now.year, now.month + 1, 0, 23, 59, 59);
+
+    final transactions = await transactionsDao.getTransactionsByDateRange(
+      monthStart,
+      monthEnd,
+    );
+
+    var totalExpenses = 0;
+    for (final tx in transactions) {
+      if (tx.type == 'expense') {
+        totalExpenses += tx.amountFcfa;
+      }
+    }
+
+    // Account for subscriptions
+    final subscriptions = await subscriptionsDao.getActiveSubscriptions();
+    var totalSubscriptions = 0;
+    for (final sub in subscriptions) {
+      if (sub.frequency == 'monthly') {
+        totalSubscriptions += sub.amountFcfa;
+      } else if (sub.frequency == 'weekly') {
+        totalSubscriptions += sub.amountFcfa * 4;
+      } else if (sub.frequency == 'yearly') {
+        totalSubscriptions += (sub.amountFcfa / 12).round();
+      }
+    }
+
+    final remaining = budgetPeriod.monthlyBudgetFcfa - totalExpenses - totalSubscriptions;
+    final total = budgetPeriod.monthlyBudgetFcfa;
+    final percentage = total > 0 ? remaining / total : 0.0;
+
+    // Days remaining in the month
+    final lastDay = DateTime(now.year, now.month + 1, 0).day;
+    final daysRemaining = lastDay - now.day;
+
+    await morningService.sendMorningNotification(
+      remainingBudget: remaining,
+      budgetPercentage: percentage,
+      daysRemaining: daysRemaining,
+    );
+    await limiter.recordNotificationSent();
+  } catch (e) {
+    // Silently fail - don't crash the background task
+  }
+}
+
+/// Detect spending anomalies by comparing current vs previous week by category.
+///
+/// Sends a notification when a category shows >50% increase week-over-week.
+Future<void> _executeSpendingAnomalyCheck(
+  TransactionsDao transactionsDao,
+  Clock clock,
+  NotificationService notificationService,
+  NotificationLimiter limiter,
+) async {
+  try {
+    final now = clock.now();
+
+    // Initialize SharedPreferences for the anomaly service
+    final prefs = await SharedPreferences.getInstance();
+    final anomalyService = SpendingAnomalyService(
+      notificationService: notificationService,
+      prefs: prefs,
+    );
+
+    // Check if we should run today (once per day)
+    if (!anomalyService.shouldCheckToday(now)) return;
+
+    // Check notification limit
+    final canSend = await limiter.canSendNotification();
+    if (canSend != NotificationLimitResult.allowed) return;
+
+    // Calculate current week (Mon-Sun) and previous week date ranges
+    final today = DateTime(now.year, now.month, now.day);
+    final currentWeekStart = today.subtract(Duration(days: today.weekday - 1));
+    final previousWeekStart = currentWeekStart.subtract(const Duration(days: 7));
+    final previousWeekEnd = currentWeekStart.subtract(const Duration(seconds: 1));
+
+    // Get transactions for both weeks
+    final currentWeekTx = await transactionsDao.getTransactionsByDateRange(
+      currentWeekStart,
+      today.add(const Duration(hours: 23, minutes: 59, seconds: 59)),
+    );
+    final previousWeekTx = await transactionsDao.getTransactionsByDateRange(
+      previousWeekStart,
+      previousWeekEnd,
+    );
+
+    // Aggregate by category
+    final currentByCategory = <String, int>{};
+    for (final tx in currentWeekTx) {
+      if (tx.type == 'expense') {
+        currentByCategory[tx.category] =
+            (currentByCategory[tx.category] ?? 0) + tx.amountFcfa;
+      }
+    }
+
+    final previousByCategory = <String, int>{};
+    for (final tx in previousWeekTx) {
+      if (tx.type == 'expense') {
+        previousByCategory[tx.category] =
+            (previousByCategory[tx.category] ?? 0) + tx.amountFcfa;
+      }
+    }
+
+    // Detect anomalies
+    final anomalies = anomalyService.detectAnomalies(
+      currentWeekByCategory: currentByCategory,
+      previousWeekByCategory: previousByCategory,
+    );
+
+    if (anomalies.isEmpty) return;
+
+    // Send notification for significant anomalies
+    final significant = anomalies.where((a) => a.isSignificant).toList();
+    if (significant.isNotEmpty) {
+      await anomalyService.notifyMultipleAnomalies(significant);
+      await limiter.recordNotificationSent();
     }
   } catch (e) {
     // Silently fail - don't crash the background task

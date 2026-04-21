@@ -93,24 +93,24 @@ class _MilestoneCelebrationDialogState extends State<MilestoneCelebrationDialog>
     super.dispose();
   }
 
-  String get _milestoneEmoji {
+  IconData get _milestoneIcon {
     switch (widget.milestone) {
       case 7:
-        return '🎉';
+        return Icons.celebration_rounded;
       case 14:
-        return '🏆';
+        return Icons.emoji_events_rounded;
       case 30:
-        return '👑';
+        return Icons.workspace_premium_rounded;
       case 60:
-        return '💎';
+        return Icons.diamond_rounded;
       case 90:
-        return '🌟';
+        return Icons.star_rounded;
       case 180:
-        return '🔥';
+        return Icons.local_fire_department_rounded;
       case 365:
-        return '🏅';
+        return Icons.military_tech_rounded;
       default:
-        return '🎊';
+        return Icons.celebration_rounded;
     }
   }
 
@@ -167,7 +167,7 @@ class _MilestoneCelebrationDialogState extends State<MilestoneCelebrationDialog>
           child: Container(
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: AppColors.background,
+              color: AppColors.revolutDark,
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
@@ -180,12 +180,13 @@ class _MilestoneCelebrationDialogState extends State<MilestoneCelebrationDialog>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Animated emoji
+                // Animated icon
                 Transform.scale(
                   scale: _scaleAnimation.value,
-                  child: Text(
-                    _milestoneEmoji,
-                    style: const TextStyle(fontSize: 72),
+                  child: Icon(
+                    _milestoneIcon,
+                    size: 72,
+                    color: AppColors.revolutAmber,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
@@ -204,13 +205,24 @@ class _MilestoneCelebrationDialogState extends State<MilestoneCelebrationDialog>
                       ),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text(
-                      '🔥 ${widget.currentStreak} jours',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.local_fire_department_rounded,
+                          size: 20,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${widget.currentStreak} jours',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -226,7 +238,7 @@ class _MilestoneCelebrationDialogState extends State<MilestoneCelebrationDialog>
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.onBackground,
+                          color: AppColors.revolutOnDark,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -235,7 +247,7 @@ class _MilestoneCelebrationDialogState extends State<MilestoneCelebrationDialog>
                         _encouragementMessage,
                         style: const TextStyle(
                           fontSize: 16,
-                          color: AppColors.onSurfaceVariant,
+                          color: AppColors.revolutOnDarkMuted,
                         ),
                         textAlign: TextAlign.center,
                       ),

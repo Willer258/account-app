@@ -23,7 +23,7 @@ class OnboardingState {
   final String? error;
 
   /// Total number of onboarding pages
-  static const int totalPages = 3;
+  static const int totalPages = 5;
 
   /// Check if on last page (budget setup)
   bool get isLastPage => currentPage == totalPages - 1;

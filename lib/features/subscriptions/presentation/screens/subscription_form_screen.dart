@@ -136,7 +136,7 @@ class _SubscriptionFormScreenState
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur: ${e.toString()}'),
-            backgroundColor: AppColors.error,
+            backgroundColor: AppColors.revolutRed,
             duration: const Duration(seconds: 3),
             behavior: SnackBarBehavior.floating,
           ),
@@ -225,7 +225,7 @@ class _SubscriptionFormScreenState
                 child: Text(
                   'Catégorie',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.onSurfaceVariant,
+                        color: AppColors.revolutOnDarkMuted,
                       ),
                 ),
               ),
@@ -246,7 +246,7 @@ class _SubscriptionFormScreenState
                     Text(
                       'Fréquence',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: AppColors.onSurfaceVariant,
+                            color: AppColors.revolutOnDarkMuted,
                           ),
                     ),
                     const SizedBox(height: AppSpacing.sm),
@@ -279,7 +279,7 @@ class _SubscriptionFormScreenState
                     Text(
                       _getDueDayLabel(formState.frequency),
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: AppColors.onSurfaceVariant,
+                            color: AppColors.revolutOnDarkMuted,
                           ),
                     ),
                     const SizedBox(height: AppSpacing.sm),
@@ -348,8 +348,8 @@ class _SubscriptionFormScreenState
                       : null,
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(AppSpacing.touchTarget),
-                    backgroundColor: AppColors.primary,
-                    disabledBackgroundColor: AppColors.outlineVariant,
+                    backgroundColor: AppColors.revolutBlue,
+                    disabledBackgroundColor: AppColors.revolutBorder,
                   ),
                   child: _isSubmitting
                       ? const SizedBox(

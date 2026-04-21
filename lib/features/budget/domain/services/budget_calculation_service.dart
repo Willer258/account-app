@@ -133,12 +133,14 @@ class BudgetCalculationService {
     // Ensure we have a current period
     final period = await _budgetPeriodRepository.ensureCurrentPeriodExists();
 
-    // Calculate totals (MVP: transactions/subscriptions/planned don't exist yet)
+    // Calculate totals
     final totalExpenses = await _calculateTotalExpenses(period);
+    final totalIncome = await _calculateTotalIncome(period);
     final totalSubscriptions = await _calculateTotalSubscriptions(period);
     final totalPlannedExpenses = await _calculateTotalPlannedExpenses(period);
 
-    final remaining = period.monthlyBudgetFcfa -
+    final remaining = period.monthlyBudgetFcfa +
+        totalIncome -
         totalExpenses -
         totalSubscriptions -
         totalPlannedExpenses;
@@ -163,6 +165,15 @@ class BudgetCalculationService {
     assert(period.id > 0); // Verify period is valid
     // Use the period's start date to calculate the month's expenses
     return _transactionRepository.getExpensesSumForMonth(period.startDate);
+  }
+
+  /// Calculates total income for the period.
+  ///
+  /// Queries transactions table for income in [period] date range
+  /// and sums amounts where type = income.
+  Future<int> _calculateTotalIncome(BudgetPeriod period) async {
+    assert(period.id > 0);
+    return _transactionRepository.getIncomeSumForMonth(period.startDate);
   }
 
   /// Calculates total subscriptions due in the period.

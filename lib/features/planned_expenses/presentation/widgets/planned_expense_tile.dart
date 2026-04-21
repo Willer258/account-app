@@ -42,7 +42,7 @@ class PlannedExpenseTile extends ConsumerWidget {
     final daysUntil = expense.daysUntilDue(now);
     final isCompleted = !expense.isPending;
 
-    return Opacity(
+    final tile = Opacity(
       opacity: isCompleted ? 0.5 : 1.0,
       child: ListTile(
         onTap: onTap,
@@ -72,28 +72,77 @@ class PlannedExpenseTile extends ConsumerWidget {
           isCompleted: isCompleted,
           status: expense.status,
         ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
+        trailing: Text(
+          FcfaFormatter.format(expense.amountFcfa),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: isCompleted
+                ? AppColors.revolutOnDarkMuted
+                : AppColors.revolutOnDark,
+          ),
+        ),
+      ),
+    );
+
+    // No swipe actions for completed expenses
+    if (isCompleted || (onMarkAsPaid == null && onCancel == null)) {
+      return tile;
+    }
+
+    return Dismissible(
+      key: ValueKey('expense_${expense.id}'),
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.startToEnd && onMarkAsPaid != null) {
+          onMarkAsPaid!();
+          return false; // Don't remove — dialog handles it
+        } else if (direction == DismissDirection.endToStart &&
+            onCancel != null) {
+          onCancel!();
+          return false; // Don't remove — dialog handles it
+        }
+        return false;
+      },
+      background: Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 24),
+        color: AppColors.revolutGreen,
+        child: const Row(
           children: [
+            Icon(Icons.check_circle_rounded, color: Colors.white, size: 24),
+            SizedBox(width: 8),
             Text(
-              FcfaFormatter.format(expense.amountFcfa),
+              'Payé',
               style: TextStyle(
-                fontSize: 16,
+                color: Colors.white,
                 fontWeight: FontWeight.w600,
-                color: isCompleted
-                    ? AppColors.onSurfaceVariant
-                    : AppColors.onSurface,
+                fontSize: 14,
               ),
             ),
-            if (expense.isPending && (onMarkAsPaid != null || onCancel != null))
-              _ActionButtons(
-                onMarkAsPaid: onMarkAsPaid,
-                onCancel: onCancel,
-              ),
           ],
         ),
       ),
+      secondaryBackground: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 24),
+        color: AppColors.revolutRed,
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              'Annuler',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
+            ),
+            SizedBox(width: 8),
+            Icon(Icons.cancel_rounded, color: Colors.white, size: 24),
+          ],
+        ),
+      ),
+      child: tile,
     );
   }
 }
@@ -117,13 +166,13 @@ class _LeadingIcon extends StatelessWidget {
     IconData icon;
 
     if (isCompleted) {
-      backgroundColor = AppColors.outlineVariant;
-      iconColor = AppColors.onSurfaceVariant;
+      backgroundColor = AppColors.revolutBorder;
+      iconColor = AppColors.revolutOnDarkMuted;
       icon = expense.isConverted ? Icons.check_circle : Icons.cancel;
     } else if (daysUntil < 0) {
       // Overdue
-      backgroundColor = AppColors.error.withValues(alpha: 0.1);
-      iconColor = AppColors.error;
+      backgroundColor = AppColors.revolutRed.withValues(alpha: 0.1);
+      iconColor = AppColors.revolutRed;
       icon = Icons.warning;
     } else if (daysUntil <= 3) {
       // Soon (within 3 days)
@@ -132,8 +181,8 @@ class _LeadingIcon extends StatelessWidget {
       icon = Icons.schedule;
     } else {
       // Normal
-      backgroundColor = AppColors.primary.withValues(alpha: 0.1);
-      iconColor = AppColors.primary;
+      backgroundColor = AppColors.revolutBlue.withValues(alpha: 0.1);
+      iconColor = AppColors.revolutBlue;
       icon = Icons.event;
     }
 
@@ -162,15 +211,15 @@ class _StatusBadge extends StatelessWidget {
 
     switch (status) {
       case PlannedExpenseStatus.converted:
-        backgroundColor = AppColors.success.withValues(alpha: 0.1);
-        textColor = AppColors.success;
+        backgroundColor = AppColors.revolutGreen.withValues(alpha: 0.1);
+        textColor = AppColors.revolutGreen;
       case PlannedExpenseStatus.postponed:
         backgroundColor = BudgetColors.warning.withValues(alpha: 0.1);
         textColor = BudgetColors.warning;
       case PlannedExpenseStatus.cancelled:
       case PlannedExpenseStatus.pending:
-        backgroundColor = AppColors.outlineVariant;
-        textColor = AppColors.onSurfaceVariant;
+        backgroundColor = AppColors.revolutBorder;
+        textColor = AppColors.revolutOnDarkMuted;
     }
 
     return Container(
@@ -215,20 +264,20 @@ class _DaysUntilLabel extends StatelessWidget {
       switch (status) {
         case PlannedExpenseStatus.converted:
           text = 'Payé';
-          color = AppColors.onSurfaceVariant;
+          color = AppColors.revolutOnDarkMuted;
         case PlannedExpenseStatus.cancelled:
           text = 'Annulé';
-          color = AppColors.onSurfaceVariant;
+          color = AppColors.revolutOnDarkMuted;
         case PlannedExpenseStatus.postponed:
           text = 'Reporté';
           color = BudgetColors.warning;
         case PlannedExpenseStatus.pending:
           text = '';
-          color = AppColors.onSurfaceVariant;
+          color = AppColors.revolutOnDarkMuted;
       }
     } else if (daysUntil < 0) {
       text = 'En retard de ${-daysUntil} jour${-daysUntil > 1 ? 's' : ''}';
-      color = AppColors.error;
+      color = AppColors.revolutRed;
     } else if (daysUntil == 0) {
       text = 'Aujourd\'hui';
       color = BudgetColors.warning;
@@ -240,7 +289,7 @@ class _DaysUntilLabel extends StatelessWidget {
       color = BudgetColors.warning;
     } else {
       text = 'Dans $daysUntil jours';
-      color = AppColors.onSurfaceVariant;
+      color = AppColors.revolutOnDarkMuted;
     }
 
     return Text(
@@ -250,46 +299,3 @@ class _DaysUntilLabel extends StatelessWidget {
   }
 }
 
-/// Action buttons for pending expenses.
-class _ActionButtons extends StatelessWidget {
-  const _ActionButtons({
-    this.onMarkAsPaid,
-    this.onCancel,
-  });
-
-  final VoidCallback? onMarkAsPaid;
-  final VoidCallback? onCancel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (onMarkAsPaid != null)
-          IconButton(
-            onPressed: onMarkAsPaid,
-            icon: const Icon(Icons.check_circle_outline),
-            iconSize: 20,
-            color: AppColors.success,
-            tooltip: 'Marquer comme payé',
-            constraints: const BoxConstraints(
-              minWidth: 32,
-              minHeight: 32,
-            ),
-          ),
-        if (onCancel != null)
-          IconButton(
-            onPressed: onCancel,
-            icon: const Icon(Icons.cancel_outlined),
-            iconSize: 20,
-            color: AppColors.error,
-            tooltip: 'Annuler',
-            constraints: const BoxConstraints(
-              minWidth: 32,
-              minHeight: 32,
-            ),
-          ),
-      ],
-    );
-  }
-}

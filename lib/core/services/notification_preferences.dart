@@ -8,6 +8,9 @@ abstract class NotificationPreferenceKeys {
   static const budgetWarningsEnabled = 'notification_budget_warnings';
   static const subscriptionRemindersEnabled = 'notification_subscription_reminders';
   static const streakCelebrationsEnabled = 'notification_streak_celebrations';
+  static const plannedExpenseRemindersEnabled = 'notification_planned_expense_reminders';
+  static const morningTipsEnabled = 'notification_morning_tips';
+  static const spendingAnomalyEnabled = 'notification_spending_anomaly';
 }
 
 /// Model for notification preferences.
@@ -16,6 +19,9 @@ class NotificationPreferences {
     required this.budgetWarningsEnabled,
     required this.subscriptionRemindersEnabled,
     required this.streakCelebrationsEnabled,
+    required this.plannedExpenseRemindersEnabled,
+    required this.morningTipsEnabled,
+    required this.spendingAnomalyEnabled,
   });
 
   /// Default preferences (all enabled).
@@ -23,16 +29,25 @@ class NotificationPreferences {
     budgetWarningsEnabled: true,
     subscriptionRemindersEnabled: true,
     streakCelebrationsEnabled: true,
+    plannedExpenseRemindersEnabled: true,
+    morningTipsEnabled: true,
+    spendingAnomalyEnabled: true,
   );
 
   final bool budgetWarningsEnabled;
   final bool subscriptionRemindersEnabled;
   final bool streakCelebrationsEnabled;
+  final bool plannedExpenseRemindersEnabled;
+  final bool morningTipsEnabled;
+  final bool spendingAnomalyEnabled;
 
   NotificationPreferences copyWith({
     bool? budgetWarningsEnabled,
     bool? subscriptionRemindersEnabled,
     bool? streakCelebrationsEnabled,
+    bool? plannedExpenseRemindersEnabled,
+    bool? morningTipsEnabled,
+    bool? spendingAnomalyEnabled,
   }) {
     return NotificationPreferences(
       budgetWarningsEnabled: budgetWarningsEnabled ?? this.budgetWarningsEnabled,
@@ -40,6 +55,10 @@ class NotificationPreferences {
           subscriptionRemindersEnabled ?? this.subscriptionRemindersEnabled,
       streakCelebrationsEnabled:
           streakCelebrationsEnabled ?? this.streakCelebrationsEnabled,
+      plannedExpenseRemindersEnabled:
+          plannedExpenseRemindersEnabled ?? this.plannedExpenseRemindersEnabled,
+      morningTipsEnabled: morningTipsEnabled ?? this.morningTipsEnabled,
+      spendingAnomalyEnabled: spendingAnomalyEnabled ?? this.spendingAnomalyEnabled,
     );
   }
 }
@@ -71,11 +90,26 @@ class NotificationPreferencesService {
       NotificationPreferenceKeys.streakCelebrationsEnabled,
       defaultValue: true,
     );
+    final plannedExpenseReminders = await _getBool(
+      NotificationPreferenceKeys.plannedExpenseRemindersEnabled,
+      defaultValue: true,
+    );
+    final morningTips = await _getBool(
+      NotificationPreferenceKeys.morningTipsEnabled,
+      defaultValue: true,
+    );
+    final spendingAnomaly = await _getBool(
+      NotificationPreferenceKeys.spendingAnomalyEnabled,
+      defaultValue: true,
+    );
 
     return NotificationPreferences(
       budgetWarningsEnabled: budgetWarnings,
       subscriptionRemindersEnabled: subscriptionReminders,
       streakCelebrationsEnabled: streakCelebrations,
+      plannedExpenseRemindersEnabled: plannedExpenseReminders,
+      morningTipsEnabled: morningTips,
+      spendingAnomalyEnabled: spendingAnomaly,
     );
   }
 
@@ -124,11 +158,53 @@ class NotificationPreferencesService {
     );
   }
 
+  /// Check if planned expense reminder notifications are enabled.
+  Future<bool> arePlannedExpenseRemindersEnabled() async {
+    return _getBool(
+      NotificationPreferenceKeys.plannedExpenseRemindersEnabled,
+      defaultValue: true,
+    );
+  }
+
+  /// Set planned expense reminder notifications enabled/disabled.
+  Future<void> setPlannedExpenseRemindersEnabled(bool enabled) async {
+    await _setBool(NotificationPreferenceKeys.plannedExpenseRemindersEnabled, enabled);
+  }
+
+  /// Check if morning tips notifications are enabled.
+  Future<bool> areMorningTipsEnabled() async {
+    return _getBool(
+      NotificationPreferenceKeys.morningTipsEnabled,
+      defaultValue: true,
+    );
+  }
+
+  /// Set morning tips notifications enabled/disabled.
+  Future<void> setMorningTipsEnabled(bool enabled) async {
+    await _setBool(NotificationPreferenceKeys.morningTipsEnabled, enabled);
+  }
+
+  /// Check if spending anomaly notifications are enabled.
+  Future<bool> areSpendingAnomalyEnabled() async {
+    return _getBool(
+      NotificationPreferenceKeys.spendingAnomalyEnabled,
+      defaultValue: true,
+    );
+  }
+
+  /// Set spending anomaly notifications enabled/disabled.
+  Future<void> setSpendingAnomalyEnabled(bool enabled) async {
+    await _setBool(NotificationPreferenceKeys.spendingAnomalyEnabled, enabled);
+  }
+
   /// Reset all preferences to defaults.
   Future<void> resetToDefaults() async {
     await _setBool(NotificationPreferenceKeys.budgetWarningsEnabled, true);
     await _setBool(NotificationPreferenceKeys.subscriptionRemindersEnabled, true);
     await _setBool(NotificationPreferenceKeys.streakCelebrationsEnabled, true);
+    await _setBool(NotificationPreferenceKeys.plannedExpenseRemindersEnabled, true);
+    await _setBool(NotificationPreferenceKeys.morningTipsEnabled, true);
+    await _setBool(NotificationPreferenceKeys.spendingAnomalyEnabled, true);
   }
 
   Future<bool> _getBool(String key, {required bool defaultValue}) async {
@@ -205,6 +281,24 @@ class NotificationPreferencesNotifier extends StateNotifier<NotificationPreferen
   Future<void> setStreakCelebrations({required bool enabled}) async {
     await _service.setStreakCelebrationsEnabled(enabled);
     state = state.copyWith(streakCelebrationsEnabled: enabled);
+  }
+
+  /// Set planned expense reminders preference directly.
+  Future<void> setPlannedExpenseReminders({required bool enabled}) async {
+    await _service.setPlannedExpenseRemindersEnabled(enabled);
+    state = state.copyWith(plannedExpenseRemindersEnabled: enabled);
+  }
+
+  /// Set morning tips preference directly.
+  Future<void> setMorningTips({required bool enabled}) async {
+    await _service.setMorningTipsEnabled(enabled);
+    state = state.copyWith(morningTipsEnabled: enabled);
+  }
+
+  /// Set spending anomaly preference directly.
+  Future<void> setSpendingAnomaly({required bool enabled}) async {
+    await _service.setSpendingAnomalyEnabled(enabled);
+    state = state.copyWith(spendingAnomalyEnabled: enabled);
   }
 }
 

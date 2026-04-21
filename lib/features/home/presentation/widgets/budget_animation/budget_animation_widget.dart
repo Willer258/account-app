@@ -190,11 +190,12 @@ class _AnimationIconButton extends StatelessWidget {
           child: AnimatedScale(
             duration: const Duration(milliseconds: 200),
             scale: isSelected ? 1.1 : 1.0,
-            child: Text(
-              type.emoji,
-              style: TextStyle(
-                fontSize: isSelected ? 24 : 22,
-              ),
+            child: Icon(
+              type.icon,
+              size: isSelected ? 24 : 22,
+              color: isSelected
+                  ? theme.colorScheme.onPrimary
+                  : theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ),

@@ -202,7 +202,7 @@ class _DonutChartPainter extends CustomPainter {
 
     // Draw center circle (creates donut hole)
     final centerPaint = Paint()
-      ..color = AppColors.background
+      ..color = AppColors.revolutDark
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(center, innerRadius - 2, centerPaint);
@@ -263,7 +263,7 @@ class _LegendItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: isSelected ? color.withValues(alpha: 0.1) : Colors.transparent,
+      color: isSelected ? color.withOpacity( 0.1) : Colors.transparent,
       child: InkWell(
         onTap: onTap,
         child: Padding(
@@ -289,7 +289,7 @@ class _LegendItem extends StatelessWidget {
               Icon(
                 category.categoryIcon,
                 size: 20,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
 
               const SizedBox(width: AppSpacing.sm),
@@ -300,7 +300,7 @@ class _LegendItem extends StatelessWidget {
                   category.categoryLabel,
                   style: TextStyle(
                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                    color: AppColors.onSurface,
+                    color: AppColors.revolutOnDark,
                   ),
                 ),
               ),
@@ -310,7 +310,7 @@ class _LegendItem extends StatelessWidget {
                 _formatAmount(category.totalAmount),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  color: AppColors.onSurface,
+                  color: AppColors.revolutOnDark,
                 ),
               ),
 
@@ -323,7 +323,7 @@ class _LegendItem extends StatelessWidget {
                   vertical: 2,
                 ),
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.2),
+                  color: color.withOpacity( 0.2),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
@@ -365,13 +365,13 @@ class _EmptyState extends StatelessWidget {
             Icon(
               Icons.pie_chart_outline,
               size: 64,
-              color: AppColors.onSurfaceVariant,
+              color: AppColors.revolutOnDarkMuted,
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
               'Pas encore de dépenses',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -380,7 +380,7 @@ class _EmptyState extends StatelessWidget {
               'Ajoute des dépenses pour voir la répartition par catégorie',
               style: TextStyle(
                 fontSize: 14,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
               textAlign: TextAlign.center,
             ),

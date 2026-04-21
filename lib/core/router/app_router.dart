@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/finances/presentation/screens/finances_screen.dart';
 import '../../features/history/presentation/screens/history_screen.dart';
-import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/home/presentation/screens/revolut_home_screen.dart';
 import '../../features/onboarding/presentation/providers/onboarding_provider.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/patterns/presentation/screens/patterns_locked_screen.dart';
@@ -15,6 +15,9 @@ import '../../features/shell/presentation/screens/main_shell.dart';
 import '../../features/savings_projects/presentation/screens/create_project_screen.dart';
 import '../../features/savings_projects/presentation/screens/project_detail_screen.dart';
 import '../../features/savings_projects/presentation/screens/projects_list_screen.dart';
+import '../../features/analytics/presentation/screens/analytics_screen.dart';
+import '../../features/challenges/presentation/screens/challenges_screen.dart';
+import '../../features/social/presentation/screens/social_screen.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../../features/subscriptions/presentation/screens/subscriptions_list_screen.dart';
 
@@ -58,6 +61,15 @@ abstract class AppRoutes {
 
   /// Project detail screen route (with id parameter)
   static const String projectDetail = '/projects/:id';
+
+  /// Analytics screen route
+  static const String analytics = '/analytics';
+
+  /// Challenges screen route
+  static const String challenges = '/challenges';
+
+  /// Social screen route
+  static const String social = '/social';
 }
 
 /// Provider for tracking if onboarding check is complete.
@@ -136,7 +148,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'onboarding',
         builder: (context, state) => const OnboardingScreen(),
       ),
-      // Shell route for main screens with bottom navigation
+      // Shell route for main tabs with bottom navigation
       ShellRoute(
         builder: (context, state, child) => MainShell(child: child),
         routes: [
@@ -145,7 +157,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             name: 'home',
             pageBuilder: (context, state) => _buildTransitionPage(
               key: state.pageKey,
-              child: const HomeScreen(),
+              child: const RevolutHomeScreen(),
             ),
           ),
           GoRoute(
@@ -154,14 +166,6 @@ final routerProvider = Provider<GoRouter>((ref) {
             pageBuilder: (context, state) => _buildTransitionPage(
               key: state.pageKey,
               child: const FinancesScreen(),
-            ),
-          ),
-          GoRoute(
-            path: AppRoutes.history,
-            name: 'history',
-            pageBuilder: (context, state) => _buildTransitionPage(
-              key: state.pageKey,
-              child: const HistoryScreen(),
             ),
           ),
           GoRoute(
@@ -180,72 +184,103 @@ final routerProvider = Provider<GoRouter>((ref) {
               child: const SettingsScreen(),
             ),
           ),
+        ],
+      ),
+      // Standalone pages (full screen, no bottom nav)
+      GoRoute(
+        path: AppRoutes.history,
+        name: 'history',
+        pageBuilder: (context, state) => _buildTransitionPage(
+          key: state.pageKey,
+          child: const HistoryScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.subscriptions,
+        name: 'subscriptions',
+        pageBuilder: (context, state) => _buildTransitionPage(
+          key: state.pageKey,
+          child: const SubscriptionsListScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.plannedExpenses,
+        name: 'planned-expenses',
+        pageBuilder: (context, state) => _buildTransitionPage(
+          key: state.pageKey,
+          child: const PlannedExpensesListScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.notificationPreferences,
+        name: 'notification-preferences',
+        pageBuilder: (context, state) => _buildTransitionPage(
+          key: state.pageKey,
+          child: const NotificationPreferencesScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.projects,
+        name: 'projects',
+        pageBuilder: (context, state) => _buildTransitionPage(
+          key: state.pageKey,
+          child: const ProjectsListScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.createProject,
+        name: 'create-project',
+        pageBuilder: (context, state) => _buildTransitionPage(
+          key: state.pageKey,
+          child: const CreateProjectScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/projects/:id',
+        name: 'project-detail',
+        pageBuilder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return _buildTransitionPage(
+            key: state.pageKey,
+            child: ProjectDetailScreen(projectId: id),
+          );
+        },
+        routes: [
           GoRoute(
-            path: AppRoutes.subscriptions,
-            name: 'subscriptions',
-            pageBuilder: (context, state) => _buildTransitionPage(
-              key: state.pageKey,
-              child: const SubscriptionsListScreen(),
-            ),
-          ),
-          GoRoute(
-            path: AppRoutes.plannedExpenses,
-            name: 'planned-expenses',
-            pageBuilder: (context, state) => _buildTransitionPage(
-              key: state.pageKey,
-              child: const PlannedExpensesListScreen(),
-            ),
-          ),
-          GoRoute(
-            path: AppRoutes.notificationPreferences,
-            name: 'notification-preferences',
-            pageBuilder: (context, state) => _buildTransitionPage(
-              key: state.pageKey,
-              child: const NotificationPreferencesScreen(),
-            ),
-          ),
-          // Savings Projects routes
-          GoRoute(
-            path: AppRoutes.projects,
-            name: 'projects',
-            pageBuilder: (context, state) => _buildTransitionPage(
-              key: state.pageKey,
-              child: const ProjectsListScreen(),
-            ),
-          ),
-          GoRoute(
-            path: AppRoutes.createProject,
-            name: 'create-project',
-            pageBuilder: (context, state) => _buildTransitionPage(
-              key: state.pageKey,
-              child: const CreateProjectScreen(),
-            ),
-          ),
-          GoRoute(
-            path: '/projects/:id',
-            name: 'project-detail',
+            path: 'edit',
+            name: 'project-edit',
             pageBuilder: (context, state) {
-              final id = int.parse(state.pathParameters['id']!);
               return _buildTransitionPage(
                 key: state.pageKey,
-                child: ProjectDetailScreen(projectId: id),
+                child: const CreateProjectScreen(),
               );
             },
-            routes: [
-              GoRoute(
-                path: 'edit',
-                name: 'project-edit',
-                pageBuilder: (context, state) {
-                  // Edit mode will be handled by fetching the project
-                  return _buildTransitionPage(
-                    key: state.pageKey,
-                    child: const CreateProjectScreen(),
-                  );
-                },
-              ),
-            ],
           ),
         ],
+      ),
+      GoRoute(
+        path: AppRoutes.analytics,
+        name: 'analytics',
+        pageBuilder: (context, state) => _buildTransitionPage(
+          key: state.pageKey,
+          child: const AnalyticsScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.challenges,
+        name: 'challenges',
+        pageBuilder: (context, state) => _buildTransitionPage(
+          key: state.pageKey,
+          child: const ChallengesScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.social,
+        name: 'social',
+        pageBuilder: (context, state) => _buildTransitionPage(
+          key: state.pageKey,
+          child: const SocialScreen(),
+        ),
       ),
     ],
   );

@@ -67,7 +67,10 @@ class SubscriptionsListScreen extends ConsumerWidget {
                 }
 
                 return ListView.separated(
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                  padding: const EdgeInsets.only(
+                    top: AppSpacing.sm,
+                    bottom: 72,
+                  ),
                   itemCount: subscriptions.length,
                   separatorBuilder: (_, __) => const Divider(height: 1),
                   itemBuilder: (context, index) {
@@ -92,7 +95,7 @@ class SubscriptionsListScreen extends ConsumerWidget {
                     const Icon(
                       Icons.error_outline,
                       size: 48,
-                      color: AppColors.error,
+                      color: AppColors.revolutRed,
                     ),
                     const SizedBox(height: AppSpacing.md),
                     Text(
@@ -168,7 +171,7 @@ class _TotalMonthlyCard extends StatelessWidget {
       margin: const EdgeInsets.all(AppSpacing.md),
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.1),
+        color: AppColors.revolutBlue.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -177,7 +180,7 @@ class _TotalMonthlyCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              color: AppColors.revolutBlue,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
@@ -193,7 +196,7 @@ class _TotalMonthlyCard extends StatelessWidget {
                 Text(
                   'Total mensuel',
                   style: TextStyle(
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                     fontSize: 14,
                   ),
                 ),
@@ -213,7 +216,7 @@ class _TotalMonthlyCard extends StatelessWidget {
                   ),
                   error: (_, __) => const Text(
                     'Erreur',
-                    style: TextStyle(color: AppColors.error),
+                    style: TextStyle(color: AppColors.revolutRed),
                   ),
                 ),
               ],
@@ -226,7 +229,7 @@ class _TotalMonthlyCard extends StatelessWidget {
                 vertical: AppSpacing.xs,
               ),
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: AppColors.revolutBlue,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
@@ -268,7 +271,7 @@ class _EmptyState extends StatelessWidget {
             Icon(
               Icons.credit_card_off,
               size: 64,
-              color: AppColors.outlineVariant,
+              color: AppColors.revolutBorder,
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
@@ -276,7 +279,7 @@ class _EmptyState extends StatelessWidget {
                   ? 'Aucun abonnement'
                   : 'Aucun abonnement actif',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                   ),
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -284,7 +287,7 @@ class _EmptyState extends StatelessWidget {
               'Ajoutez vos abonnements récurrents pour\nmieux gérer votre budget.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
             ),
             const SizedBox(height: AppSpacing.lg),

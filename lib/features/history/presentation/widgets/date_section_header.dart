@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_typography.dart';
 
 /// Section header widget showing date label in transaction list.
 ///
@@ -25,12 +26,13 @@ class DateSectionHeader extends StatelessWidget {
         horizontal: AppSpacing.md,
         vertical: AppSpacing.sm,
       ),
-      color: AppColors.surfaceVariant,
+      color: AppColors.revolutSurface,
       child: Text(
         label,
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+        style: AppTypography.revolutMicro.copyWith(
               fontWeight: FontWeight.w600,
-              color: AppColors.onSurfaceVariant,
+              letterSpacing: 1.2,
+              color: AppColors.revolutOnDarkMuted,
             ),
       ),
     );

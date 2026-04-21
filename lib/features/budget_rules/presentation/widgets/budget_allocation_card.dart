@@ -26,10 +26,10 @@ class BudgetAllocationCard extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding),
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.outlineVariant,
+          color: AppColors.revolutBorder,
           width: 0.5,
         ),
       ),
@@ -76,7 +76,7 @@ class BudgetAllocationCard extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(AppSpacing.xs),
               decoration: BoxDecoration(
-                color: AppColors.error.withValues(alpha: 0.1),
+                color: AppColors.revolutRed.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -150,7 +150,7 @@ class _AllocationBarWithProgress extends StatelessWidget {
               ' / ${FcfaFormatter.formatCompact(categoryAllocation.targetAmount)}',
               style: TextStyle(
                 fontSize: 11,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
             ),
           ],
@@ -161,7 +161,7 @@ class _AllocationBarWithProgress extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
           child: LinearProgressIndicator(
             value: progress.clamp(0.0, 1.0),
-            backgroundColor: AppColors.outlineVariant.withValues(alpha: 0.3),
+            backgroundColor: AppColors.revolutBorder,
             valueColor: AlwaysStoppedAnimation<Color>(
               isOver ? AppColors.error : category.color,
             ),
@@ -177,7 +177,7 @@ class _AllocationBarWithProgress extends StatelessWidget {
               '${categoryAllocation.targetPercentage}% du budget',
               style: TextStyle(
                 fontSize: 10,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
             ),
             Text(

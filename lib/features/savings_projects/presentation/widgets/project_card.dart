@@ -87,7 +87,7 @@ class _FullProjectCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.onSurface,
+                          color: AppColors.revolutOnDark,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -96,7 +96,7 @@ class _FullProjectCard extends StatelessWidget {
                         project.category.displayName,
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.onSurfaceVariant,
+                          color: AppColors.revolutOnDarkMuted,
                         ),
                       ),
                     ],
@@ -110,7 +110,7 @@ class _FullProjectCard extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.success.withValues(alpha: 0.1),
+                      color: AppColors.revolutGreen.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -119,7 +119,7 @@ class _FullProjectCard extends StatelessWidget {
                         Icon(
                           Icons.check_circle,
                           size: 14,
-                          color: AppColors.success,
+                          color: AppColors.revolutGreen,
                         ),
                         const SizedBox(width: 4),
                         Text(
@@ -127,7 +127,7 @@ class _FullProjectCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.success,
+                            color: AppColors.revolutGreen,
                           ),
                         ),
                       ],
@@ -155,7 +155,7 @@ class _FullProjectCard extends StatelessWidget {
             Container(
               height: 12,
               decoration: BoxDecoration(
-                color: AppColors.outlineVariant.withValues(alpha: 0.3),
+                color: AppColors.revolutBorder.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Stack(
@@ -164,7 +164,7 @@ class _FullProjectCard extends StatelessWidget {
                     widthFactor: progress,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: isGoalReached ? AppColors.success : color,
+                        color: isGoalReached ? AppColors.revolutGreen : color,
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
@@ -185,7 +185,7 @@ class _FullProjectCard extends StatelessWidget {
                       'Épargné',
                       style: TextStyle(
                         fontSize: 10,
-                        color: AppColors.onSurfaceVariant,
+                        color: AppColors.revolutOnDarkMuted,
                       ),
                     ),
                     Text(
@@ -203,7 +203,7 @@ class _FullProjectCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: isGoalReached ? AppColors.success : color,
+                    color: isGoalReached ? AppColors.revolutGreen : color,
                   ),
                 ),
                 Column(
@@ -213,7 +213,7 @@ class _FullProjectCard extends StatelessWidget {
                       'Objectif',
                       style: TextStyle(
                         fontSize: 10,
-                        color: AppColors.onSurfaceVariant,
+                        color: AppColors.revolutOnDarkMuted,
                       ),
                     ),
                     Text(
@@ -234,7 +234,7 @@ class _FullProjectCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(AppSpacing.xs),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: AppColors.revolutSurface,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
@@ -243,14 +243,14 @@ class _FullProjectCard extends StatelessWidget {
                     Icon(
                       Icons.autorenew,
                       size: 12,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       '${FcfaFormatter.formatCompact(project.autoContributionAmountFcfa)}/${project.autoContributionFrequency?.displayName.toLowerCase() ?? 'mois'}',
                       style: TextStyle(
                         fontSize: 10,
-                        color: AppColors.onSurfaceVariant,
+                        color: AppColors.revolutOnDarkMuted,
                       ),
                     ),
                   ],
@@ -321,7 +321,7 @@ class _CompactProjectCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.onSurface,
+                      color: AppColors.revolutOnDark,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -331,7 +331,7 @@ class _CompactProjectCard extends StatelessWidget {
                   Container(
                     height: 6,
                     decoration: BoxDecoration(
-                      color: AppColors.outlineVariant.withValues(alpha: 0.3),
+                      color: AppColors.revolutBorder.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(3),
                     ),
                     child: FractionallySizedBox(
@@ -339,7 +339,7 @@ class _CompactProjectCard extends StatelessWidget {
                       widthFactor: progress,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: isGoalReached ? AppColors.success : color,
+                          color: isGoalReached ? AppColors.revolutGreen : color,
                           borderRadius: BorderRadius.circular(3),
                         ),
                       ),
@@ -355,7 +355,7 @@ class _CompactProjectCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: isGoalReached ? AppColors.success : color,
+                color: isGoalReached ? AppColors.revolutGreen : color,
               ),
             ),
           ],

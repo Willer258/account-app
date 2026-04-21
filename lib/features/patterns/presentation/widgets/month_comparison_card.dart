@@ -48,17 +48,17 @@ class _ComparisonContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final changeColor = comparison.isImprovement
-        ? AppColors.success
+        ? AppColors.revolutGreen
         : comparison.isWorse
-            ? AppColors.error
-            : AppColors.onSurfaceVariant;
+            ? AppColors.revolutRed
+            : AppColors.revolutOnDarkMuted;
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.outlineVariant),
+        border: Border.all(color: AppColors.revolutBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +68,7 @@ class _ComparisonContent extends StatelessWidget {
             children: [
               Icon(
                 Icons.compare_arrows,
-                color: AppColors.primary,
+                color: AppColors.revolutBlue,
                 size: 24,
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -106,7 +106,7 @@ class _ComparisonContent extends StatelessWidget {
                         vertical: AppSpacing.xs,
                       ),
                       decoration: BoxDecoration(
-                        color: changeColor.withValues(alpha: 0.1),
+                        color: changeColor.withOpacity( 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -122,7 +122,7 @@ class _ComparisonContent extends StatelessWidget {
                     Text(
                       'vs',
                       style: TextStyle(
-                        color: AppColors.onSurfaceVariant,
+                        color: AppColors.revolutOnDarkMuted,
                         fontSize: 12,
                       ),
                     ),
@@ -147,18 +147,18 @@ class _ComparisonContent extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(AppSpacing.sm),
               decoration: BoxDecoration(
-                color: AppColors.success.withValues(alpha: 0.1),
+                color: AppColors.revolutGreen.withOpacity( 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 children: [
-                  const Text('👏', style: TextStyle(fontSize: 20)),
+                  const Icon(Icons.emoji_events_rounded, size: 20, color: AppColors.revolutAmber),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
                       'Tu depenses moins ce mois!',
                       style: TextStyle(
-                        color: AppColors.success,
+                        color: AppColors.revolutGreen,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -175,14 +175,14 @@ class _ComparisonContent extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(AppSpacing.sm),
               decoration: BoxDecoration(
-                color: AppColors.error.withValues(alpha: 0.1),
+                color: AppColors.revolutRed.withOpacity( 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 children: [
                   Icon(
                     Icons.trending_up,
-                    color: AppColors.error,
+                    color: AppColors.revolutRed,
                     size: 20,
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -190,7 +190,7 @@ class _ComparisonContent extends StatelessWidget {
                     child: Text(
                       'Attention aux depenses ce mois',
                       style: TextStyle(
-                        color: AppColors.error,
+                        color: AppColors.revolutRed,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -227,7 +227,7 @@ class _MonthColumn extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: 12,
-            color: AppColors.onSurfaceVariant,
+            color: AppColors.revolutOnDarkMuted,
             fontWeight: isCurrent ? FontWeight.w600 : FontWeight.normal,
           ),
         ),
@@ -237,7 +237,7 @@ class _MonthColumn extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: isCurrent ? AppColors.onSurface : AppColors.onSurfaceVariant,
+            color: isCurrent ? AppColors.revolutOnDark : AppColors.revolutOnDarkMuted,
           ),
         ),
       ],
@@ -261,15 +261,15 @@ class _NotEnoughDataState extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.outlineVariant),
+        border: Border.all(color: AppColors.revolutBorder),
       ),
       child: Column(
         children: [
           Icon(
             Icons.hourglass_empty,
-            color: AppColors.onSurfaceVariant,
+            color: AppColors.revolutOnDarkMuted,
             size: 32,
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -277,7 +277,7 @@ class _NotEnoughDataState extends StatelessWidget {
             'Pas encore assez de donnees',
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: AppColors.onSurface,
+              color: AppColors.revolutOnDark,
             ),
             textAlign: TextAlign.center,
           ),
@@ -286,7 +286,7 @@ class _NotEnoughDataState extends StatelessWidget {
             'Continue a suivre tes depenses pour voir la comparaison mensuelle',
             style: TextStyle(
               fontSize: 13,
-              color: AppColors.onSurfaceVariant,
+              color: AppColors.revolutOnDarkMuted,
             ),
             textAlign: TextAlign.center,
           ),

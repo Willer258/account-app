@@ -129,9 +129,9 @@ class _StreakBadgeContentState extends State<_StreakBadgeContent>
   @override
   Widget build(BuildContext context) {
     final hasStreak = widget.status.currentStreak > 0;
-    final streakText = widget.status.currentStreak == 1
-        ? '🔥 1 jour'
-        : '🔥 ${widget.status.currentStreak} jours';
+    final streakCount = widget.status.currentStreak == 1
+        ? '1 jour'
+        : '${widget.status.currentStreak} jours';
 
     Widget badge = GestureDetector(
       onTap: () => _showStreakDetails(context),
@@ -150,27 +150,35 @@ class _StreakBadgeContentState extends State<_StreakBadgeContent>
           ),
           decoration: BoxDecoration(
             color: hasStreak
-                ? const Color(0xFFFFF3E0) // Orange[50] for active streak
-                : AppColors.surfaceVariant,
+                ? AppColors.revolutAmber.withOpacity(0.15)
+                : AppColors.revolutSurfaceElevated,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: hasStreak
-                  ? const Color(0xFFFFCC80) // Orange[200]
-                  : AppColors.outlineVariant,
+                  ? AppColors.revolutAmber.withOpacity(0.3)
+                  : AppColors.revolutBorder,
               width: 1.5,
             ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Icon(
+                Icons.local_fire_department_rounded,
+                size: 16,
+                color: hasStreak
+                    ? AppColors.revolutAmber
+                    : AppColors.revolutOnDarkMuted,
+              ),
+              const SizedBox(width: 4),
               Text(
-                streakText,
+                streakCount,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: hasStreak
-                      ? const Color(0xFFE65100) // Orange[900]
-                      : AppColors.onSurfaceVariant,
+                      ? AppColors.revolutAmber
+                      : AppColors.revolutOnDarkMuted,
                 ),
               ),
               if (!hasStreak) ...[
@@ -178,7 +186,7 @@ class _StreakBadgeContentState extends State<_StreakBadgeContent>
                 const Icon(
                   Icons.info_outline,
                   size: 14,
-                  color: AppColors.onSurfaceVariant,
+                  color: AppColors.revolutOnDarkMuted,
                 ),
               ],
             ],
@@ -218,7 +226,7 @@ class _StreakBadgePlaceholder extends StatelessWidget {
         vertical: AppSpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
+        color: AppColors.revolutSurfaceElevated,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -229,7 +237,7 @@ class _StreakBadgePlaceholder extends StatelessWidget {
             height: 14,
             child: Container(
               decoration: BoxDecoration(
-                color: AppColors.outlineVariant,
+                color: AppColors.revolutBorder,
                 borderRadius: BorderRadius.circular(4),
               ),
             ),
@@ -259,11 +267,11 @@ class StreakDetailsDialog extends ConsumerWidget {
     final bool showBudgetStatus = budgetRuleSettings.isEnabled && allocation != null;
 
     return AlertDialog(
-      title: const Row(
+      title: Row(
         children: [
-          Text('🔥', style: TextStyle(fontSize: 28)),
-          SizedBox(width: AppSpacing.sm),
-          Text('Ta série'),
+          const Icon(Icons.local_fire_department_rounded, size: 28, color: AppColors.revolutAmber),
+          const SizedBox(width: AppSpacing.sm),
+          const Text('Ta série'),
         ],
       ),
       content: Column(
@@ -297,13 +305,13 @@ class StreakDetailsDialog extends ConsumerWidget {
             const _InfoCard(
               icon: Icons.lightbulb_outline,
               message: 'Ajoute une transaction aujourd\'hui pour commencer une nouvelle série!',
-              color: AppColors.primary,
+              color: AppColors.revolutBlue,
             )
           else if (!status.hasActivityToday && status.streakIsActive)
             const _InfoCard(
               icon: Icons.warning_amber_outlined,
               message: 'N\'oublie pas de logger une transaction aujourd\'hui pour maintenir ta série!',
-              color: Color(0xFFFF9800),
+              color: AppColors.revolutAmber,
             )
           else if (status.hasActivityToday)
             _InfoCard(
@@ -311,7 +319,7 @@ class StreakDetailsDialog extends ConsumerWidget {
               message: isBudgetHealthy
                   ? 'Excellent! Tu respectes ton budget 50/30/20. Continue comme ça!'
                   : 'Super! Tu as déjà logé une transaction aujourd\'hui. Reviens demain!',
-              color: isBudgetHealthy ? const Color(0xFFFFD700) : AppColors.success,
+              color: isBudgetHealthy ? AppColors.revolutAmber : AppColors.revolutGreen,
             ),
         ],
       ),
@@ -352,7 +360,7 @@ class _DetailRow extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 14,
-            color: AppColors.onSurfaceVariant,
+            color: AppColors.revolutOnDarkMuted,
           ),
         ),
         Text(
@@ -360,7 +368,7 @@ class _DetailRow extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: isHighlighted ? FontWeight.bold : FontWeight.w500,
-            color: isHighlighted ? AppColors.primary : AppColors.onSurface,
+            color: isHighlighted ? AppColors.revolutBlue : AppColors.revolutOnDark,
           ),
         ),
       ],
@@ -385,10 +393,10 @@ class _InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.sm),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
+        color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: color.withValues(alpha: 0.3),
+          color: color.withOpacity(0.3),
         ),
       ),
       child: Row(
@@ -433,9 +441,10 @@ class _BudgetHealthRow extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(
-              isHealthy ? '✨' : '⚠️',
-              style: const TextStyle(fontSize: 18),
+            Icon(
+              isHealthy ? Icons.auto_awesome_rounded : Icons.warning_amber_rounded,
+              size: 18,
+              color: isHealthy ? AppColors.revolutGreen : AppColors.revolutRed,
             ),
             const SizedBox(width: AppSpacing.sm),
             Text(
@@ -443,7 +452,7 @@ class _BudgetHealthRow extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: isHealthy ? AppColors.success : AppColors.error,
+                color: isHealthy ? AppColors.revolutGreen : AppColors.revolutRed,
               ),
             ),
           ],
@@ -454,7 +463,7 @@ class _BudgetHealthRow extends StatelessWidget {
           children: [
             Expanded(
               child: _MiniProgressBar(
-                label: '🏠',
+                icon: Icons.home_outlined,
                 progress: needsProgress,
                 isOver: needsProgress > 100,
               ),
@@ -462,7 +471,7 @@ class _BudgetHealthRow extends StatelessWidget {
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: _MiniProgressBar(
-                label: '🎉',
+                icon: Icons.celebration_outlined,
                 progress: wantsProgress,
                 isOver: wantsProgress > 100,
               ),
@@ -470,7 +479,7 @@ class _BudgetHealthRow extends StatelessWidget {
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: _MiniProgressBar(
-                label: '💰',
+                icon: Icons.savings_outlined,
                 progress: savingsProgress,
                 isOver: false, // Savings over is good!
               ),
@@ -485,12 +494,12 @@ class _BudgetHealthRow extends StatelessWidget {
 /// Mini progress bar for budget category.
 class _MiniProgressBar extends StatelessWidget {
   const _MiniProgressBar({
-    required this.label,
+    required this.icon,
     required this.progress,
     required this.isOver,
   });
 
-  final String label;
+  final IconData icon;
   final int progress;
   final bool isOver;
 
@@ -498,15 +507,15 @@ class _MiniProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(label, style: const TextStyle(fontSize: 14)),
+        Icon(icon, size: 14, color: AppColors.revolutOnDarkMuted),
         const SizedBox(height: 2),
         ClipRRect(
           borderRadius: BorderRadius.circular(4),
           child: LinearProgressIndicator(
             value: (progress / 100).clamp(0.0, 1.0),
-            backgroundColor: AppColors.outlineVariant.withValues(alpha: 0.3),
+            backgroundColor: AppColors.revolutBorder.withOpacity(0.3),
             valueColor: AlwaysStoppedAnimation<Color>(
-              isOver ? AppColors.error : AppColors.success,
+              isOver ? AppColors.revolutRed : AppColors.revolutGreen,
             ),
             minHeight: 4,
           ),
@@ -517,7 +526,7 @@ class _MiniProgressBar extends StatelessWidget {
           style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.w500,
-            color: isOver ? AppColors.error : AppColors.onSurfaceVariant,
+            color: isOver ? AppColors.revolutRed : AppColors.revolutOnDarkMuted,
           ),
         ),
       ],
@@ -582,7 +591,7 @@ class _StreakCelebrationDialogState extends State<_StreakCelebrationDialog>
 
   @override
   Widget build(BuildContext context) {
-    final emoji = getCelebrationEmoji(widget.milestone);
+    final celebrationIcon = _getCelebrationIcon(widget.milestone);
     final message = getCelebrationMessage(widget.milestone);
 
     return AnimatedBuilder(
@@ -609,9 +618,10 @@ class _StreakCelebrationDialogState extends State<_StreakCelebrationDialog>
                   child: child,
                 );
               },
-              child: Text(
-                emoji,
-                style: const TextStyle(fontSize: 72),
+              child: Icon(
+                celebrationIcon,
+                size: 72,
+                color: AppColors.revolutAmber,
               ),
             ),
             const SizedBox(height: AppSpacing.lg),
@@ -619,7 +629,7 @@ class _StreakCelebrationDialogState extends State<_StreakCelebrationDialog>
               'Felicitations!',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
+                    color: AppColors.revolutBlue,
                   ),
             ),
             const SizedBox(height: AppSpacing.md),
@@ -627,7 +637,7 @@ class _StreakCelebrationDialogState extends State<_StreakCelebrationDialog>
               message,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.onSurface,
+                    color: AppColors.revolutOnDark,
                   ),
             ),
             const SizedBox(height: AppSpacing.xl),
@@ -645,5 +655,26 @@ class _StreakCelebrationDialogState extends State<_StreakCelebrationDialog>
         ),
       ),
     );
+  }
+
+  IconData _getCelebrationIcon(int milestone) {
+    switch (milestone) {
+      case 7:
+        return Icons.celebration_rounded;
+      case 14:
+        return Icons.local_fire_department_rounded;
+      case 30:
+        return Icons.workspace_premium_rounded;
+      case 60:
+        return Icons.fitness_center_rounded;
+      case 90:
+        return Icons.emoji_events_rounded;
+      case 180:
+        return Icons.star_rounded;
+      case 365:
+        return Icons.celebration_rounded;
+      default:
+        return Icons.local_fire_department_rounded;
+    }
   }
 }

@@ -4,6 +4,9 @@ import 'dart:ui' show Color;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Callback type for handling notification taps with navigation.
+typedef NotificationTapCallback = void Function(String? payload);
+
 /// Service for managing local notifications.
 ///
 /// Handles initialization, permission requests, and sending notifications
@@ -13,9 +16,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class NotificationService {
   NotificationService({
     FlutterLocalNotificationsPlugin? plugin,
-  }) : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
+    NotificationTapCallback? onTap,
+  })  : _plugin = plugin ?? FlutterLocalNotificationsPlugin(),
+        _onTap = onTap;
 
   final FlutterLocalNotificationsPlugin _plugin;
+  NotificationTapCallback? _onTap;
 
   static const _channelId = 'pockii_notifications';
   static const _channelName = 'Pockii Notifications';
@@ -27,6 +33,25 @@ class NotificationService {
   static const _urgentChannelDescription = 'Critical budget threshold notifications';
 
   bool _isInitialized = false;
+
+  /// Set the notification tap callback for deep linking.
+  void setOnTapCallback(NotificationTapCallback callback) {
+    _onTap = callback;
+  }
+
+  /// Maps notification payloads to route paths for deep navigation.
+  static const Map<String, String> payloadRoutes = {
+    'budget_warning': '/',
+    'budget_critical': '/',
+    'subscription_reminder': '/subscriptions',
+    'subscription_group': '/subscriptions',
+    'streak_celebration': '/',
+    'planned_expense_reminder': '/planned-expenses',
+    'planned_expense_group': '/planned-expenses',
+    'morning_notification': '/',
+    'spending_anomaly': '/patterns',
+    'spending_anomaly_multiple': '/patterns',
+  };
 
   /// Initialize the notification service.
   ///
@@ -73,12 +98,12 @@ class NotificationService {
     return false;
   }
 
-  /// Handle notification tap.
-  ///
-  /// Navigation to specific screens based on payload will be implemented
-  /// when deep linking is added.
+  /// Handle notification tap — navigates to the relevant screen.
   void _onNotificationTapped(NotificationResponse response) {
-    // Navigation based on response.payload will be handled by deep linking
+    final payload = response.payload;
+    if (payload == null) return;
+
+    _onTap?.call(payload);
   }
 
   /// Show a budget warning notification (remaining < 30%).

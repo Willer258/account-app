@@ -116,7 +116,7 @@ class EmptyStateWidget extends StatelessWidget {
             Text(
               title,
               style: AppTypography.titleSmall.copyWith(
-                color: AppColors.onSurface,
+                color: AppColors.revolutOnDark,
               ),
               textAlign: TextAlign.center,
             ),
@@ -126,7 +126,7 @@ class EmptyStateWidget extends StatelessWidget {
             Text(
               subtitle,
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
               textAlign: TextAlign.center,
             ),
@@ -166,10 +166,10 @@ class _EmptyStateIcon extends StatelessWidget {
       width: 80,
       height: 80,
       decoration: const BoxDecoration(
-        color: AppColors.surfaceVariant,
+        color: AppColors.revolutSurfaceElevated,
         shape: BoxShape.circle,
       ),
-      child: Icon(icon, size: 40, color: AppColors.onSurfaceVariant),
+      child: Icon(icon, size: 40, color: AppColors.revolutOnDarkMuted),
     );
   }
 }
@@ -223,14 +223,14 @@ class _FabPointerState extends State<_FabPointer>
           const Icon(
             Icons.arrow_downward_rounded,
             size: 28,
-            color: AppColors.primary,
+            color: AppColors.revolutBlue,
             semanticLabel: 'Appuie sur le bouton + en bas',
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
             'Appuie sur +',
             style: AppTypography.label.copyWith(
-              color: AppColors.primary,
+              color: AppColors.revolutBlue,
               fontWeight: FontWeight.w600,
             ),
           ),

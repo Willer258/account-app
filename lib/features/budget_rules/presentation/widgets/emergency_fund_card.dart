@@ -27,13 +27,13 @@ class EmergencyFundCard extends ConsumerWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.primary.withValues(alpha: 0.1),
-            AppColors.primaryContainer.withValues(alpha: 0.3),
+            AppColors.revolutGreen.withOpacity(0.15),
+            AppColors.revolutSurface,
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.2),
+          color: AppColors.revolutBorder,
           width: 1,
         ),
       ),
@@ -46,10 +46,10 @@ class EmergencyFundCard extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
+                  color: AppColors.revolutGreen.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text('🛡️', style: TextStyle(fontSize: 16)),
+                child: const Icon(Icons.shield_rounded, size: 16, color: AppColors.revolutGreen),
               ),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
@@ -61,14 +61,14 @@ class EmergencyFundCard extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.primary,
+                        color: AppColors.revolutGreen,
                       ),
                     ),
                     Text(
                       'Objectif: ${settings.targetMonths} mois de salaire',
                       style: TextStyle(
                         fontSize: 11,
-                        color: AppColors.onSurfaceVariant,
+                        color: AppColors.revolutOnDarkMuted,
                       ),
                     ),
                   ],
@@ -82,7 +82,7 @@ class EmergencyFundCard extends ConsumerWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.success.withValues(alpha: 0.1),
+                    color: AppColors.revolutGreen.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -129,7 +129,7 @@ class EmergencyFundCard extends ConsumerWidget {
                     'Épargné',
                     style: TextStyle(
                       fontSize: 10,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                   ),
                   Text(
@@ -137,7 +137,7 @@ class EmergencyFundCard extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
+                      color: AppColors.revolutGreen,
                     ),
                   ),
                 ],
@@ -149,7 +149,7 @@ class EmergencyFundCard extends ConsumerWidget {
                     'Objectif',
                     style: TextStyle(
                       fontSize: 10,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                   ),
                   Text(
@@ -170,7 +170,7 @@ class EmergencyFundCard extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(AppSpacing.sm),
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: AppColors.revolutSurfaceElevated,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -185,7 +185,7 @@ class EmergencyFundCard extends ConsumerWidget {
                     settings.motivationalTip,
                     style: TextStyle(
                       fontSize: 11,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                   ),
                 ),
@@ -218,7 +218,7 @@ class _ProgressBar extends StatelessWidget {
         Container(
           height: 12,
           decoration: BoxDecoration(
-            color: AppColors.outlineVariant.withValues(alpha: 0.3),
+            color: AppColors.revolutBorder,
             borderRadius: BorderRadius.circular(6),
           ),
           child: Stack(
@@ -230,7 +230,7 @@ class _ProgressBar extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        AppColors.primary,
+                        AppColors.revolutGreen,
                         AppColors.success,
                       ],
                     ),
@@ -247,7 +247,7 @@ class _ProgressBar extends StatelessWidget {
                   bottom: 0,
                   child: Container(
                     width: 1,
-                    color: AppColors.surface.withValues(alpha: 0.5),
+                    color: AppColors.revolutSurfaceElevated,
                   ),
                 );
               }),
@@ -263,7 +263,7 @@ class _ProgressBar extends StatelessWidget {
             style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w600,
-              color: AppColors.primary,
+              color: AppColors.revolutGreen,
             ),
           ),
         ),
@@ -285,7 +285,7 @@ class EmergencyFundPreview extends ConsumerWidget {
         'Non configuré',
         style: TextStyle(
           fontSize: 13,
-          color: AppColors.onSurfaceVariant,
+          color: AppColors.revolutOnDarkMuted,
         ),
       );
     }
@@ -297,7 +297,7 @@ class EmergencyFundPreview extends ConsumerWidget {
           child: Container(
             height: 6,
             decoration: BoxDecoration(
-              color: AppColors.outlineVariant.withValues(alpha: 0.3),
+              color: AppColors.revolutBorder,
               borderRadius: BorderRadius.circular(3),
             ),
             child: FractionallySizedBox(
@@ -305,7 +305,7 @@ class EmergencyFundPreview extends ConsumerWidget {
               widthFactor: settings.progressPercentage.clamp(0.0, 1.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: AppColors.revolutGreen,
                   borderRadius: BorderRadius.circular(3),
                 ),
               ),
@@ -318,7 +318,7 @@ class EmergencyFundPreview extends ConsumerWidget {
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            color: AppColors.primary,
+            color: AppColors.revolutGreen,
           ),
         ),
       ],

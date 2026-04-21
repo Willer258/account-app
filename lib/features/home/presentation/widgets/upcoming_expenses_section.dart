@@ -84,7 +84,7 @@ class UpcomingExpensesSection extends ConsumerWidget {
                   child: Text(
                     '+${expenses.length - 3} autres',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.onSurfaceVariant,
+                          color: AppColors.revolutOnDarkMuted,
                         ),
                   ),
                 ),
@@ -118,16 +118,16 @@ class _UpcomingExpenseCard extends ConsumerWidget {
     Color urgencyColor;
     String urgencyLabel;
     if (daysUntil < 0) {
-      urgencyColor = AppColors.error;
+      urgencyColor = AppColors.revolutRed;
       urgencyLabel = 'En retard';
     } else if (daysUntil == 0) {
-      urgencyColor = AppColors.error;
+      urgencyColor = AppColors.revolutRed;
       urgencyLabel = "Aujourd'hui";
     } else if (daysUntil == 1) {
       urgencyColor = Colors.orange;
       urgencyLabel = 'Demain';
     } else {
-      urgencyColor = AppColors.primary;
+      urgencyColor = AppColors.revolutBlue;
       urgencyLabel = 'Dans $daysUntil jours';
     }
 

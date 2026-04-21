@@ -61,9 +61,9 @@ class _DistributionContentState extends State<_DistributionContent> {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.outlineVariant),
+        border: Border.all(color: AppColors.revolutBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +73,7 @@ class _DistributionContentState extends State<_DistributionContent> {
             children: [
               Icon(
                 Icons.calendar_view_week,
-                color: AppColors.primary,
+                color: AppColors.revolutBlue,
                 size: 24,
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -93,8 +93,8 @@ class _DistributionContentState extends State<_DistributionContent> {
             padding: const EdgeInsets.all(AppSpacing.sm),
             decoration: BoxDecoration(
               color: widget.distribution.isEvenlyDistributed
-                  ? AppColors.success.withValues(alpha: 0.1)
-                  : AppColors.primary.withValues(alpha: 0.1),
+                  ? AppColors.revolutGreen.withOpacity( 0.1)
+                  : AppColors.revolutBlue.withOpacity( 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -104,8 +104,8 @@ class _DistributionContentState extends State<_DistributionContent> {
                       ? Icons.balance
                       : Icons.insights,
                   color: widget.distribution.isEvenlyDistributed
-                      ? AppColors.success
-                      : AppColors.primary,
+                      ? AppColors.revolutGreen
+                      : AppColors.revolutBlue,
                   size: 20,
                 ),
                 const SizedBox(width: AppSpacing.sm),
@@ -114,8 +114,8 @@ class _DistributionContentState extends State<_DistributionContent> {
                     widget.distribution.insightMessage,
                     style: TextStyle(
                       color: widget.distribution.isEvenlyDistributed
-                          ? AppColors.success
-                          : AppColors.primary,
+                          ? AppColors.revolutGreen
+                          : AppColors.revolutBlue,
                       fontWeight: FontWeight.w600,
                       fontSize: 13,
                     ),
@@ -158,13 +158,13 @@ class _DistributionContentState extends State<_DistributionContent> {
                         height: day.totalAmount > 0 ? barHeight : 4,
                         decoration: BoxDecoration(
                           color: isHighest
-                              ? AppColors.primary
+                              ? AppColors.revolutBlue
                               : isSelected
-                                  ? AppColors.primary.withValues(alpha: 0.7)
-                                  : AppColors.surfaceVariant,
+                                  ? AppColors.revolutBlue.withOpacity( 0.7)
+                                  : AppColors.revolutSurfaceElevated,
                           borderRadius: BorderRadius.circular(4),
                           border: isSelected
-                              ? Border.all(color: AppColors.primary, width: 2)
+                              ? Border.all(color: AppColors.revolutBlue, width: 2)
                               : null,
                         ),
                       ),
@@ -177,8 +177,8 @@ class _DistributionContentState extends State<_DistributionContent> {
                           fontWeight:
                               isHighest ? FontWeight.bold : FontWeight.normal,
                           color: isHighest
-                              ? AppColors.primary
-                              : AppColors.onSurfaceVariant,
+                              ? AppColors.revolutBlue
+                              : AppColors.revolutOnDarkMuted,
                         ),
                       ),
                     ],
@@ -213,7 +213,7 @@ class _DayDetailPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
+        color: AppColors.revolutSurfaceElevated,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -223,7 +223,7 @@ class _DayDetailPanel extends StatelessWidget {
             day.dayName,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: AppColors.onSurface,
+              color: AppColors.revolutOnDark,
             ),
           ),
           const SizedBox(height: AppSpacing.xs),
@@ -257,7 +257,7 @@ class _DayDetailPanel extends StatelessWidget {
                   'Top catégorie: ',
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                   ),
                 ),
                 Text(
@@ -265,7 +265,7 @@ class _DayDetailPanel extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
+                    color: AppColors.revolutBlue,
                   ),
                 ),
               ],
@@ -305,7 +305,7 @@ class _DetailItem extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: 10,
-            color: AppColors.onSurfaceVariant,
+            color: AppColors.revolutOnDarkMuted,
           ),
         ),
         Text(
@@ -313,7 +313,7 @@ class _DetailItem extends StatelessWidget {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: AppColors.onSurface,
+            color: AppColors.revolutOnDark,
           ),
         ),
       ],
@@ -328,9 +328,9 @@ class _NoDataState extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.outlineVariant),
+        border: Border.all(color: AppColors.revolutBorder),
       ),
       child: Column(
         children: [
@@ -338,7 +338,7 @@ class _NoDataState extends StatelessWidget {
             children: [
               Icon(
                 Icons.calendar_view_week,
-                color: AppColors.primary,
+                color: AppColors.revolutBlue,
                 size: 24,
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -353,7 +353,7 @@ class _NoDataState extends StatelessWidget {
           const SizedBox(height: AppSpacing.lg),
           Icon(
             Icons.bar_chart,
-            color: AppColors.onSurfaceVariant,
+            color: AppColors.revolutOnDarkMuted,
             size: 32,
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -361,7 +361,7 @@ class _NoDataState extends StatelessWidget {
             'Pas encore de données',
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: AppColors.onSurface,
+              color: AppColors.revolutOnDark,
             ),
             textAlign: TextAlign.center,
           ),
@@ -370,7 +370,7 @@ class _NoDataState extends StatelessWidget {
             'Ajoute des dépenses pour voir la répartition par jour',
             style: TextStyle(
               fontSize: 13,
-              color: AppColors.onSurfaceVariant,
+              color: AppColors.revolutOnDarkMuted,
             ),
             textAlign: TextAlign.center,
           ),

@@ -113,7 +113,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.revolutDark,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -136,13 +136,20 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: AppColors.primaryContainer,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColors.revolutBlue,
+                            AppColors.revolutPurple,
+                          ],
+                        ),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Icon(
                         Icons.account_balance_wallet,
                         size: 40,
-                        color: AppColors.primary,
+                        color: AppColors.revolutOnDark,
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),
@@ -151,7 +158,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
+                        color: AppColors.revolutOnDark,
                       ),
                     ),
                   ],
@@ -205,17 +212,10 @@ class _DailyTipCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.primaryContainer,
-            AppColors.primaryContainer.withValues(alpha: 0.6),
-          ],
-        ),
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.2),
+          color: AppColors.revolutBorder,
           width: 1,
         ),
       ),
@@ -228,7 +228,7 @@ class _DailyTipCard extends StatelessWidget {
               Icon(
                 Icons.lightbulb,
                 size: 20,
-                color: AppColors.primary,
+                color: AppColors.revolutBlue,
               ),
               const SizedBox(width: AppSpacing.xs),
               Text(
@@ -236,14 +236,14 @@ class _DailyTipCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.primary,
+                  color: AppColors.revolutBlue,
                 ),
               ),
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.15),
+                  color: AppColors.revolutBlue.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -259,7 +259,7 @@ class _DailyTipCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.primary,
+                        color: AppColors.revolutBlue,
                       ),
                     ),
                   ],
@@ -276,7 +276,7 @@ class _DailyTipCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 15,
               height: 1.5,
-              color: AppColors.onSurface,
+              color: AppColors.revolutOnDark,
             ),
           ),
 
@@ -288,7 +288,7 @@ class _DailyTipCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontStyle: FontStyle.italic,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
             ),
           ],

@@ -59,7 +59,7 @@ class _ProjectColorPickerState extends State<ProjectColorPicker> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: AppColors.onSurface,
+            color: AppColors.revolutOnDark,
           ),
         ),
         const SizedBox(height: AppSpacing.sm),
@@ -126,7 +126,7 @@ class _ColorCircle extends StatelessWidget {
           color: color,
           shape: BoxShape.circle,
           border: Border.all(
-            color: isSelected ? AppColors.onSurface : Colors.transparent,
+            color: isSelected ? AppColors.revolutOnDark : Colors.transparent,
             width: 3,
           ),
           boxShadow: isSelected
@@ -188,7 +188,7 @@ class _CustomColorButton extends StatelessWidget {
           ),
           shape: BoxShape.circle,
           border: Border.all(
-            color: isSelected ? AppColors.onSurface : Colors.transparent,
+            color: isSelected ? AppColors.revolutOnDark : Colors.transparent,
             width: 3,
           ),
         ),
@@ -251,7 +251,7 @@ class _AdvancedColorPickerState extends State<_AdvancedColorPicker> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: SafeArea(
@@ -260,16 +260,7 @@ class _AdvancedColorPickerState extends State<_AdvancedColorPicker> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Handle bar
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.outlineVariant,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.sm),
 
               // Title
               Text(
@@ -277,7 +268,7 @@ class _AdvancedColorPickerState extends State<_AdvancedColorPicker> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.onSurface,
+                  color: AppColors.revolutOnDark,
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
@@ -405,7 +396,7 @@ class _ColorSlider extends StatelessWidget {
               label,
               style: TextStyle(
                 fontSize: 12,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
             ),
             Text(
@@ -413,7 +404,7 @@ class _ColorSlider extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
-                color: AppColors.onSurface,
+                color: AppColors.revolutOnDark,
               ),
             ),
           ],
@@ -495,7 +486,7 @@ class _ColorPreview extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.onSurface,
+                    color: AppColors.revolutOnDark,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -503,7 +494,7 @@ class _ColorPreview extends StatelessWidget {
                 Container(
                   height: 8,
                   decoration: BoxDecoration(
-                    color: AppColors.outlineVariant.withValues(alpha: 0.3),
+                    color: AppColors.revolutBorder.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: FractionallySizedBox(

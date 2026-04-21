@@ -22,6 +22,8 @@ class BudgetState {
     required this.remainingBudget,
     required this.periodStart,
     required this.periodEnd,
+    this.totalExpenses = 0,
+    this.totalSubscriptions = 0,
     this.pendingPlannedExpenses = 0,
     this.isLoading = false,
     this.error,
@@ -84,6 +86,12 @@ class BudgetState {
   /// End date of the budget period
   final DateTime periodEnd;
 
+  /// Total transaction expenses (type = expense) in FCFA
+  final int totalExpenses;
+
+  /// Total active subscriptions monthly amount in FCFA
+  final int totalSubscriptions;
+
   /// Whether budget data is currently loading
   final bool isLoading;
 
@@ -138,6 +146,8 @@ class BudgetState {
     int? remainingBudget,
     DateTime? periodStart,
     DateTime? periodEnd,
+    int? totalExpenses,
+    int? totalSubscriptions,
     int? pendingPlannedExpenses,
     bool? isLoading,
     String? error,
@@ -148,6 +158,8 @@ class BudgetState {
       remainingBudget: remainingBudget ?? this.remainingBudget,
       periodStart: periodStart ?? this.periodStart,
       periodEnd: periodEnd ?? this.periodEnd,
+      totalExpenses: totalExpenses ?? this.totalExpenses,
+      totalSubscriptions: totalSubscriptions ?? this.totalSubscriptions,
       pendingPlannedExpenses:
           pendingPlannedExpenses ?? this.pendingPlannedExpenses,
       isLoading: isLoading ?? this.isLoading,
@@ -164,6 +176,8 @@ class BudgetState {
         other.remainingBudget == remainingBudget &&
         other.periodStart == periodStart &&
         other.periodEnd == periodEnd &&
+        other.totalExpenses == totalExpenses &&
+        other.totalSubscriptions == totalSubscriptions &&
         other.pendingPlannedExpenses == pendingPlannedExpenses &&
         other.isLoading == isLoading &&
         other.error == error &&
@@ -177,6 +191,8 @@ class BudgetState {
       remainingBudget,
       periodStart,
       periodEnd,
+      totalExpenses,
+      totalSubscriptions,
       pendingPlannedExpenses,
       isLoading,
       error,

@@ -23,22 +23,29 @@ class ChallengesScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.revolutDark,
+      appBar: AppBar(
+        backgroundColor: AppColors.revolutDark,
+        foregroundColor: AppColors.revolutOnDark,
+        title: Text(
+          'Défis Hebdo',
+          style: AppTypography.revolutSubtitle.copyWith(
+            color: AppColors.revolutOnDark,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0,
+      ),
       body: SafeArea(
+        top: false,
         child: CustomScrollView(
           slivers: [
             // ── Header ────────────────────────────────────────
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Défis Hebdo',
-                      style: AppTypography.revolutTitle.copyWith(
-                        color: AppColors.revolutOnDark,
-                      ),
-                    ),
                     Text(
                       '$completed/$total défis complétés cette semaine',
                       style: AppTypography.revolutMicro.copyWith(
@@ -116,7 +123,7 @@ class ChallengesScreen extends StatelessWidget {
               ),
             ],
 
-            const SliverToBoxAdapter(child: SizedBox(height: 80)),
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
           ],
         ),
       ),
@@ -190,7 +197,7 @@ class _WeekProgressCard extends StatelessWidget {
                   ),
                 ),
                 child: const Center(
-                  child: Text('🏆', style: TextStyle(fontSize: 28)),
+                  child: Icon(Icons.emoji_events_rounded, size: 28, color: AppColors.revolutAmber),
                 ),
               ),
             ],

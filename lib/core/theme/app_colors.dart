@@ -111,6 +111,28 @@ abstract class AppColors {
   /// Revolut divider/border on dark
   static const Color revolutBorder = Color(0xFF2A2A2A);
 
+  // ============================================
+  // Revolut Light Mode Colors
+  // ============================================
+
+  /// Light background
+  static const Color revolutLight = Color(0xFFF7F7F7);
+
+  /// Light surface
+  static const Color revolutLightSurface = Color(0xFFFFFFFF);
+
+  /// Light elevated surface
+  static const Color revolutLightSurfaceElevated = Color(0xFFF0F0F0);
+
+  /// Light text primary
+  static const Color revolutOnLight = Color(0xFF191919);
+
+  /// Light text muted
+  static const Color revolutOnLightMuted = Color(0xFF6B6B7B);
+
+  /// Light border
+  static const Color revolutLightBorder = Color(0xFFE5E5E5);
+
   /// Glassmorphic overlay (white with low opacity)
   static const Color glassOverlay = Color(0x1AFFFFFF);
 
@@ -121,11 +143,18 @@ abstract class AppColors {
   // Revolut Gradient Stops
   // ============================================
 
-  /// Hero gradient — dark blue to blue
+  /// Hero gradient — dark blue to blue (dark mode)
   static const List<Color> revolutHeroGradient = [
     Color(0xFF0A1628),
     Color(0xFF0D2040),
     Color(0xFF0075EB),
+  ];
+
+  /// Hero gradient — light mode (soft blue)
+  static const List<Color> revolutHeroGradientLight = [
+    Color(0xFFE8F2FF),
+    Color(0xFFD6E8FF),
+    Color(0xFFBBDAFF),
   ];
 
   /// Positive balance gradient

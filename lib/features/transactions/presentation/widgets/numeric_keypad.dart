@@ -78,7 +78,7 @@ class NumericKeypad extends StatelessWidget {
         style: const TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.w500,
-          color: AppColors.onSurface,
+          color: AppColors.revolutOnDark,
         ),
       ),
     );
@@ -93,7 +93,7 @@ class NumericKeypad extends StatelessWidget {
       child: const Icon(
         Icons.backspace_outlined,
         size: 24,
-        color: AppColors.onSurfaceVariant,
+        color: AppColors.revolutOnDarkMuted,
         semanticLabel: 'Effacer',
       ),
     );

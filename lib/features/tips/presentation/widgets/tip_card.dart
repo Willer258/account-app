@@ -20,17 +20,10 @@ class TipCard extends ConsumerWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.primaryContainer.withValues(alpha: 0.6),
-            AppColors.primaryContainer.withValues(alpha: 0.3),
-          ],
-        ),
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.2),
+          color: AppColors.revolutBorder,
           width: 1,
         ),
       ),
@@ -63,7 +56,7 @@ class _TipContent extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
+                  color: AppColors.revolutBlue.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -77,7 +70,7 @@ class _TipContent extends ConsumerWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.primary,
+                  color: AppColors.revolutAmber,
                   letterSpacing: 0.5,
                 ),
               ),
@@ -89,7 +82,7 @@ class _TipContent extends ConsumerWidget {
                   vertical: 2,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
+                  color: AppColors.revolutBlue.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -97,7 +90,7 @@ class _TipContent extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.primary,
+                    color: AppColors.revolutBlue,
                   ),
                 ),
               ),
@@ -110,7 +103,7 @@ class _TipContent extends ConsumerWidget {
             style: const TextStyle(
               fontSize: 14,
               height: 1.4,
-              color: AppColors.onSurface,
+              color: AppColors.revolutOnDark,
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -125,7 +118,7 @@ class _TipContent extends ConsumerWidget {
                 icon: const Icon(Icons.refresh, size: 16),
                 label: const Text('Suivant'),
                 style: TextButton.styleFrom(
-                  foregroundColor: AppColors.primary,
+                  foregroundColor: AppColors.revolutBlue,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 4,
@@ -157,10 +150,10 @@ class _TipLoading extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
+              color: AppColors.revolutBlue.withOpacity(0.15),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Text('💡', style: TextStyle(fontSize: 16)),
+            child: const Icon(Icons.lightbulb_rounded, size: 16, color: AppColors.revolutAmber),
           ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
@@ -171,7 +164,7 @@ class _TipLoading extends StatelessWidget {
                   height: 12,
                   width: 100,
                   decoration: BoxDecoration(
-                    color: AppColors.outlineVariant,
+                    color: AppColors.revolutBorder,
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
@@ -179,7 +172,7 @@ class _TipLoading extends StatelessWidget {
                 Container(
                   height: 12,
                   decoration: BoxDecoration(
-                    color: AppColors.outlineVariant.withValues(alpha: 0.5),
+                    color: AppColors.revolutBorder.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
@@ -205,10 +198,10 @@ class _TipError extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
+              color: AppColors.revolutBlue.withOpacity(0.15),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Text('💡', style: TextStyle(fontSize: 16)),
+            child: const Icon(Icons.lightbulb_rounded, size: 16, color: AppColors.revolutAmber),
           ),
           const SizedBox(width: AppSpacing.sm),
           const Expanded(
@@ -216,7 +209,7 @@ class _TipError extends StatelessWidget {
               'Les conseils arrivent bientôt...',
               style: TextStyle(
                 fontSize: 14,
-                color: AppColors.onSurfaceVariant,
+                color: AppColors.revolutOnDarkMuted,
               ),
             ),
           ),
@@ -241,7 +234,7 @@ class TipCardCompact extends ConsumerWidget {
           vertical: AppSpacing.sm,
         ),
         decoration: BoxDecoration(
-          color: AppColors.primaryContainer.withValues(alpha: 0.4),
+          color: AppColors.revolutSurface,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(

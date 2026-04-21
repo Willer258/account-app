@@ -42,30 +42,43 @@ class AnalyticsScreen extends ConsumerWidget {
 
     final totalSpent = expenses.fold<int>(0, (s, t) => s + t.amountFcfa);
 
-    final categoryTotals = <ExpenseCategory, int>{};
+    final rawTotals = <String, int>{};
     for (final t in expenses) {
-      categoryTotals[t.category] =
-          (categoryTotals[t.category] ?? 0) + t.amountFcfa;
+      rawTotals[t.category] = (rawTotals[t.category] ?? 0) + t.amountFcfa;
+    }
+    // Convert string categories to ExpenseCategory for the chart
+    final categoryTotals = <ExpenseCategory, int>{};
+    for (final entry in rawTotals.entries) {
+      final budgetCat = DefaultCategoryMappings.guessCategory(entry.key);
+      categoryTotals[budgetCat] =
+          (categoryTotals[budgetCat] ?? 0) + entry.value;
     }
 
     return Scaffold(
       backgroundColor: AppColors.revolutDark,
+      appBar: AppBar(
+        backgroundColor: AppColors.revolutDark,
+        foregroundColor: AppColors.revolutOnDark,
+        title: Text(
+          'Analyses',
+          style: AppTypography.revolutSubtitle.copyWith(
+            color: AppColors.revolutOnDark,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0,
+      ),
       body: SafeArea(
+        top: false,
         child: CustomScrollView(
           slivers: [
             // ── Header ────────────────────────────────────────
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Analyses',
-                      style: AppTypography.revolutTitle.copyWith(
-                        color: AppColors.revolutOnDark,
-                      ),
-                    ),
                     Text(
                       DateFormat('MMMM yyyy', 'fr_FR').format(DateTime.now()),
                       style: AppTypography.revolutMicro.copyWith(
@@ -224,7 +237,7 @@ class AnalyticsScreen extends ConsumerWidget {
               ),
             ),
 
-            const SliverToBoxAdapter(child: SizedBox(height: 80)),
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
           ],
         ),
       ),

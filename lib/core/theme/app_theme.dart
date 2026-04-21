@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'app_typography.dart';
 import 'app_spacing.dart';
 import 'app_border_radius.dart';
+import 'pockii_colors.dart';
 
 /// Application theme configuration using Material Design 3.
 ///
@@ -23,6 +26,9 @@ class AppTheme {
 
   /// Revolut-inspired dark theme (new design system).
   static ThemeData revolut() => _buildRevolutTheme();
+
+  /// Revolut-inspired light theme.
+  static ThemeData revolutLight() => _buildRevolutLightTheme();
 
   /// Light theme for the application (MVP default).
   ///
@@ -443,7 +449,9 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: colorScheme,
-      fontFamily: AppTypography.fontFamily,
+      extensions: const [PockiiThemeColors.dark],
+      fontFamily: AppTypography.bodyFont,
+      textTheme: GoogleFonts.dmSansTextTheme(ThemeData.dark().textTheme),
       scaffoldBackgroundColor: AppColors.revolutDark,
       appBarTheme: AppBarTheme(
         elevation: 0,
@@ -573,6 +581,153 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 0,
         actionTextColor: AppColors.revolutBlue,
+      ),
+    );
+  }
+
+  // ============================================
+  // Revolut Light Theme
+  // ============================================
+
+  static ThemeData _buildRevolutLightTheme() {
+    const ColorScheme colorScheme = ColorScheme(
+      brightness: Brightness.light,
+      primary: AppColors.revolutBlue,
+      onPrimary: Color(0xFFFFFFFF),
+      primaryContainer: Color(0xFFD6E8FF),
+      onPrimaryContainer: AppColors.revolutBlueDark,
+      secondary: AppColors.revolutGreen,
+      onSecondary: Color(0xFFFFFFFF),
+      secondaryContainer: Color(0xFFB8F5D8),
+      onSecondaryContainer: Color(0xFF003D26),
+      error: AppColors.revolutRed,
+      onError: Color(0xFFFFFFFF),
+      errorContainer: Color(0xFFFFDAD6),
+      onErrorContainer: AppColors.revolutRed,
+      surface: AppColors.revolutLightSurface,
+      onSurface: AppColors.revolutOnLight,
+      surfaceContainerHighest: AppColors.revolutLightSurfaceElevated,
+      onSurfaceVariant: AppColors.revolutOnLightMuted,
+      outline: AppColors.revolutLightBorder,
+      outlineVariant: AppColors.revolutLightBorder,
+      inverseSurface: AppColors.revolutOnLight,
+      onInverseSurface: AppColors.revolutLightSurface,
+      inversePrimary: AppColors.revolutBlueLight,
+      scrim: AppColors.scrim,
+      shadow: AppColors.scrim,
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      colorScheme: colorScheme,
+      extensions: const [PockiiThemeColors.light],
+      fontFamily: AppTypography.bodyFont,
+      textTheme: GoogleFonts.dmSansTextTheme(ThemeData.light().textTheme),
+      scaffoldBackgroundColor: AppColors.revolutLight,
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        backgroundColor: AppColors.revolutLight,
+        foregroundColor: AppColors.revolutOnLight,
+        surfaceTintColor: Colors.transparent,
+        titleTextStyle: AppTypography.revolutTitle.copyWith(
+          color: AppColors.revolutOnLight,
+        ),
+        iconTheme: const IconThemeData(
+          color: AppColors.revolutOnLight,
+          size: 24,
+        ),
+      ),
+      cardTheme: CardThemeData(
+        elevation: 0,
+        color: AppColors.revolutLightSurface,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.revolutLightBorder, width: 1),
+        ),
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          minimumSize: const Size(double.infinity, 52),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          textStyle: AppTypography.revolutLabel,
+          foregroundColor: Colors.white,
+          backgroundColor: AppColors.revolutBlue,
+        ),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: AppColors.revolutBlue,
+        foregroundColor: Colors.white,
+        elevation: 2,
+        highlightElevation: 4,
+        shape: StadiumBorder(),
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: AppColors.revolutLightSurface,
+        surfaceTintColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        elevation: 4,
+        modalElevation: 8,
+        showDragHandle: true,
+        dragHandleColor: AppColors.revolutLightBorder,
+        dragHandleSize: const Size(36, 4),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.revolutLightSurfaceElevated,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppColors.revolutLightBorder),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppColors.revolutLightBorder),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppColors.revolutBlue, width: 2),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
+        labelStyle: AppTypography.revolutBody.copyWith(
+          color: AppColors.revolutOnLightMuted,
+        ),
+        hintStyle: AppTypography.revolutBody.copyWith(
+          color: AppColors.revolutOnLightMuted,
+        ),
+      ),
+      dividerTheme: const DividerThemeData(
+        color: AppColors.revolutLightBorder,
+        thickness: 1,
+        space: 1,
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: AppColors.revolutBlue,
+        linearTrackColor: AppColors.revolutBlue.withValues(alpha: 0.15),
+        circularTrackColor: AppColors.revolutBlue.withValues(alpha: 0.15),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: AppColors.revolutOnLight,
+        contentTextStyle: AppTypography.revolutBody.copyWith(
+          color: AppColors.revolutLightSurface,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 4,
+        actionTextColor: AppColors.revolutBlueLight,
       ),
     );
   }

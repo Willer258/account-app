@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../shared/widgets/empty_state_widget.dart';
 import '../../../home/presentation/providers/budget_provider.dart';
 import '../../../transactions/data/transaction_repository.dart';
@@ -11,11 +13,9 @@ import '../providers/history_provider.dart';
 import '../widgets/date_section_header.dart';
 import '../widgets/transaction_tile.dart';
 
-/// Screen displaying chronological transaction history.
+/// Revolut-style dark history screen.
 ///
-/// Shows transactions grouped by date (Aujourd'hui, Hier, DD/MM/YYYY).
-/// Uses ListView.builder for efficient rendering with large lists (NFR5).
-/// Supports category filtering via [historyCategoryFilterProvider].
+/// Shows transactions grouped by date with dark theme styling.
 class HistoryScreen extends ConsumerWidget {
   /// Creates a HistoryScreen.
   const HistoryScreen({super.key});
@@ -26,13 +26,24 @@ class HistoryScreen extends ConsumerWidget {
     final categoryFilter = ref.watch(historyCategoryFilterProvider);
 
     return Scaffold(
+      backgroundColor: AppColors.revolutDark,
       appBar: AppBar(
-        title: Text(categoryFilter != null ? 'Historique (filtré)' : 'Historique'),
-        centerTitle: true,
+        backgroundColor: AppColors.revolutDark,
+        title: Text(
+          categoryFilter != null ? 'Historique (filtré)' : 'Historique',
+          style: AppTypography.revolutTitle.copyWith(
+            color: AppColors.revolutOnDark,
+            fontSize: 24,
+          ),
+        ),
+        centerTitle: false,
         actions: [
           if (categoryFilter != null)
             IconButton(
-              icon: const Icon(Icons.filter_alt_off),
+              icon: const Icon(
+                Icons.filter_alt_off_rounded,
+                color: AppColors.revolutBlue,
+              ),
               tooltip: 'Effacer le filtre',
               onPressed: () {
                 ref.read(historyCategoryFilterProvider.notifier).state = null;
@@ -41,9 +52,16 @@ class HistoryScreen extends ConsumerWidget {
         ],
       ),
       body: historyAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(
+          child: CircularProgressIndicator(color: AppColors.revolutBlue),
+        ),
         error: (error, _) => Center(
-          child: Text('Erreur: $error'),
+          child: Text(
+            'Erreur: $error',
+            style: AppTypography.revolutBody.copyWith(
+              color: AppColors.revolutRed,
+            ),
+          ),
         ),
         data: (grouped) {
           if (grouped.totalCount == 0) {
@@ -54,7 +72,6 @@ class HistoryScreen extends ConsumerWidget {
             );
           }
 
-          // Build flat list with headers and tiles
           return _TransactionListView(grouped: grouped);
         },
       ),
@@ -121,11 +138,17 @@ class _TransactionListView extends ConsumerWidget {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Transaction supprimée'),
+          content: Text(
+            'Transaction supprimée',
+            style: AppTypography.revolutBody.copyWith(
+              color: AppColors.revolutOnDark,
+            ),
+          ),
           duration: const Duration(seconds: 4),
           behavior: SnackBarBehavior.floating,
           action: SnackBarAction(
             label: 'Annuler',
+            textColor: AppColors.revolutBlue,
             onPressed: () => _restoreTransaction(ref, transaction),
           ),
         ),

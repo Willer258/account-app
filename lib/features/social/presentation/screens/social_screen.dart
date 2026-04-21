@@ -30,22 +30,29 @@ class SocialScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.revolutDark,
+      appBar: AppBar(
+        backgroundColor: AppColors.revolutDark,
+        foregroundColor: AppColors.revolutOnDark,
+        title: Text(
+          'Budget Buddies',
+          style: AppTypography.revolutSubtitle.copyWith(
+            color: AppColors.revolutOnDark,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0,
+      ),
       body: SafeArea(
+        top: false,
         child: CustomScrollView(
           slivers: [
             // ── Header ────────────────────────────────────────
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Budget Buddies',
-                      style: AppTypography.revolutTitle.copyWith(
-                        color: AppColors.revolutOnDark,
-                      ),
-                    ),
                     Text(
                       'Économisez mieux ensemble',
                       style: AppTypography.revolutMicro.copyWith(
@@ -104,7 +111,7 @@ class SocialScreen extends StatelessWidget {
               ),
             ),
 
-            const SliverToBoxAdapter(child: SizedBox(height: 80)),
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
           ],
         ),
       ),

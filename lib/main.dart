@@ -9,6 +9,7 @@ import 'core/router/app_router.dart';
 import 'core/services/background_task_manager.dart';
 import 'core/services/notification_service.dart';
 import 'core/theme/theme.dart';
+import 'core/theme/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,28 +33,58 @@ void main() async {
   await backgroundTaskManager.registerPeriodicTask();
 
   runApp(
-    const ProviderScope(
-      child: PockiiApp(),
+    ProviderScope(
+      overrides: [
+        notificationServiceProvider.overrideWithValue(notificationService),
+      ],
+      child: const PockiiApp(),
     ),
   );
 }
 
 /// Root widget for the Pockii application.
-class PockiiApp extends ConsumerWidget {
+class PockiiApp extends ConsumerStatefulWidget {
   const PockiiApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PockiiApp> createState() => _PockiiAppState();
+}
+
+class _PockiiAppState extends ConsumerState<PockiiApp> {
+  bool _notificationCallbackSet = false;
+
+  @override
+  Widget build(BuildContext context) {
     // Watch database initialization
     final dbAsync = ref.watch(databaseProvider);
     final router = ref.watch(routerProvider);
+
+    // Wire notification tap to GoRouter — once only
+    if (!_notificationCallbackSet) {
+      _notificationCallbackSet = true;
+      final notifService = ref.read(notificationServiceProvider);
+      notifService.setOnTapCallback((payload) {
+        if (payload == null) return;
+        final basePayload = payload.startsWith('spending_anomaly')
+            ? 'spending_anomaly'
+            : payload;
+        final route = NotificationService.payloadRoutes[basePayload];
+        if (route != null) {
+          router.go(route);
+        }
+      });
+    }
+
+    final appThemeMode = ref.watch(themeModeProvider);
+    final flutterThemeMode = toFlutterThemeMode(appThemeMode);
 
     return dbAsync.when(
       data: (_) => MaterialApp.router(
         title: 'Pockii',
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.light(),
-        darkTheme: AppTheme.dark(),
+        theme: AppTheme.revolutLight(),
+        darkTheme: AppTheme.revolut(),
+        themeMode: flutterThemeMode,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

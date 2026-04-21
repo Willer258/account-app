@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/services/notification_preferences.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/pockii_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 
 /// Screen for configuring notification preferences.
@@ -86,6 +87,21 @@ class _NotificationPreferencesScreenState
           const SizedBox(height: AppSpacing.md),
 
           _NotificationToggle(
+            title: 'Rappels dépenses prévues',
+            description:
+                'Recevoir des rappels quand une dépense prévue arrive à échéance.',
+            icon: Icons.event_note_outlined,
+            iconColor: const Color(0xFF9C27B0),
+            value: preferences.plannedExpenseRemindersEnabled,
+            onChanged: (value) {
+              ref
+                  .read(notificationPreferencesNotifierProvider.notifier)
+                  .setPlannedExpenseReminders(enabled: value);
+            },
+          ),
+          const SizedBox(height: AppSpacing.md),
+
+          _NotificationToggle(
             title: 'Célébrations série',
             description:
                 'Recevoir des félicitations pour les jalons de série (7, 14, 30 jours...).',
@@ -96,6 +112,36 @@ class _NotificationPreferencesScreenState
               ref
                   .read(notificationPreferencesNotifierProvider.notifier)
                   .setStreakCelebrations(enabled: value);
+            },
+          ),
+          const SizedBox(height: AppSpacing.md),
+
+          _NotificationToggle(
+            title: 'Conseils du matin',
+            description:
+                'Recevoir un résumé budget et un conseil financier chaque matin à 8h.',
+            icon: Icons.wb_sunny_outlined,
+            iconColor: const Color(0xFFFF9800),
+            value: preferences.morningTipsEnabled,
+            onChanged: (value) {
+              ref
+                  .read(notificationPreferencesNotifierProvider.notifier)
+                  .setMorningTips(enabled: value);
+            },
+          ),
+          const SizedBox(height: AppSpacing.md),
+
+          _NotificationToggle(
+            title: 'Alertes dépenses inhabituelles',
+            description:
+                'Être alerté quand une catégorie de dépenses augmente de plus de 50%.',
+            icon: Icons.trending_up_outlined,
+            iconColor: const Color(0xFFF44336),
+            value: preferences.spendingAnomalyEnabled,
+            onChanged: (value) {
+              ref
+                  .read(notificationPreferencesNotifierProvider.notifier)
+                  .setSpendingAnomaly(enabled: value);
             },
           ),
 
@@ -136,7 +182,7 @@ class _SectionHeader extends StatelessWidget {
           description,
           style: TextStyle(
             fontSize: 14,
-            color: AppColors.onSurfaceVariant,
+            color: context.pockii.onSurfaceMuted,
           ),
         ),
       ],
@@ -166,10 +212,10 @@ class _NotificationToggle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.pockii.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.outlineVariant,
+          color: context.pockii.border,
           width: 0.5,
         ),
       ),
@@ -206,7 +252,7 @@ class _NotificationToggle extends StatelessWidget {
                     description,
                     style: TextStyle(
                       fontSize: 13,
-                      color: AppColors.onSurfaceVariant,
+                      color: context.pockii.onSurfaceMuted,
                     ),
                   ),
                 ],
@@ -216,7 +262,7 @@ class _NotificationToggle extends StatelessWidget {
             Switch.adaptive(
               value: value,
               onChanged: onChanged,
-              activeColor: AppColors.primary,
+              activeColor: AppColors.revolutBlue,
             ),
           ],
         ),
@@ -234,10 +280,10 @@ class _InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.08),
+        color: AppColors.revolutBlue.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.2),
+          color: AppColors.revolutBlue.withValues(alpha: 0.2),
         ),
       ),
       child: Row(
@@ -246,7 +292,7 @@ class _InfoCard extends StatelessWidget {
           Icon(
             Icons.info_outline,
             size: 20,
-            color: AppColors.primary,
+            color: AppColors.revolutBlue,
           ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
@@ -258,7 +304,7 @@ class _InfoCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
+                    color: AppColors.revolutBlue,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -266,7 +312,7 @@ class _InfoCard extends StatelessWidget {
                   'Pour ne pas te déranger, l\'app envoie maximum 2 notifications par jour (sauf alertes critiques).',
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppColors.primary.withValues(alpha: 0.8),
+                    color: AppColors.revolutBlue.withValues(alpha: 0.8),
                   ),
                 ),
               ],

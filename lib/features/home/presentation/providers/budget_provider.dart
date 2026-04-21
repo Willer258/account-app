@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import '../../../../core/services/clock_service.dart';
 import '../../../../shared/utils/fcfa_formatter.dart';
 import '../../../budget/domain/services/budget_calculation_service.dart';
+import '../../../transactions/data/transaction_repository.dart';
+import '../../../transactions/domain/models/transaction_type.dart';
 import '../../domain/models/budget_state.dart';
 
 /// Provider for the current budget state.
@@ -33,6 +35,8 @@ class BudgetStateNotifier extends StateNotifier<BudgetState> {
         remainingBudget: result.remainingBudget,
         periodStart: result.periodStart,
         periodEnd: result.periodEnd,
+        totalExpenses: result.totalExpenses,
+        totalSubscriptions: result.totalSubscriptions,
         pendingPlannedExpenses: result.totalPlannedExpenses,
         hasTimeInconsistency: result.hasTimeInconsistency,
       );
@@ -128,4 +132,19 @@ final budgetStatusProvider = Provider<BudgetStatus>((ref) {
 final hasTimeInconsistencyProvider = Provider<bool>((ref) {
   final budgetState = ref.watch(budgetStateProvider);
   return budgetState.hasTimeInconsistency;
+});
+
+/// Provider for total non-recurring income this month.
+///
+/// Watches current month transactions and sums income entries.
+final monthlyIncomeProvider = StreamProvider.autoDispose<int>((ref) {
+  final repository = ref.watch(transactionRepositoryProvider);
+  final clock = ref.watch(clockProvider);
+  final now = clock.now();
+
+  return repository.watchTransactionsForMonth(now).map((transactions) {
+    return transactions
+        .where((t) => t.type == TransactionType.income)
+        .fold<int>(0, (sum, t) => sum + t.amountFcfa);
+  });
 });

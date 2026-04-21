@@ -47,14 +47,14 @@ class _OverviewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final balanceColor = overview.isPositive ? AppColors.success : AppColors.error;
+    final balanceColor = overview.isPositive ? AppColors.revolutGreen : AppColors.revolutRed;
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.outlineVariant),
+        border: Border.all(color: AppColors.revolutBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +64,7 @@ class _OverviewContent extends StatelessWidget {
             children: [
               Icon(
                 Icons.account_balance_wallet,
-                color: AppColors.primary,
+                color: AppColors.revolutBlue,
                 size: 24,
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -81,14 +81,14 @@ class _OverviewContent extends StatelessWidget {
                   vertical: AppSpacing.xs,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceVariant,
+                  color: AppColors.revolutSurfaceElevated,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   overview.monthName,
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -101,26 +101,26 @@ class _OverviewContent extends StatelessWidget {
           // Income and expense rows
           _AmountRow(
             icon: Icons.arrow_downward,
-            iconColor: AppColors.success,
+            iconColor: AppColors.revolutGreen,
             label: 'Revenus',
             amount: overview.totalIncome,
-            amountColor: AppColors.success,
+            amountColor: AppColors.revolutGreen,
           ),
 
           const SizedBox(height: AppSpacing.sm),
 
           _AmountRow(
             icon: Icons.arrow_upward,
-            iconColor: AppColors.error,
+            iconColor: AppColors.revolutRed,
             label: 'Depenses',
             amount: overview.totalExpenses,
-            amountColor: AppColors.error,
+            amountColor: AppColors.revolutRed,
           ),
 
           const SizedBox(height: AppSpacing.md),
 
           // Divider
-          Divider(color: AppColors.outlineVariant, height: 1),
+          Divider(color: AppColors.revolutBorder, height: 1),
 
           const SizedBox(height: AppSpacing.md),
 
@@ -132,7 +132,7 @@ class _OverviewContent extends StatelessWidget {
                 'Solde net',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  color: AppColors.onSurface,
+                  color: AppColors.revolutOnDark,
                 ),
               ),
               Row(
@@ -163,7 +163,7 @@ class _OverviewContent extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppSpacing.sm),
             decoration: BoxDecoration(
-              color: balanceColor.withValues(alpha: 0.1),
+              color: balanceColor.withOpacity( 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -228,7 +228,7 @@ class _AmountRow extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: iconColor.withValues(alpha: 0.1),
+            color: iconColor.withOpacity( 0.1),
             shape: BoxShape.circle,
           ),
           child: Icon(icon, color: iconColor, size: 16),
@@ -237,7 +237,7 @@ class _AmountRow extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: AppColors.onSurfaceVariant,
+            color: AppColors.revolutOnDarkMuted,
           ),
         ),
         const Spacer(),
@@ -274,9 +274,9 @@ class _NoDataState extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.revolutSurface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.outlineVariant),
+        border: Border.all(color: AppColors.revolutBorder),
       ),
       child: Column(
         children: [
@@ -284,7 +284,7 @@ class _NoDataState extends StatelessWidget {
             children: [
               Icon(
                 Icons.account_balance_wallet,
-                color: AppColors.primary,
+                color: AppColors.revolutBlue,
                 size: 24,
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -301,14 +301,14 @@ class _NoDataState extends StatelessWidget {
                   vertical: AppSpacing.xs,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceVariant,
+                  color: AppColors.revolutSurfaceElevated,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   monthName,
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.onSurfaceVariant,
+                    color: AppColors.revolutOnDarkMuted,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -318,7 +318,7 @@ class _NoDataState extends StatelessWidget {
           const SizedBox(height: AppSpacing.lg),
           Icon(
             Icons.inbox_outlined,
-            color: AppColors.onSurfaceVariant,
+            color: AppColors.revolutOnDarkMuted,
             size: 32,
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -326,7 +326,7 @@ class _NoDataState extends StatelessWidget {
             'Pas de donnees ce mois',
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: AppColors.onSurface,
+              color: AppColors.revolutOnDark,
             ),
             textAlign: TextAlign.center,
           ),
@@ -335,7 +335,7 @@ class _NoDataState extends StatelessWidget {
             'Ajoute des revenus ou depenses pour voir le bilan',
             style: TextStyle(
               fontSize: 13,
-              color: AppColors.onSurfaceVariant,
+              color: AppColors.revolutOnDarkMuted,
             ),
             textAlign: TextAlign.center,
           ),

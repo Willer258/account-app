@@ -59,7 +59,7 @@ class ProjectPreviewCard extends ConsumerWidget {
                       strokeWidth: 4,
                       backgroundColor: Colors.transparent,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        AppColors.outlineVariant.withValues(alpha: 0.2),
+                        AppColors.revolutBorder.withValues(alpha: 0.2),
                       ),
                     ),
                   ),
@@ -72,7 +72,7 @@ class ProjectPreviewCard extends ConsumerWidget {
                       strokeWidth: 4,
                       backgroundColor: Colors.transparent,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        isGoalReached ? AppColors.success : color,
+                        isGoalReached ? AppColors.revolutGreen : color,
                       ),
                       strokeCap: StrokeCap.round,
                     ),
@@ -101,7 +101,7 @@ class ProjectPreviewCard extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.onSurface,
+                            color: AppColors.revolutOnDark,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -123,7 +123,7 @@ class ProjectPreviewCard extends ConsumerWidget {
                     '${FcfaFormatter.formatCompact(project.currentAmountFcfa)} / ${FcfaFormatter.formatCompact(project.targetAmountFcfa)}',
                     style: TextStyle(
                       fontSize: 11,
-                      color: AppColors.onSurfaceVariant,
+                      color: AppColors.revolutOnDarkMuted,
                     ),
                   ),
                 ],
@@ -138,7 +138,7 @@ class ProjectPreviewCard extends ConsumerWidget {
               ),
               decoration: BoxDecoration(
                 color: isGoalReached
-                    ? AppColors.success.withValues(alpha: 0.1)
+                    ? AppColors.revolutGreen.withValues(alpha: 0.1)
                     : color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -147,7 +147,7 @@ class ProjectPreviewCard extends ConsumerWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
-                  color: isGoalReached ? AppColors.success : color,
+                  color: isGoalReached ? AppColors.revolutGreen : color,
                 ),
               ),
             ),
@@ -156,7 +156,7 @@ class ProjectPreviewCard extends ConsumerWidget {
             const SizedBox(width: 4),
             Icon(
               Icons.chevron_right,
-              color: AppColors.onSurfaceVariant,
+              color: AppColors.revolutOnDarkMuted,
               size: 20,
             ),
           ],
@@ -194,7 +194,7 @@ class ProjectsMiniList extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.onSurface,
+                      color: AppColors.revolutOnDark,
                     ),
                   ),
                   TextButton(
@@ -267,7 +267,7 @@ class _MiniProjectCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
-                    color: isGoalReached ? AppColors.success : color,
+                    color: isGoalReached ? AppColors.revolutGreen : color,
                   ),
                 ),
               ],
@@ -280,7 +280,7 @@ class _MiniProjectCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w600,
-                color: AppColors.onSurface,
+                color: AppColors.revolutOnDark,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -292,7 +292,7 @@ class _MiniProjectCard extends StatelessWidget {
             Container(
               height: 6,
               decoration: BoxDecoration(
-                color: AppColors.outlineVariant.withValues(alpha: 0.3),
+                color: AppColors.revolutBorder.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(3),
               ),
               child: FractionallySizedBox(
@@ -300,7 +300,7 @@ class _MiniProjectCard extends StatelessWidget {
                 widthFactor: progress,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: isGoalReached ? AppColors.success : color,
+                    color: isGoalReached ? AppColors.revolutGreen : color,
                     borderRadius: BorderRadius.circular(3),
                   ),
                 ),
