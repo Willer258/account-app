@@ -7,6 +7,7 @@ import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
+import '../../../../core/theme/pockii_colors.dart';
 import '../../domain/models/onboarding_state.dart';
 import '../providers/onboarding_provider.dart';
 
@@ -103,7 +104,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
     final state = ref.watch(onboardingStateProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.revolutDark,
+      backgroundColor: context.pockii.background,
       body: Stack(
         children: [
           // Gradient background
@@ -230,7 +231,7 @@ class _TopBar extends StatelessWidget {
             IconButton(
               onPressed: onBack,
               icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
-              color: AppColors.revolutOnDark,
+              color: context.pockii.onSurface,
             )
           else
             const SizedBox(width: 48),
@@ -250,7 +251,7 @@ class _TopBar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(3),
                     color: isActive
                         ? AppColors.revolutBlue
-                        : AppColors.revolutOnDarkMuted.withOpacity(0.4),
+                        : context.pockii.onSurfaceMuted.withOpacity(0.4),
                   ),
                 );
               }),
@@ -263,8 +264,8 @@ class _TopBar extends StatelessWidget {
               onPressed: onSkip,
               child: Text(
                 'Passer',
-                style: AppTypography.label.copyWith(
-                  color: AppColors.revolutOnDarkMuted,
+                style: AppTypography.revolutLabel.copyWith(
+                  color: context.pockii.onSurfaceMuted,
                 ),
               ),
             )
@@ -324,8 +325,8 @@ class _WelcomePage extends StatelessWidget {
 
             Text(
               'Pockii',
-              style: AppTypography.hero.copyWith(
-                color: AppColors.revolutOnDark,
+              style: AppTypography.revolutDisplay.copyWith(
+                color: context.pockii.onSurface,
                 fontWeight: FontWeight.w800,
                 letterSpacing: -1.5,
               ),
@@ -335,7 +336,7 @@ class _WelcomePage extends StatelessWidget {
 
             Text(
               'Ton argent, maîtrisé.',
-              style: AppTypography.titleSmall.copyWith(
+              style: AppTypography.revolutSubtitle.copyWith(
                 color: AppColors.revolutBlue,
                 fontWeight: FontWeight.w600,
               ),
@@ -346,8 +347,8 @@ class _WelcomePage extends StatelessWidget {
             Text(
               'Pockii t\'aide à gérer ton budget intelligemment avec la méthode 50/30/20 — sans effort.',
               textAlign: TextAlign.center,
-              style: AppTypography.bodyMedium.copyWith(
-                color: AppColors.revolutOnDarkMuted,
+              style: AppTypography.revolutBody.copyWith(
+                color: context.pockii.onSurfaceMuted,
                 height: 1.6,
               ),
             ),
@@ -400,7 +401,7 @@ class _FeatureChip extends StatelessWidget {
           const SizedBox(width: AppSpacing.xs),
           Text(
             label,
-            style: AppTypography.label.copyWith(color: AppColors.revolutOnDark),
+            style: AppTypography.revolutLabel.copyWith(color: context.pockii.onSurface),
           ),
         ],
       ),
@@ -429,8 +430,8 @@ class _RulePage extends StatelessWidget {
           children: [
             Text(
               'La règle\n50/30/20',
-              style: AppTypography.headline.copyWith(
-                color: AppColors.revolutOnDark,
+              style: AppTypography.revolutTitle.copyWith(
+                color: context.pockii.onSurface,
                 fontWeight: FontWeight.w800,
                 letterSpacing: -1,
               ),
@@ -440,8 +441,8 @@ class _RulePage extends StatelessWidget {
 
             Text(
               'Répartis tes revenus en 3 catégories simples.',
-              style: AppTypography.bodyMedium.copyWith(
-                color: AppColors.revolutOnDarkMuted,
+              style: AppTypography.revolutBody.copyWith(
+                color: context.pockii.onSurfaceMuted,
               ),
             ),
 
@@ -499,8 +500,8 @@ class _RuleCard extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: AppColors.revolutSurface,
-        border: Border.all(color: AppColors.revolutBorder),
+        color: context.pockii.surface,
+        border: Border.all(color: context.pockii.border),
       ),
       child: Row(
         children: [
@@ -515,7 +516,7 @@ class _RuleCard extends StatelessWidget {
             child: Center(
               child: Text(
                 percent,
-                style: AppTypography.titleSmall.copyWith(
+                style: AppTypography.revolutSubtitle.copyWith(
                   color: color,
                   fontWeight: FontWeight.w800,
                 ),
@@ -531,16 +532,16 @@ class _RuleCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: AppTypography.titleSmall.copyWith(
-                    color: AppColors.revolutOnDark,
+                  style: AppTypography.revolutSubtitle.copyWith(
+                    color: context.pockii.onSurface,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: AppTypography.caption.copyWith(
-                    color: AppColors.revolutOnDarkMuted,
+                  style: AppTypography.revolutMicro.copyWith(
+                    color: context.pockii.onSurfaceMuted,
                   ),
                 ),
               ],
@@ -598,7 +599,7 @@ class _EmergencyFundPage extends StatelessWidget {
             Text(
               'Fond d\'urgence',
               style: AppTypography.revolutTitle.copyWith(
-                color: AppColors.revolutOnDark,
+                color: context.pockii.onSurface,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -607,8 +608,8 @@ class _EmergencyFundPage extends StatelessWidget {
 
             Text(
               'L\'objectif est d\'avoir 3 à 6 mois de dépenses en réserve. C\'est ton filet de sécurité.',
-              style: AppTypography.bodyMedium.copyWith(
-                color: AppColors.revolutOnDarkMuted,
+              style: AppTypography.revolutBody.copyWith(
+                color: context.pockii.onSurfaceMuted,
                 height: 1.6,
               ),
             ),
@@ -621,19 +622,19 @@ class _EmergencyFundPage extends StatelessWidget {
               onChanged: onChanged,
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              style: AppTypography.title.copyWith(
-                color: AppColors.revolutOnDark,
+              style: AppTypography.revolutSubtitle.copyWith(
+                color: context.pockii.onSurface,
               ),
               decoration: InputDecoration(
                 labelText: 'Objectif (optionnel)',
-                labelStyle: TextStyle(color: AppColors.revolutOnDarkMuted),
+                labelStyle: TextStyle(color: context.pockii.onSurfaceMuted),
                 suffixText: 'FCFA',
-                suffixStyle: AppTypography.bodyMedium.copyWith(
+                suffixStyle: AppTypography.revolutBody.copyWith(
                   color: AppColors.revolutGreen,
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.revolutBorder),
+                  borderSide: BorderSide(color: context.pockii.border),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -643,7 +644,7 @@ class _EmergencyFundPage extends StatelessWidget {
                   ),
                 ),
                 filled: true,
-                fillColor: AppColors.revolutSurface,
+                fillColor: context.pockii.surface,
               ),
             ),
 
@@ -691,8 +692,8 @@ class _InfoTile extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: AppTypography.caption.copyWith(
-                color: AppColors.revolutOnDarkMuted,
+              style: AppTypography.revolutMicro.copyWith(
+                color: context.pockii.onSurfaceMuted,
                 height: 1.5,
               ),
             ),
@@ -747,7 +748,7 @@ class _BudgetSetupPage extends StatelessWidget {
             Text(
               'Ton budget\nmensuel',
               style: AppTypography.revolutTitle.copyWith(
-                color: AppColors.revolutOnDark,
+                color: context.pockii.onSurface,
                 fontWeight: FontWeight.w800,
                 letterSpacing: -0.5,
               ),
@@ -757,8 +758,8 @@ class _BudgetSetupPage extends StatelessWidget {
 
             Text(
               'Saisis tes revenus mensuels nets. Pockii calculera automatiquement tes limites 50/30/20.',
-              style: AppTypography.bodyMedium.copyWith(
-                color: AppColors.revolutOnDarkMuted,
+              style: AppTypography.revolutBody.copyWith(
+                color: context.pockii.onSurfaceMuted,
                 height: 1.6,
               ),
             ),
@@ -771,20 +772,20 @@ class _BudgetSetupPage extends StatelessWidget {
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               autofocus: false,
-              style: AppTypography.title.copyWith(
-                color: AppColors.revolutOnDark,
+              style: AppTypography.revolutSubtitle.copyWith(
+                color: context.pockii.onSurface,
                 fontWeight: FontWeight.w700,
               ),
               decoration: InputDecoration(
                 labelText: 'Revenus mensuels',
-                labelStyle: TextStyle(color: AppColors.revolutOnDarkMuted),
+                labelStyle: TextStyle(color: context.pockii.onSurfaceMuted),
                 suffixText: 'FCFA',
-                suffixStyle: AppTypography.bodyMedium.copyWith(
+                suffixStyle: AppTypography.revolutBody.copyWith(
                   color: AppColors.revolutBlue,
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.revolutBorder),
+                  borderSide: BorderSide(color: context.pockii.border),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -794,7 +795,7 @@ class _BudgetSetupPage extends StatelessWidget {
                   ),
                 ),
                 filled: true,
-                fillColor: AppColors.revolutSurface,
+                fillColor: context.pockii.surface,
               ),
             ),
 
@@ -835,7 +836,7 @@ class _TutorialPage extends StatelessWidget {
             Text(
               'Ajoute ta\npremière dépense',
               style: AppTypography.revolutTitle.copyWith(
-                color: AppColors.revolutOnDark,
+                color: context.pockii.onSurface,
                 fontWeight: FontWeight.w800,
                 letterSpacing: -0.5,
               ),
@@ -845,8 +846,8 @@ class _TutorialPage extends StatelessWidget {
 
             Text(
               'C\'est aussi simple que ça :',
-              style: AppTypography.bodyMedium.copyWith(
-                color: AppColors.revolutOnDarkMuted,
+              style: AppTypography.revolutBody.copyWith(
+                color: context.pockii.onSurfaceMuted,
               ),
             ),
 
@@ -904,8 +905,8 @@ class _TutorialPage extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'Tu es prêt·e ! Lance-toi et prends le contrôle de ton argent. 🚀',
-                      style: AppTypography.bodyMedium.copyWith(
-                        color: AppColors.revolutOnDark,
+                      style: AppTypography.revolutBody.copyWith(
+                        color: context.pockii.onSurface,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -941,8 +942,8 @@ class _TutorialStep extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: AppColors.revolutSurface,
-        border: Border.all(color: AppColors.revolutBorder),
+        color: context.pockii.surface,
+        border: Border.all(color: context.pockii.border),
       ),
       child: Row(
         children: [
@@ -962,16 +963,16 @@ class _TutorialStep extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: AppTypography.titleSmall.copyWith(
-                    color: AppColors.revolutOnDark,
+                  style: AppTypography.revolutSubtitle.copyWith(
+                    color: context.pockii.onSurface,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   description,
-                  style: AppTypography.caption.copyWith(
-                    color: AppColors.revolutOnDarkMuted,
+                  style: AppTypography.revolutMicro.copyWith(
+                    color: context.pockii.onSurfaceMuted,
                   ),
                 ),
               ],
@@ -1019,7 +1020,7 @@ class _BottomActions extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: Text(
                 state.error!,
-                style: AppTypography.caption.copyWith(
+                style: AppTypography.revolutMicro.copyWith(
                   color: AppColors.revolutRed,
                 ),
               ),
@@ -1033,8 +1034,8 @@ class _BottomActions extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: _isLastPage && !state.isBudgetValid
                       ? [
-                          AppColors.revolutOnDarkMuted.withOpacity(0.3),
-                          AppColors.revolutOnDarkMuted.withOpacity(0.3),
+                          context.pockii.onSurfaceMuted.withOpacity(0.3),
+                          context.pockii.onSurfaceMuted.withOpacity(0.3),
                         ]
                       : [AppColors.revolutBlue, AppColors.revolutBlueDark],
                 ),
@@ -1072,7 +1073,7 @@ class _BottomActions extends StatelessWidget {
                       )
                     : Text(
                         _isLastPage ? 'Commencer 🚀' : 'Continuer',
-                        style: AppTypography.labelLarge.copyWith(
+                        style: AppTypography.revolutLabel.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
                         ),
