@@ -10,6 +10,8 @@ import '../../domain/models/subscription_model.dart';
 import '../providers/subscription_form_provider.dart';
 import '../widgets/subscription_category_row.dart';
 import '../../../../shared/utils/fcfa_formatter.dart';
+import '../../../../shared/widgets/money_input_field.dart';
+import '../../../../shared/utils/money_input_formatter.dart';
 
 /// Screen for adding or editing a subscription.
 ///
@@ -193,28 +195,46 @@ class _SubscriptionFormScreenState
               // Amount input with system keyboard
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                child: TextField(
-                  controller: _amountController,
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(14),
+                    border: formState.showAmountError
+                        ? Border.all(color: AppColors.revolutRed)
+                        : null,
                   ),
-                  decoration: InputDecoration(
-                    labelText: 'Montant',
-                    hintText: '0',
-                    suffixText: FcfaFormatter.symbol,
-                    border: const OutlineInputBorder(),
-                    errorText: formState.showAmountError ? 'Montant requis' : null,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _amountController,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          inputFormatters: [MoneyInputFormatter()],
+                          style: const TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          decoration: const InputDecoration(
+                            hintText: '0',
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (value) {
+                            formNotifier.setAmount(MoneyInputFormatter.parse(value));
+                          },
+                        ),
+                      ),
+                      Text(
+                        FcfaFormatter.symbol,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
                   ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  onChanged: (value) {
-                    final amount = int.tryParse(value) ?? 0;
-                    formNotifier.setAmount(amount);
-                  },
                 ),
               ),
 

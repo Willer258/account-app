@@ -11,6 +11,7 @@ import '../../../../core/theme/pockii_colors.dart';
 import '../../domain/models/onboarding_state.dart';
 import '../providers/onboarding_provider.dart';
 import '../../../../shared/utils/fcfa_formatter.dart';
+import '../../../../shared/utils/money_input_formatter.dart';
 
 /// Onboarding screen — Revolut-inspired redesign (US-010).
 ///
@@ -32,10 +33,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   late PageController _pageController;
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
-  final TextEditingController _budgetController = TextEditingController();
-  final TextEditingController _emergencyController = TextEditingController();
 
-  static const int _totalPages = 5;
+  static const int _totalPages = 4;
 
   @override
   void initState() {
@@ -56,8 +55,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   void dispose() {
     _pageController.dispose();
     _fadeController.dispose();
-    _budgetController.dispose();
-    _emergencyController.dispose();
     super.dispose();
   }
 
@@ -128,10 +125,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                 _TopBar(
                   currentPage: state.currentPage,
                   totalPages: _totalPages,
-                  onSkip: state.currentPage < 3
+                  onSkip: state.currentPage < 2
                       ? () {
                           _pageController.animateToPage(
-                            3,
+                            2,
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOutCubic,
                           );
@@ -150,34 +147,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
                       _WelcomePage(fadeAnimation: _fadeAnimation),
-                      _RulePage(fadeAnimation: _fadeAnimation),
-                      _EmergencyFundPage(
-                        fadeAnimation: _fadeAnimation,
-                        controller: _emergencyController,
-                        onChanged: (val) {
-                          final parsed =
-                              int.tryParse(
-                                val.replaceAll(RegExp(r'[^0-9]'), ''),
-                              ) ??
-                              0;
-                          // Store as info only — not blocking
-                          ref
-                              .read(onboardingStateProvider.notifier)
-                              .setBudgetAmount(parsed);
-                        },
-                      ),
+                      _FeaturesPage(fadeAnimation: _fadeAnimation),
                       _BudgetSetupPage(
                         fadeAnimation: _fadeAnimation,
-                        controller: _budgetController,
-                        onChanged: (val) {
-                          final parsed =
-                              int.tryParse(
-                                val.replaceAll(RegExp(r'[^0-9]'), ''),
-                              ) ??
-                              0;
+                        value: state.budgetAmount,
+                        onChanged: (amount) {
                           ref
                               .read(onboardingStateProvider.notifier)
-                              .setBudgetAmount(parsed);
+                              .setBudgetAmount(amount);
                         },
                       ),
                       _TutorialPage(fadeAnimation: _fadeAnimation),
@@ -411,11 +388,11 @@ class _FeatureChip extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────
-// Page 1 — 50/30/20 Rule
+// Page 1 — Features Overview
 // ─────────────────────────────────────────────
 
-class _RulePage extends StatelessWidget {
-  const _RulePage({required this.fadeAnimation});
+class _FeaturesPage extends StatelessWidget {
+  const _FeaturesPage({required this.fadeAnimation});
 
   final Animation<double> fadeAnimation;
 
@@ -423,244 +400,127 @@ class _RulePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: fadeAnimation,
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: AppSpacing.xl),
+
             Text(
-              'La règle\n50/30/20',
+              'Tout ce que\nPockii fait pour toi',
               style: AppTypography.revolutTitle.copyWith(
                 color: context.pockii.onSurface,
                 fontWeight: FontWeight.w800,
-                letterSpacing: -1,
-              ),
-            ),
-
-            const SizedBox(height: AppSpacing.sm),
-
-            Text(
-              'Répartis tes revenus en 3 catégories simples.',
-              style: AppTypography.revolutBody.copyWith(
-                color: context.pockii.onSurfaceMuted,
+                letterSpacing: -0.5,
               ),
             ),
 
             const SizedBox(height: AppSpacing.xl),
 
-            // Cards
-            _RuleCard(
-              percent: '50%',
-              title: 'Besoins essentiels',
-              subtitle: 'Loyer, nourriture, transport, factures',
+            _FeatureTile(
+              icon: Icons.pie_chart_rounded,
               color: AppColors.revolutBlue,
-              icon: Icons.home_rounded,
+              title: 'Règle 50/30/20',
+              description: 'Répartis ton budget automatiquement entre besoins, envies et épargne.',
             ),
             const SizedBox(height: AppSpacing.md),
-            _RuleCard(
-              percent: '30%',
-              title: 'Envies & loisirs',
-              subtitle: 'Sorties, abonnements, shopping',
-              color: AppColors.revolutPurple,
-              icon: Icons.celebration_rounded,
-            ),
-            const SizedBox(height: AppSpacing.md),
-            _RuleCard(
-              percent: '20%',
-              title: 'Épargne & avenir',
-              subtitle: 'Fond d\'urgence, investissements, dettes',
+            _FeatureTile(
+              icon: Icons.trending_up_rounded,
               color: AppColors.revolutGreen,
+              title: 'Suivi en temps réel',
+              description: 'Visualise tes dépenses, revenus et solde restant d\'un coup d\'œil.',
+            ),
+            const SizedBox(height: AppSpacing.md),
+            _FeatureTile(
+              icon: Icons.event_note_rounded,
+              color: AppColors.revolutAmber,
+              title: 'Dépenses prévues',
+              description: 'Planifie tes futures dépenses pour ne jamais être pris au dépourvu.',
+            ),
+            const SizedBox(height: AppSpacing.md),
+            _FeatureTile(
+              icon: Icons.repeat_rounded,
+              color: AppColors.revolutPurple,
+              title: 'Abonnements',
+              description: 'Garde un œil sur tes charges récurrentes mensuelles.',
+            ),
+            const SizedBox(height: AppSpacing.md),
+            _FeatureTile(
               icon: Icons.savings_rounded,
+              color: AppColors.revolutGreen,
+              title: 'Projets d\'épargne',
+              description: 'Crée des cagnottes et suis ta progression vers tes objectifs.',
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _RuleCard extends StatelessWidget {
-  const _RuleCard({
-    required this.percent,
-    required this.title,
-    required this.subtitle,
-    required this.color,
-    required this.icon,
-  });
-
-  final String percent;
-  final String title;
-  final String subtitle;
-  final Color color;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: context.pockii.surface,
-        border: Border.all(color: context.pockii.border),
-      ),
-      child: Row(
-        children: [
-          // Percent badge
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: color.withOpacity(0.15),
-            ),
-            child: Center(
-              child: Text(
-                percent,
-                style: AppTypography.revolutSubtitle.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(width: AppSpacing.md),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: AppTypography.revolutSubtitle.copyWith(
-                    color: context.pockii.onSurface,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  style: AppTypography.revolutMicro.copyWith(
-                    color: context.pockii.onSurfaceMuted,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Icon(icon, color: color, size: 22),
-        ],
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────
-// Page 2 — Emergency Fund
-// ─────────────────────────────────────────────
-
-class _EmergencyFundPage extends StatelessWidget {
-  const _EmergencyFundPage({
-    required this.fadeAnimation,
-    required this.controller,
-    required this.onChanged,
-  });
-
-  final Animation<double> fadeAnimation;
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: fadeAnimation,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.revolutGreen.withOpacity(0.15),
-              ),
-              child: const Icon(
-                Icons.shield_rounded,
-                color: AppColors.revolutGreen,
-                size: 32,
-              ),
-            ),
-
-            const SizedBox(height: AppSpacing.lg),
-
-            Text(
-              'Fond d\'urgence',
-              style: AppTypography.revolutTitle.copyWith(
-                color: context.pockii.onSurface,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-
-            const SizedBox(height: AppSpacing.sm),
-
-            Text(
-              'L\'objectif est d\'avoir 3 à 6 mois de dépenses en réserve. C\'est ton filet de sécurité.',
-              style: AppTypography.revolutBody.copyWith(
-                color: context.pockii.onSurfaceMuted,
-                height: 1.6,
-              ),
+            const SizedBox(height: AppSpacing.md),
+            _FeatureTile(
+              icon: Icons.shield_rounded,
+              color: AppColors.revolutBlue,
+              title: 'Fonds d\'urgence',
+              description: 'Constitue une réserve de 3 à 6 mois pour les imprévus.',
             ),
 
             const SizedBox(height: AppSpacing.xl),
-
-            // Goal input
-            TextField(
-              controller: controller,
-              onChanged: onChanged,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              style: AppTypography.revolutSubtitle.copyWith(
-                color: context.pockii.onSurface,
-              ),
-              decoration: InputDecoration(
-                labelText: 'Objectif (optionnel)',
-                labelStyle: TextStyle(color: context.pockii.onSurfaceMuted),
-                suffixText: FcfaFormatter.symbol,
-                suffixStyle: AppTypography.revolutBody.copyWith(
-                  color: AppColors.revolutGreen,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: context.pockii.border),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: AppColors.revolutGreen,
-                    width: 2,
-                  ),
-                ),
-                filled: true,
-                fillColor: context.pockii.surface,
-              ),
-            ),
-
-            const SizedBox(height: AppSpacing.lg),
-
-            // Tips
-            _InfoTile(
-              icon: Icons.lightbulb_rounded,
-              color: AppColors.revolutAmber,
-              text:
-                  'Commence petit — même 50 000 FCFA de côté fait une vraie différence.',
-            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _FeatureTile extends StatelessWidget {
+  const _FeatureTile({
+    required this.icon,
+    required this.color,
+    required this.title,
+    required this.description,
+  });
+
+  final IconData icon;
+  final Color color;
+  final String title;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, color: color, size: 20),
+        ),
+        const SizedBox(width: AppSpacing.md),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: AppTypography.revolutLabel.copyWith(
+                  color: context.pockii.onSurface,
+                  fontSize: 15,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                description,
+                style: AppTypography.revolutMicro.copyWith(
+                  color: context.pockii.onSurfaceMuted,
+                  fontSize: 12,
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -709,27 +569,54 @@ class _InfoTile extends StatelessWidget {
 // Page 3 — Budget Setup
 // ─────────────────────────────────────────────
 
-class _BudgetSetupPage extends StatelessWidget {
+class _BudgetSetupPage extends StatefulWidget {
   const _BudgetSetupPage({
     required this.fadeAnimation,
-    required this.controller,
+    required this.value,
     required this.onChanged,
   });
 
   final Animation<double> fadeAnimation;
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
+  final int value;
+  final ValueChanged<int> onChanged;
+
+  @override
+  State<_BudgetSetupPage> createState() => _BudgetSetupPageState();
+}
+
+class _BudgetSetupPageState extends State<_BudgetSetupPage> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+      text: widget.value > 0 ? FcfaFormatter.formatCompact(widget.value) : '',
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
-      opacity: fadeAnimation,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+      opacity: widget.fadeAnimation,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          left: AppSpacing.xl,
+          right: AppSpacing.xl,
+          top: AppSpacing.xl,
+          bottom: MediaQuery.of(context).viewInsets.bottom + AppSpacing.xl,
+        ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: AppSpacing.xxl),
+
             Container(
               width: 64,
               height: 64,
@@ -767,36 +654,48 @@ class _BudgetSetupPage extends StatelessWidget {
 
             const SizedBox(height: AppSpacing.xl),
 
-            TextField(
-              controller: controller,
-              onChanged: onChanged,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              autofocus: false,
-              style: AppTypography.revolutSubtitle.copyWith(
-                color: context.pockii.onSurface,
-                fontWeight: FontWeight.w700,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: context.pockii.surfaceElevated,
+                borderRadius: BorderRadius.circular(16),
               ),
-              decoration: InputDecoration(
-                labelText: 'Revenus mensuels',
-                labelStyle: TextStyle(color: context.pockii.onSurfaceMuted),
-                suffixText: FcfaFormatter.symbol,
-                suffixStyle: AppTypography.revolutBody.copyWith(
-                  color: AppColors.revolutBlue,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: context.pockii.border),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: AppColors.revolutBlue,
-                    width: 2,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [MoneyInputFormatter()],
+                      style: AppTypography.revolutSubtitle.copyWith(
+                        color: context.pockii.onSurface,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: '150 000',
+                        hintStyle: AppTypography.revolutSubtitle.copyWith(
+                          color: context.pockii.onSurfaceMuted,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      onChanged: (val) {
+                        widget.onChanged(MoneyInputFormatter.parse(val));
+                      },
+                    ),
                   ),
-                ),
-                filled: true,
-                fillColor: context.pockii.surface,
+                  Text(
+                    FcfaFormatter.symbol,
+                    style: AppTypography.revolutBody.copyWith(
+                      color: AppColors.revolutBlue,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
               ),
             ),
 

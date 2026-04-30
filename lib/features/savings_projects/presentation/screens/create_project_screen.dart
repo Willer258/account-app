@@ -11,6 +11,7 @@ import '../../domain/enums/contribution_frequency.dart';
 import '../../domain/enums/project_category.dart';
 import '../../domain/models/savings_project_model.dart';
 import '../widgets/project_color_picker.dart';
+import '../../../../shared/utils/money_input_formatter.dart';
 
 /// Screen for creating or editing a savings project.
 class CreateProjectScreen extends ConsumerStatefulWidget {
@@ -263,17 +264,16 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
         TextFormField(
           controller: _targetAmountController,
           decoration: InputDecoration(
-            hintText: 'Montant à atteindre',
-            suffixText: FcfaFormatter.symbol,
+            hintText: 'Montant en ${FcfaFormatter.symbol}',
           ),
           keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          inputFormatters: [MoneyInputFormatter()],
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Le montant est requis';
             }
-            final amount = int.tryParse(value);
-            if (amount == null || amount <= 0) {
+            final amount = MoneyInputFormatter.parse(value);
+            if (amount <= 0) {
               return 'Montant invalide';
             }
             if (amount < 1000) {
@@ -475,18 +475,17 @@ class _CreateProjectScreenState extends ConsumerState<CreateProjectScreen> {
             TextFormField(
               controller: _autoAmountController,
               decoration: InputDecoration(
-                labelText: 'Montant',
-                suffixText: FcfaFormatter.symbol,
+                labelText: 'Montant en ${FcfaFormatter.symbol}',
               ),
               keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              inputFormatters: [MoneyInputFormatter()],
               validator: (value) {
                 if (_autoContributionEnabled) {
                   if (value == null || value.isEmpty) {
                     return 'Le montant est requis';
                   }
-                  final amount = int.tryParse(value);
-                  if (amount == null || amount <= 0) {
+                  final amount = MoneyInputFormatter.parse(value);
+                  if (amount <= 0) {
                     return 'Montant invalide';
                   }
                 }

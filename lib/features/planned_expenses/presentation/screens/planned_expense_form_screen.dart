@@ -5,10 +5,13 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/services/clock_service.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/pockii_colors.dart';
+import '../../../../shared/widgets/money_input_field.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../domain/models/planned_expense_model.dart';
 import '../providers/planned_expense_form_provider.dart';
 import '../../../../shared/utils/fcfa_formatter.dart';
+import '../../../../shared/utils/money_input_formatter.dart';
 
 /// Bottom sheet for adding or editing a planned expense.
 class PlannedExpenseFormScreen extends ConsumerStatefulWidget {
@@ -61,15 +64,18 @@ class _PlannedExpenseFormScreenState
     final isEditing = widget.expense != null;
     final dateFormat = DateFormat('EEE d MMM yyyy', 'fr_FR');
 
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return DraggableScrollableSheet(
+      initialChildSize: 0.85,
+      minChildSize: 0.5,
+      maxChildSize: 0.95,
+      expand: false,
+      builder: (context, scrollController) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: ListView(
+          controller: scrollController,
+          padding: const EdgeInsets.all(24),
           children: [
             const SizedBox(height: 4),
 
@@ -112,37 +118,46 @@ class _PlannedExpenseFormScreenState
             const SizedBox(height: 16),
 
             // Amount
-            TextField(
-              controller: _amountController,
-              keyboardType: TextInputType.number,
-              style: TextStyle(
-                color: AppColors.revolutOnDark,
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              decoration: BoxDecoration(
+                color: context.pockii.surfaceElevated,
+                borderRadius: BorderRadius.circular(14),
               ),
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              onChanged: (value) {
-                final amount = int.tryParse(value) ?? 0;
-                ref
-                    .read(plannedExpenseFormProvider.notifier)
-                    .setAmount(amount);
-              },
-              decoration: InputDecoration(
-                labelText: 'Montant',
-                labelStyle: TextStyle(color: AppColors.revolutOnDarkMuted),
-                hintText: '0',
-                hintStyle: TextStyle(color: AppColors.revolutOnDarkMuted),
-                suffixText: FcfaFormatter.symbol,
-                suffixStyle: TextStyle(
-                  color: AppColors.revolutOnDarkMuted,
-                  fontSize: 14,
-                ),
-                filled: true,
-                fillColor: AppColors.revolutSurfaceElevated,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _amountController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [MoneyInputFormatter()],
+                      style: TextStyle(
+                        color: context.pockii.onSurface,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: '0',
+                        hintStyle: TextStyle(color: context.pockii.onSurfaceMuted),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      onChanged: (value) {
+                        ref
+                            .read(plannedExpenseFormProvider.notifier)
+                            .setAmount(MoneyInputFormatter.parse(value));
+                      },
+                    ),
+                  ),
+                  Text(
+                    FcfaFormatter.symbol,
+                    style: TextStyle(
+                      color: context.pockii.onSurfaceMuted,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 16),

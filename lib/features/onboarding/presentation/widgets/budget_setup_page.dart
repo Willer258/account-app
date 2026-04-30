@@ -6,6 +6,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../shared/utils/fcfa_formatter.dart';
 import '../providers/onboarding_provider.dart';
+import '../../../../shared/utils/money_input_formatter.dart';
 
 /// The budget setup page (screen 3) of onboarding.
 ///
@@ -119,7 +120,7 @@ class _BudgetSetupPageState extends ConsumerState<BudgetSetupPage> {
               fontSize: 40,
             ),
             inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
+              MoneyInputFormatter(),
               LengthLimitingTextInputFormatter(12), // Max 999 999 999 999
             ],
             decoration: InputDecoration(

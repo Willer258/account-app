@@ -9,6 +9,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../shared/utils/fcfa_formatter.dart';
+import '../../../../shared/widgets/money_input_field.dart';
 import '../../../budget_rules/domain/enums/expense_category.dart';
 import '../../../budget_rules/presentation/providers/budget_rules_provider.dart';
 import '../../../home/presentation/providers/budget_provider.dart';
@@ -20,6 +21,7 @@ import '../../domain/models/transaction_model.dart';
 import '../../domain/models/transaction_type.dart';
 import '../providers/transaction_form_provider.dart';
 import 'category_chip_row.dart';
+import '../../../../shared/utils/money_input_formatter.dart';
 
 /// A bottom sheet for adding or editing a transaction (expense or income).
 ///
@@ -289,15 +291,18 @@ class _TransactionBottomSheetState
         ? dateFormat.format(_selectedDate!)
         : "Aujourd'hui";
 
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+    return DraggableScrollableSheet(
+      initialChildSize: 0.85,
+      minChildSize: 0.5,
+      maxChildSize: 0.95,
+      expand: false,
+      builder: (context, scrollController) => SafeArea(
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: ListView(
+            controller: scrollController,
             children: [
               // Drag handle
 
@@ -352,40 +357,53 @@ class _TransactionBottomSheetState
 
               const SizedBox(height: AppSpacing.md),
 
-              // Amount input with system keyboard
+              // Amount input
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                child: TextField(
-                  controller: _amountController,
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  style: AppTypography.revolutTitle.copyWith(
-                    color: AppColors.revolutOnDark,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.revolutSurfaceElevated,
+                    borderRadius: BorderRadius.circular(14),
+                    border: formState.showAmountError
+                        ? Border.all(color: AppColors.revolutRed)
+                        : null,
                   ),
-                  decoration: InputDecoration(
-                    hintText: '0',
-                    hintStyle: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.revolutOnDarkMuted.withOpacity(0.5),
-                    ),
-                    suffixText: FcfaFormatter.symbol,
-                    suffixStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.revolutOnDarkMuted,
-                    ),
-                    border: const OutlineInputBorder(),
-                    errorText:
-                        formState.showAmountError ? 'Montant requis' : null,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _amountController,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          inputFormatters: [MoneyInputFormatter()],
+                          style: AppTypography.revolutTitle.copyWith(
+                            color: AppColors.revolutOnDark,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: '0',
+                            hintStyle: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.revolutOnDarkMuted.withOpacity(0.5),
+                            ),
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (value) {
+                            formNotifier.setAmount(MoneyInputFormatter.parse(value));
+                          },
+                        ),
+                      ),
+                      Text(
+                        FcfaFormatter.symbol,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.revolutOnDarkMuted,
+                        ),
+                      ),
+                    ],
                   ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  onChanged: (value) {
-                    final amount = int.tryParse(value) ?? 0;
-                    formNotifier.setAmount(amount);
-                  },
                 ),
               ),
 
@@ -514,6 +532,7 @@ class _TransactionBottomSheetState
     );
   }
 }
+
 
 /// Widget for adding savings to emergency fund.
 class _EmergencyFundOption extends ConsumerWidget {

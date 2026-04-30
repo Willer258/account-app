@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/database/database_provider.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/services/simulation_service.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -16,6 +17,7 @@ import '../../../budget/data/repositories/budget_period_repository.dart';
 import '../../../budget_rules/presentation/providers/budget_rules_provider.dart';
 import '../../../budget_rules/presentation/widgets/budget_allocation_card.dart';
 import '../../../home/presentation/providers/budget_provider.dart';
+import '../../../onboarding/presentation/providers/onboarding_provider.dart';
 import '../../../tutorials/presentation/widgets/tutorial_bottom_sheet.dart';
 import '../../../tutorials/tutorial_content.dart';
 import '../dialogs/budget_edit_dialog.dart';
@@ -52,9 +54,11 @@ class SettingsScreen extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  // Simulation button prominent at top (debug only)
+                  // Debug tools (debug only)
                   if (kDebugMode) ...[
                     _SimulationButton(),
+                    const SizedBox(height: 12),
+                    _ResetOnboardingButton(),
                     const SizedBox(height: 12),
                   ],
                   _BudgetSection(),
@@ -247,6 +251,44 @@ class _SimulationButtonState extends ConsumerState<_SimulationButton> {
     } finally {
       if (mounted) setState(() => _isSimulating = false);
     }
+  }
+}
+
+/// Reset onboarding button (debug only).
+class _ResetOnboardingButton extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () async {
+        final dao = ref.read(appSettingsDaoProvider);
+        await dao.setValue(kOnboardingCompletedKey, 'false');
+        invalidateOnboardingCache(ref);
+        if (context.mounted) {
+          context.go(AppRoutes.onboarding);
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.revolutAmber.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.revolutAmber.withOpacity(0.3)),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.restart_alt_rounded, color: AppColors.revolutAmber),
+            const SizedBox(width: 12),
+            Text(
+              'Relancer l\'onboarding',
+              style: AppTypography.revolutLabel.copyWith(
+                color: AppColors.revolutAmber,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
